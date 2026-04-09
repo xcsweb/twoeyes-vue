@@ -1,0 +1,223 @@
+<template>
+  <div class="exercise-container" ref="containerRef">
+    <div v-if="!isWebGLAvailable" class="fallback-msg">
+      当前环境无法创建 WebGL 渲染上下文，已自动切换为兼容模式。请使用支持 WebGL 的浏览器继续训练。
+    </div>
+    
+    <div class="progress-hud">
+      <span :class="{ 'text-success': stageTime >= 60, 'text-white': stageTime < 60 }">
+        本阶段累计训练: {{ stageTime }} / 60 秒
+        <span v-if="stageTime >= 60" class="ml-2">✓ 已达标，下一阶段已解锁</span>
+      </span>
+    </div>
+        <div class="instruction-overlay">
+      <p class="text-body-1">
+        盯着移动的白球，保持球只有一个不重影。
+        <br/><br/>
+        <span class="text-info">{{ instructionText }}</span>
+      </p>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+
+import * as THREE from 'three'
+import { useSettingsStore } from '../../store/settings'
+import { useProgressStore } from '../../store/progress'
+
+const containerRef = ref<HTMLElement | null>(null)
+const isWebGLAvailable = ref(true)
+const settingsStore = useSettingsStore()
+const progressStore = useProgressStore()
+
+let scene: THREE.Scene
+let camera: THREE.PerspectiveCamera
+let renderer: THREE.WebGLRenderer
+let animationId: number
+let timerId: number
+let ballGroup: THREE.Group
+
+const STAGE_NUMBER = 3 // Brock String Exercise belongs to Stage 3
+const stageTime = computed(() => progressStore.stages[STAGE_NUMBER]?.totalTime || 0)
+
+const instructionText = computed(() => {
+  const offset = settingsStore.alignmentOffset.x
+  if (offset > 0) return "检测到内隐斜：请在球远离时着重练习『双眼视线发散』的能力"
+  if (offset < 0) return "检测到外隐斜：请在球靠近时着重练习『双眼视线汇聚』的能力（斗鸡眼）"
+  return "当球靠近时努力把眼睛“斗”起来（集合），远离时放松（分开）"
+})
+
+const initThree = () => {
+  if (!containerRef.value) return
+
+  // Check WebGL
+  try {
+    const canvas = document.createElement('canvas')
+    isWebGLAvailable.value = !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')))
+  } catch (e) {
+    isWebGLAvailable.value = false
+  }
+
+  if (!isWebGLAvailable.value) return
+
+  scene = new THREE.Scene()
+  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
+  camera.position.set(0, 0, 5)
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setPixelRatio(window.devicePixelRatio)
+  containerRef.value.appendChild(renderer.domElement)
+
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
+  scene.add(ambientLight)
+
+  const pointLight = new THREE.PointLight(0xffffff, 2)
+  pointLight.position.set(0, 5, 5)
+  scene.add(pointLight)
+
+  const { alignmentOffset } = settingsStore
+  const leftColorStr = settingsStore.leftEyeColorStr
+  const rightColorStr = settingsStore.rightEyeColorStr
+
+  const IOD_FACTOR = 0.08
+  const startZ = 4;
+  const endZ = -40;
+
+  // Moving Ball (Dichoptic) - Using Physical 3D Material
+  ballGroup = new THREE.Group()
+  const sphereGeo = new THREE.SphereGeometry(1, 32, 32)
+  
+  const leftBallMat = new THREE.MeshStandardMaterial({ 
+    color: leftColorStr, 
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    transparent: true,
+    roughness: 0.2,
+    metalness: 0.1
+  })
+  const leftBallMesh = new THREE.Mesh(sphereGeo, leftBallMat)
+  leftBallMesh.name = 'leftBall'
+  
+  const rightBallMat = new THREE.MeshStandardMaterial({ 
+    color: rightColorStr, 
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    transparent: true,
+    roughness: 0.2,
+    metalness: 0.1
+  })
+  const rightBallMesh = new THREE.Mesh(sphereGeo, rightBallMat)
+  rightBallMesh.name = 'rightBall'
+
+  ballGroup.add(leftBallMesh)
+  ballGroup.add(rightBallMesh)
+  scene.add(ballGroup)
+
+  const offset = alignmentOffset.x
+  const baseSpeed = 1.0 + Math.min(Math.abs(offset) / 50, 1.0)
+  const isEsophoria = offset > 0
+  const isExophoria = offset < 0
+  const clock = new THREE.Clock()
+  let timeRef = 0
+
+  const animate = () => {
+    animationId = requestAnimationFrame(animate)
+    const delta = clock.getDelta()
+    
+    timeRef += delta * baseSpeed
+      
+    let minZ = -20;
+    let maxZ = 3;
+    if (isEsophoria) {
+      minZ = -30; // Push further away for esophoria (train divergence)
+      maxZ = 0;
+    } else if (isExophoria) {
+      minZ = -10;
+      maxZ = 4;   // Pull closer for exophoria (train convergence)
+    }
+    
+    const normalized = (Math.sin(timeRef) + 1) / 2
+    const zPosition = minZ + normalized * (maxZ - minZ)
+    
+    ballGroup.position.z = zPosition
+    
+    // Dynamically adjust horizontal separation based on depth (Parallax)
+    // Interpolate Y position so it moves naturally
+    const t = (zPosition - startZ) / (endZ - startZ);
+    const yPos = -1.5 + t * (1.5 - (-1.5));
+
+    const leftBall = ballGroup.getObjectByName('leftBall')
+    const rightBall = ballGroup.getObjectByName('rightBall')
+    if (leftBall && rightBall) {
+      leftBall.position.set(IOD_FACTOR * zPosition, yPos, 0)
+      rightBall.position.set(-IOD_FACTOR * zPosition, yPos, 0)
+    }
+
+    renderer.render(scene, camera)
+  }
+
+  animate()
+
+  window.addEventListener('resize', onWindowResize)
+
+  timerId = window.setInterval(() => {
+    progressStore.addStageTime(STAGE_NUMBER, 1)
+  }, 1000)
+}
+
+const onWindowResize = () => {
+  if (camera && renderer) {
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize(window.innerWidth, window.innerHeight)
+  }
+}
+
+onMounted(() => {
+  initThree()
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', onWindowResize)
+  if (timerId) clearInterval(timerId)
+  if (animationId) cancelAnimationFrame(animationId)
+  
+  if (renderer && containerRef.value) {
+    containerRef.value.removeChild(renderer.domElement)
+    renderer.dispose()
+  }
+})
+</script>
+
+<style scoped>
+.exercise-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000;
+  position: relative;
+}
+
+.progress-hud {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 20px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  z-index: 100;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.fallback-msg {
+  color: white;
+  padding: 24px;
+  text-align: center;
+}
+</style>

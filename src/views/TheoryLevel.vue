@@ -1,0 +1,193 @@
+<template>
+  <v-container fluid class="level-container fill-height bg-black">
+    <div class="content-wrapper">
+      <div class="header text-center mb-8">
+        <h1 class="title text-white">原理解析与文献参考</h1>
+        <p class="text-grey mt-2">双眼分视训练（Dichoptic Training）的临床逻辑与数据关联</p>
+      </div>
+
+      <v-card class="theory-card mb-6" variant="outlined">
+        <v-card-text>
+          <h2 class="text-h5 text-white mb-4 d-flex align-center">
+            <v-icon color="primary" class="mr-2">mdi-database-link</v-icon>
+            检查数据如何关联康复训练？
+          </h2>
+          <div class="text-body-1 text-grey-lighten-1">
+            <p class="mb-4">
+              <strong class="text-white">1. 颜色的绝对匹配（消除串扰）：</strong><br />
+              在“滤片选择”阶段确定的 RGB 颜色值，会被 100% 沿用到后续所有的 3D 训练游戏中。只有保证训练刺激的颜色与您的眼镜滤片完全一致，才能达到“右眼看不见红色，左眼看不见蓝色”的彻底分视效果（Dichoptic Presentation），防止图像串扰（Crosstalk）。
+            </p>
+            <p class="mb-4">
+              <strong class="text-white">2. 抑制测试与暗光惩罚（Penalization）<sup class="text-primary">[1]</sup>：</strong><br />
+              在“四点客观测试”中，如果系统测出您的大脑正在抑制某一只眼睛（如弱视眼），系统会在后台记录该状态。在进入康复训练时，系统会自动将您“优势眼”的颜色亮度降低至 30%，通过“惩罚”好眼，强迫大脑去重新建立对“差眼”的神经连接。
+            </p>
+            <p class="mb-4">
+              <strong class="text-white">3. 隐斜偏移量与空间频率动态调节<sup class="text-primary">[3]</sup>：</strong><br />
+              在“十字准星对齐”中测出的 Offset 值代表了您的隐斜视程度。Offset 越大，说明融合能力越差。系统会将该数值代入 3D 引擎：Offset 越大，生成的训练方块就越大（降低空间频率），且运动速度越慢，给眼球肌肉更充裕的时间进行融合；随着您能力的提升（Offset 减小），方块会变得更小、更快，逐步挑战更高阶的动态立体视。
+            </p>
+            <p class="mb-0">
+              <strong class="text-white">4. 外斜视与内斜视的差异化聚散训练<sup class="text-primary">[4]</sup>：</strong><br />
+              依据临床指南，外斜视（Exotropia）与内斜视（Esotropia）的训练方向截然相反。系统会根据 Offset 值的正负号自动判断：如果您是外斜视，系统会在【阶段 3】生成交叉视差（底向外 BO）的训练，强制您进行“斗鸡眼”集合训练；如果您是内斜视，则生成非交叉视差（底向内 BI），强制您放松眼部肌肉进行散开训练。
+            </p>
+          </div>
+        </v-card-text>
+      </v-card>
+
+      <v-card class="theory-card mb-6" variant="outlined">
+        <v-card-text>
+          <h2 class="text-h5 text-white mb-4 d-flex align-center">
+            <v-icon color="secondary" class="mr-2">mdi-gamepad-variant-outline</v-icon>
+            康复训练各阶段的实现原理
+          </h2>
+          <div class="text-body-1 text-grey-lighten-1">
+            <div class="mb-6">
+              <strong class="text-white text-h6">阶段 1：基础脱抑制（洗牌训练、方块阵列）</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-secondary">🎯 核心目标：</span>打破大脑对单眼的神经抑制，建立双眼同时接收视觉信号的能力。</li>
+                <li class="mb-1"><span class="text-secondary">🎮 游戏原理：</span>利用“暗光惩罚疗法 (Penalization Therapy)”<sup class="text-primary">[1]</sup>。如果系统在检查中发现用户存在单眼抑制，会自动将优势眼的渲染亮度降低至 30%，强迫大脑调用“差眼”去寻找正确的方块，从而打破长期的抑制状态。同时，系统利用电子游戏的知觉学习机制<sup class="text-primary">[6]</sup>，通过高度注意力的任务重新激活视觉皮层的神经可塑性。</li>
+                <li><span class="text-secondary">📚 临床依据：</span><span class="text-grey-lighten-2 text-body-2">Hess et al. (2010)<sup class="text-primary">[1]</sup>；Li et al. (2011) 动作游戏与神经可塑性<sup class="text-primary">[6]</sup>。</span></li>
+              </ul>
+            </div>
+            
+            <div class="mb-6">
+              <strong class="text-white text-h6">阶段 2：动态融合与扫视（扫视追踪、星空粒子、旋转螺旋）</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-secondary">🎯 核心目标：</span>在动态干扰下维持双眼融合，强化周边视野（Peripheral Vision）与快速扫视（Saccadic）眼动。</li>
+                <li class="mb-1"><span class="text-secondary">🎮 游戏原理：</span>
+                  <ul class="ml-4 mt-1 mb-1">
+                    <li><strong>扫视追踪：</strong>系统在屏幕随机生成红蓝交替闪烁的视标，训练双眼在快速扫视运动中的注意力切换，防止单眼抑制<sup class="text-primary">[5]</sup>。</li>
+                    <li><strong>粒子/螺旋：</strong>利用全屏动态画面刺激周边视野。系统会读取用户的隐斜视（Offset）数据，自动调整粒子运动速率与密度（动态空间频率调节），以匹配您的融合极限<sup class="text-primary">[3]</sup>，并通过游戏化互动提升康复依从性<sup class="text-primary">[6]</sup>。</li>
+                  </ul>
+                </li>
+                <li><span class="text-secondary">📚 临床依据：</span><span class="text-grey-lighten-2 text-body-2">Ciuffreda (2002) 扫视眼动在视觉训练中的基础<sup class="text-primary">[5]</sup>。</span></li>
+              </ul>
+            </div>
+            
+            <div class="mb-6">
+              <strong class="text-white text-h6">阶段 3：集合与分开（裂隙尺聚散卡、聚散球 Brock String）</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-secondary">🎯 核心目标：</span>扩大双眼聚散（Vergence）范围，针对性改善外斜视（需集合）或内斜视（需散开）。</li>
+                <li class="mb-1"><span class="text-secondary">🎮 游戏原理：</span>
+                  <ul class="ml-4 mt-1 mb-1">
+                    <li><strong>裂隙尺聚散卡：</strong>系统根据检查结果判断。外斜视生成交叉视差（底向外 BO）的红蓝圆环，强制用户做“斗鸡眼”；内斜视生成非交叉视差（底向内 BI），强制放松视线<sup class="text-primary">[4]</sup>。</li>
+                    <li><strong>聚散球：</strong>系统计算瞳距系数（IOD Factor），在 3D 空间生成分离的红蓝双球。当球在Z轴运动时，用户必须控制眼球肌肉强行在大脑中将它们捏合成一颗“白球”<sup class="text-primary">[3]</sup>。</li>
+                  </ul>
+                </li>
+                <li><span class="text-secondary">📚 临床依据：</span><span class="text-grey-lighten-2 text-body-2">Scheiman & Wick (2014) 视觉训练临床指南 <sup class="text-primary">[3]</sup>；Cooper & Jamal (2012) 集合不足干预综述 <sup class="text-primary">[4]</sup>。</span></li>
+              </ul>
+            </div>
+            
+            <div class="mb-2">
+              <strong class="text-white text-h6">阶段 4：立体视建立（双眼协同俄罗斯方块）</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-secondary">🎯 核心目标：</span>重建高级的三维立体视觉与精准的分视手眼协同（Dichoptic Hand-Eye Coordination）能力。</li>
+                <li class="mb-1"><span class="text-secondary">🎮 游戏原理：</span>复刻自 McGill 大学的经典临床实验<sup class="text-primary">[2]</sup>。游戏中下落的方块仅对一只眼可见（如红色），底部堆积的方块仅对另一只眼可见（如蓝色）。用户的大脑必须完美拼合这两路独立的视觉信号，才能正确判断方块位置进行游戏。</li>
+                <li><span class="text-secondary">📚 临床依据：</span><span class="text-grey-lighten-2 text-body-2">Li, Thompson, Hess et al. (2013), Dichoptic training enables the adult amblyopic brain to learn. <sup class="text-primary">[2]</sup></span></li>
+              </ul>
+            </div>
+          </div>
+        </v-card-text>
+      </v-card>
+
+      <v-card class="theory-card" variant="outlined">
+        <v-card-text>
+          <h2 class="text-h5 text-white mb-4 d-flex align-center">
+            <v-icon color="success" class="mr-2">mdi-school</v-icon>
+            核心参考论文与临床指南
+          </h2>
+          <v-list bg-color="transparent" class="reference-list">
+            <v-list-item 
+              v-for="(paper, index) in papers"
+              :key="paper.id"
+              class="px-4 py-3 mb-3 clickable-item"
+              @click="goToPaperDetail(paper.id)"
+            >
+              <template v-slot:prepend>
+                <div class="mr-4 text-h6 text-info font-weight-bold">[{{ index + 1 }}]</div>
+              </template>
+              <v-list-item-title class="text-white font-weight-bold text-wrap mb-1">
+                {{ paper.authors }} ({{ paper.year }}).
+              </v-list-item-title>
+              <div class="text-grey text-wrap text-body-2 mb-2">
+                "{{ paper.titleEn }}" <br/>
+                <span class="text-white">【中文翻译】：{{ paper.titleZh }}</span>
+              </div>
+              <v-list-item-subtitle class="text-wrap mt-1">
+                <span class="text-caption text-primary">本系统依据：点击查看详情与文献原文链接 >></span>
+              </v-list-item-subtitle>
+            </v-list-item>
+          </v-list>
+        </v-card-text>
+      </v-card>
+    </div>
+  </v-container>
+</template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { papers } from '../data/papers'
+
+const router = useRouter()
+
+const goToPaperDetail = (id: string) => {
+  router.push({ name: 'PaperDetail', params: { id } })
+}
+</script>
+
+<style scoped>
+.level-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 40px;
+  padding-bottom: 80px;
+  overflow-y: auto;
+}
+
+.content-wrapper {
+  max-width: 800px;
+  width: 100%;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.title {
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+}
+
+.theory-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 10px;
+}
+
+.reference-list .v-list-item {
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 16px !important;
+}
+
+.clickable-item {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.clickable-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateX(4px);
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
