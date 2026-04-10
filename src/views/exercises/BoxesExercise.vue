@@ -39,7 +39,7 @@
 import { useStageTimer } from '../../composables/useStageTimer'
 
 import PersonalizedHud from '../../components/PersonalizedHud.vue'
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 import * as THREE from 'three'
 import { useSettingsStore } from '../../store/settings'

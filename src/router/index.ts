@@ -359,4 +359,17 @@ const router = createRouter({
   routes
 })
 
+router.afterEach(async () => {
+  try {
+    const res = await fetch(`/twoeyes-vue/version.json?t=${Date.now()}`)
+    const data = await res.json()
+    // @ts-ignore
+    if (data.version && typeof __APP_VERSION__ !== 'undefined' && data.version !== __APP_VERSION__) {
+      window.dispatchEvent(new Event('app-update-available'))
+    }
+  } catch (err) {
+    console.error('Failed to check version:', err)
+  }
+})
+
 export default router

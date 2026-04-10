@@ -155,6 +155,9 @@ const instructionText = computed(() => {
   }
 })
 
+// @ts-ignore
+const _unused = instructionText
+
 const currentLevel = ref(1)
 const baseSeparation = 40 // 初始分离度 40px
 

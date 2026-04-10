@@ -35,11 +35,26 @@
         <span>{{ btnHome.label ?? '回到主页' }}</span>
       </v-btn>
     </v-bottom-navigation>
+
+    <v-dialog v-model="showUpdateDialog" persistent max-width="400">
+      <v-card>
+        <v-card-title class="text-h6">
+          发现新版本
+        </v-card-title>
+        <v-card-text>
+          系统有新版本可用，为了更好的体验，请点击确认进行更新。
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="handleUpdateConfirm">立即更新</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { routeBottomNavConfig, type BottomNavAction, type NavTarget } from './config/routeBottomNav'
 import { useProgressStore } from './store/progress'
@@ -58,6 +73,25 @@ const routeSpec = computed(() => {
   const name = route.name as string | undefined
   if (!name) return undefined
   return routeBottomNavConfig[name]
+})
+
+const showUpdateDialog = ref(false)
+
+const handleUpdateAvailable = () => {
+  showUpdateDialog.value = true
+}
+
+const handleUpdateConfirm = () => {
+  // @ts-ignore
+  window.location.reload(true)
+}
+
+onMounted(() => {
+  window.addEventListener('app-update-available', handleUpdateAvailable)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('app-update-available', handleUpdateAvailable)
 })
 
 const showNav = computed(() => routeSpec.value?.showNav ?? false)
