@@ -6,7 +6,7 @@
     <div class="instructions text-center px-4 pt-6">
       <p class="text-h6 text-white mb-2">请戴上您的 3D 眼镜。</p>
       <p class="text-body-2 text-grey">
-        使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动其中一个十字准星，直到两个十字准星在您的视觉中完全重合（看起来像一个发光的白色十字）。
+        使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动其中一个十字准星。使用旋转按钮或键盘 Q/E 键调整旋转角度，直到两个十字准星在您的视觉中完全重合（看起来像一个发光的白色十字）。
       </p>
     </div>
 
@@ -26,7 +26,7 @@
         class="box right-box alignment-exercise-interactive"
         :style="{
           backgroundColor: rightLenseRGBString,
-          transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px))`
+          transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) rotate(${position.r}deg)`
         }"
         tabindex="0"
         @keydown="handleKeyDown"
@@ -49,6 +49,11 @@
           <button class="dpad-btn" @click.stop="moveBox(1, 0)">→</button>
         </div>
         <button class="dpad-btn" @click.stop="moveBox(0, 1)">↓</button>
+      </div>
+
+      <div class="rotate-controls mt-4">
+        <button class="dpad-btn" @click.stop="rotateBox(-1)">↺</button>
+        <button class="dpad-btn" @click.stop="rotateBox(1)">↻</button>
       </div>
       
       <v-btn
@@ -79,7 +84,11 @@ const getRandomOffset = () => {
   return sign * (Math.floor(Math.random() * 50) + 30)
 }
 
-const position = ref({ x: getRandomOffset(), y: getRandomOffset() })
+const position = ref({ 
+  x: getRandomOffset(), 
+  y: getRandomOffset(),
+  r: Math.floor(Math.random() * 31) - 15
+})
 const isDragging = ref(false)
 const dragStartPos = ref({ x: 0, y: 0 })
 
@@ -105,6 +114,7 @@ const handlePointerMove = (e: PointerEvent) => {
   position.value = {
     x: e.clientX - dragStartPos.value.x,
     y: e.clientY - dragStartPos.value.y,
+    r: position.value.r
   }
 }
 
@@ -134,6 +144,16 @@ const handleKeyDown = (e: KeyboardEvent) => {
       position.value.x += step
       e.preventDefault()
       break
+    case 'q':
+    case 'Q':
+      position.value.r -= step
+      e.preventDefault()
+      break
+    case 'e':
+    case 'E':
+      position.value.r += step
+      e.preventDefault()
+      break
   }
 }
 
@@ -142,8 +162,12 @@ const moveBox = (dx: number, dy: number) => {
   position.value.y += dy
 }
 
+const rotateBox = (dr: number) => {
+  position.value.r += dr
+}
+
 const handleConfirm = () => {
-  settingsStore.setAlignmentOffset({ x: position.value.x, y: position.value.y })
+  settingsStore.setAlignmentOffset({ x: position.value.x, y: position.value.y, r: position.value.r })
   goNext(route.name as string)
 }
 </script>
@@ -261,6 +285,11 @@ const handleConfirm = () => {
 }
 
 .dpad-row {
+  display: flex;
+  gap: 40px;
+}
+
+.rotate-controls {
   display: flex;
   gap: 40px;
 }

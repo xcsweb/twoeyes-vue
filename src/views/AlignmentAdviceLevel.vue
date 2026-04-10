@@ -21,6 +21,23 @@
             <span class="ml-2 text-info" v-else-if="offset.y < 0">(向上偏移)</span>
           </div>
 
+          <div class="advice-text text-grey mb-4" v-if="offset.r !== undefined">
+            旋转偏移量 (Torsional Offset): 
+            <span class="text-white font-weight-bold ml-2">{{ offset.r }} °</span>
+            <span class="ml-2 text-info" v-if="offset.r > 0">(顺时针/外旋)</span>
+            <span class="ml-2 text-info" v-else-if="offset.r < 0">(逆时针/内旋)</span>
+          </div>
+
+          <v-alert
+            v-if="offset.r !== undefined && Math.abs(offset.r) > 2"
+            type="error"
+            variant="tonal"
+            class="mb-6"
+            title="⚠️ 警告：检测到明显的旋转斜视 (Cyclotropia)"
+          >
+            系统检测到您的眼球存在明显的旋转偏斜（&gt; 2度）。视觉康复训练（Vision Therapy）对旋转斜视的改善效果极为有限，强烈建议您尽快前往正规医院斜视与小儿眼科就诊，寻求斜视手术或特殊棱镜的临床评估。
+          </v-alert>
+
           <v-divider class="my-4" color="rgba(255,255,255,0.2)"></v-divider>
 
           <div class="text-h6 text-white mb-4">根据您的立体视筛查结果：</div>

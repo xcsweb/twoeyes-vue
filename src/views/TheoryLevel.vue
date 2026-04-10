@@ -78,11 +78,19 @@
               </ul>
             </div>
 
-            <div class="mb-2">
+            <div class="mb-6">
               <strong class="text-white text-h6">6. 立体视敏度重建与视差训练</strong><br />
               <ul class="mt-2 ml-4">
                 <li class="mb-1"><span class="text-info">👁️ 原理：</span>立体视敏度是衡量双眼深度知觉能力的重要指标。本系统通过提供具有微小水平视差（Disparity）的立体图，促使大脑视觉中枢进行双眼融合，从而恢复和提升立体视觉功能。</li>
                 <li><span class="text-info">📚 依据：</span><span class="text-grey-lighten-2 text-body-2">Li et al. (2013), Dichoptic training improves amblyopic stereopsis.</span></li>
+              </ul>
+            </div>
+
+            <div class="mb-2">
+              <strong class="text-white text-h6">7. 旋转斜视 (Cyclotropia) 与双马氏杆测试模拟</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-info">👁️ 原理：</span>旋转斜视是指眼球绕前后轴发生旋转偏斜。传统上使用双马氏杆测试（Double Maddox Rod Test）来评估。本系统通过屏幕上的红蓝分视旋转刻度线（用户旋转其中一条线使其与另一条线平行），能够在数字设备上精准模拟这一临床测试，从而量化旋转偏移角度。由于视觉训练对旋转斜视效果有限，系统会在检测到明显偏斜时及时发出就医预警。</li>
+                <li><span class="text-info">📚 依据：</span><span class="text-grey-lighten-2 text-body-2">Ruttum (1989), The Double Maddox Rod Test for Cyclotropia.</span></li>
               </ul>
             </div>
           </div>

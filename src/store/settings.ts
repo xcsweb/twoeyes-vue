@@ -4,6 +4,7 @@ export interface AlignmentRecord {
   date: string
   x: number
   y: number
+  r?: number
 }
 
 export interface VisionRecord {
@@ -23,7 +24,7 @@ export const useSettingsStore = defineStore('settings', {
     lensConfig: 'red-cyan', // 'red-cyan' or 'cyan-red'
     leftLense: { r: 255, g: 0, b: 0 },
     rightLense: { r: 0, g: 255, b: 255 },
-    alignmentOffset: { x: 0, y: 0 },
+    alignmentOffset: { x: 0, y: 0, r: 0 },
     alignmentHistory: [] as AlignmentRecord[],
     visionAcuity: { left: 1.0, right: 1.0 },
     visionHistory: [] as VisionRecord[],
@@ -58,8 +59,12 @@ export const useSettingsStore = defineStore('settings', {
         parts.push(`亮度: ${Math.round(state.penalizationFactor * 100)}%`)
       }
       
-      if (state.alignmentOffset.x !== 0 || state.alignmentOffset.y !== 0) {
-        parts.push(`偏移: X:${state.alignmentOffset.x} Y:${state.alignmentOffset.y}`)
+      if (state.alignmentOffset.x !== 0 || state.alignmentOffset.y !== 0 || (state.alignmentOffset.r && state.alignmentOffset.r !== 0)) {
+        let text = `偏移: X:${state.alignmentOffset.x} Y:${state.alignmentOffset.y}`
+        if (state.alignmentOffset.r && state.alignmentOffset.r !== 0) {
+          text += ` R:${state.alignmentOffset.r}°`
+        }
+        parts.push(text)
       }
 
       if (state.visionAcuity && (state.visionAcuity.left !== 1.0 || state.visionAcuity.right !== 1.0)) {
@@ -99,8 +104,12 @@ export const useSettingsStore = defineStore('settings', {
     changeRightLense(color: RGBColor) {
       this.rightLense = color
     },
-    setAlignmentOffset(offset: { x: number; y: number }) {
-      this.alignmentOffset = offset
+    setAlignmentOffset(offset: { x: number; y: number; r?: number }) {
+      this.alignmentOffset = {
+        x: offset.x,
+        y: offset.y,
+        r: offset.r ?? 0
+      }
       
       const today = new Date().toISOString().split('T')[0] // 'YYYY-MM-DD'
       
@@ -116,9 +125,10 @@ export const useSettingsStore = defineStore('settings', {
         // Overwrite today's record
         this.alignmentHistory[existingIndex].x = offset.x
         this.alignmentHistory[existingIndex].y = offset.y
+        this.alignmentHistory[existingIndex].r = offset.r ?? 0
       } else {
         // Add new record
-        this.alignmentHistory.push({ date: today, x: offset.x, y: offset.y })
+        this.alignmentHistory.push({ date: today, x: offset.x, y: offset.y, r: offset.r ?? 0 })
       }
     },
     setVisionAcuity(acuity: { left: number; right: number }) {

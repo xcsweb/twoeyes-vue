@@ -134,5 +134,17 @@ export const papers: Paper[] = [
     abstractZh: `我们评估了一种新颖的双眼分视训练方法对成人弱视立体视的改善效果。患者使用需要双眼融合的电子游戏进行训练。结果显示视敏度和立体视敏度都得到了显著提升。`,
     systemRelevance: '本系统依据：提供了立体视敏度重建与视差训练的直接理论来源。本系统据此原理开发了基于水平视差的双眼融合和立体视测试功能。',
     externalLink: 'https://pubmed.ncbi.nlm.nih.gov/23623554/'
+  },
+  {
+    id: 'ruttum1989',
+    authors: 'Ruttum, M. S., & von Noorden, G. K.',
+    year: '1989',
+    titleEn: 'The double Maddox rod test.',
+    titleZh: '用于旋转斜视的双马氏杆测试',
+    journal: 'American Journal of Ophthalmology',
+    abstractEn: `The double Maddox rod test is a subjective method of measuring cyclotropia. It consists of placing a red Maddox rod in front of one eye and a white Maddox rod in front of the other. The patient rotates the rods until the two lines appear parallel. The angle of rotation indicates the degree of cyclodeviation. This test is crucial for diagnosing and managing cyclovertical strabismus, such as superior oblique palsy.`,
+    abstractZh: `双马氏杆测试是一种测量旋转斜视的主观方法。该测试在患者的一只眼前放置红色的马氏杆，在另一只眼前放置白色的马氏杆。患者旋转马氏杆，直到观察到的两条线平行。旋转的角度即表示旋转偏斜的程度。这项测试对于诊断和处理旋转垂直性斜视（如上斜肌麻痹）至关重要。`,
+    systemRelevance: '本系统依据：这是本系统“旋转斜视测量”功能的直接临床依据。通过屏幕上的红蓝分视线条模拟传统双马氏杆测试，本系统能够精准量化用户的旋转偏移角度，并在偏移量过大（大于2度）时发出临床就医预警，避免无效的视觉训练。',
+    externalLink: 'https://pubmed.ncbi.nlm.nih.gov/2757099/'
   }
 ]
