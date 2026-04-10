@@ -67,5 +67,24 @@ npm run test:e2e
 ## 自动化部署
 本项目已配置 GitHub Actions 工作流。每次将代码推送到 `main` 分支时，都会自动构建并部署到 [GitHub Pages](https://xcsweb.github.io/twoeyes-vue/)。
 
-## 声明
-> ⚠️ **免责声明**：本系统的测试结果和训练方案仅供康复训练参考，**不作为任何临床医疗诊断依据**。如有严重的视力或斜视问题，请及时前往专业眼科医院就医。
+## 声明与协议 (License & Disclaimer)
+
+### ⚠️ 免责声明 (Medical Disclaimer)
+> 本系统的测试结果和训练方案仅供个人康复训练参考，**绝不作为任何临床医疗诊断依据**。如有严重的视力、斜视或立体视受损问题，请及时前往专业眼科医院就医。
+
+### 🚫 许可协议 (License)
+> **版权所有 © 2024 TwoEyes-Vue。本项目仅供个人学习、非盈利性学术研究及个人视觉康复使用。**  
+> **禁止商用，侵权必究！**  
+> 未经作者明确书面授权，任何人不得将本项目源码、UI设计、医疗逻辑及衍生程序用于任何商业目的（包括但不限于：整合进收费软件、用于医院或诊所的收费治疗项目、二次打包出售等）。详细条款请参阅项目根目录下的 [LICENSE](./LICENSE) 文件。
+
+## 致谢 (Acknowledgments)
+
+本项目在医学底层逻辑、双眼分视疗法 (Dichoptic Therapy) 和立体视康复机制的设计上，深受国内外众多眼科学者和前沿研究文献的启发。
+目前本项目**尚未取得**以下论文作者的商业授权，因此再次重申本项目仅为非商业的个人开源实践。
+
+在此，向以下文献的作者及研究团队表达最诚挚的敬意与感谢（排名不分先后）：
+- **Ganesh S, et al. (2024)** - *Effectiveness of Dichoptic Therapy for Treating Mild to Moderate Amblyopia. J Pediatr Ophthalmol Strabismus.*
+- **Piñero DP, et al. (2023)** - *Visual Performance of Children with Amblyopia after 6 Weeks of Home-Based Dichoptic Visual Training.*
+- **Li J, et al. (2013)** - *Dichoptic training improves amblyopic stereopsis. Clinical Ophthalmology.*
+- **Ruttum M.S. (1989)** - *The Double Maddox Rod Test for Cyclotropia.*
+- 以及所有致力于弱视与斜视数字疗法 (Digital Therapeutics) 研究的医学先驱们。
