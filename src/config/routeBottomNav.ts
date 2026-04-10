@@ -126,6 +126,13 @@ home: { target: { type: 'route', to: { name: 'Home' } } }
       home: { target: { type: 'route', to: { name: 'Home' } } },
     },
   },
+  StereopsisTest: {
+    showNav: true,
+    buttons: {
+      back: { target: { type: 'exam_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
   AlignmentAdvice: {
     showNav: true,
     buttons: {

@@ -7,16 +7,7 @@
       </span>
     </div>
     <PersonalizedHud :gameParams="[`当前难度等级: ${currentLevel}`, `当前水平分离度: ${separation}px`]" />
-
     
-        <div class="instruction-overlay">
-      <p class="text-body-1">
-        <strong class="text-h6">{{ isExophoria ? '外斜视集合训练 (BO)' : '内斜视散开训练 (BI)' }}</strong><br/><br/>
-        请看着下方的两个圆环，{{ instructionText }}。<br/>
-        当两个圆环融合成<strong>一个带有十字准星的完整圆环</strong>时，点击“已融合”进入下一级难度。
-      </p>
-    </div>
-
     <div class="canvas-area">
       <!-- 模拟实体卡片/裂隙尺 -->
       <div 
