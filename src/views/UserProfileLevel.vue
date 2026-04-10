@@ -166,6 +166,16 @@
               </div>
 
               <div class="data-item">
+                <div class="data-label">旋转偏斜量</div>
+                <div class="data-value" v-if="(settingsStore.alignmentOffset.rLeft !== undefined && settingsStore.alignmentOffset.rLeft !== 0) || (settingsStore.alignmentOffset.rRight !== undefined && settingsStore.alignmentOffset.rRight !== 0)">
+                  <span v-if="settingsStore.alignmentOffset.rLeft !== undefined && settingsStore.alignmentOffset.rLeft !== 0">左眼: {{ settingsStore.alignmentOffset.rLeft }}°</span>
+                  <span v-if="(settingsStore.alignmentOffset.rLeft !== undefined && settingsStore.alignmentOffset.rLeft !== 0) && (settingsStore.alignmentOffset.rRight !== undefined && settingsStore.alignmentOffset.rRight !== 0)">, </span>
+                  <span v-if="settingsStore.alignmentOffset.rRight !== undefined && settingsStore.alignmentOffset.rRight !== 0">右眼: {{ settingsStore.alignmentOffset.rRight }}°</span>
+                </div>
+                <div class="data-value text-success" v-else>无旋转偏斜</div>
+              </div>
+
+              <div class="data-item">
                 <div class="data-label">立体视觉状态</div>
                 <div class="data-value">
                   <v-chip :color="stereopsisColor" size="small" label>{{ stereopsisText }}</v-chip>

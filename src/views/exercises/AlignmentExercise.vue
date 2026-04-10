@@ -2,11 +2,12 @@
   <div class="alignment-exercise-container">
     <!-- Background overlay to prevent distractions -->
     <div class="bg-black-overlay"></div>
+    <div class="reference-grid"></div>
 
     <div class="instructions text-center px-4 pt-6">
       <p class="text-h6 text-white mb-2">请戴上您的 3D 眼镜。</p>
       <p class="text-body-2 text-grey">
-        使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动其中一个十字准星。使用旋转按钮或键盘 Q/E 键调整旋转角度，直到两个十字准星在您的视觉中完全重合（看起来像一个发光的白色十字）。
+        使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动其中一个十字准星。使用旋转按钮或键盘 Q/E (左眼) 和 U/O (右眼) 键调整旋转角度，直到两个十字准星在您的视觉中完全重合（看起来像一个发光的白色十字）。
       </p>
     </div>
 
@@ -15,7 +16,10 @@
       <!-- Static Left Box (Target) -->
       <div
         class="box left-box"
-        :style="{ backgroundColor: leftLenseRGBString }"
+        :style="{ 
+          backgroundColor: leftLenseRGBString,
+          transform: `translate(-50%, -50%) rotate(${position.rLeft}deg)`
+        }"
       >
         <div class="horizontal-line"></div>
         <div class="vertical-line"></div>
@@ -26,7 +30,7 @@
         class="box right-box alignment-exercise-interactive"
         :style="{
           backgroundColor: rightLenseRGBString,
-          transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) rotate(${position.r}deg)`
+          transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) rotate(${position.rRight}deg)`
         }"
         tabindex="0"
         @keydown="handleKeyDown"
@@ -42,18 +46,28 @@
 
     <!-- On-Screen Controls for Mobile -->
     <div class="controls-overlay alignment-exercise-interactive">
-      <div class="dpad">
-        <button class="dpad-btn" @click.stop="moveBox(0, -1)">↑</button>
-        <div class="dpad-row">
-          <button class="dpad-btn" @click.stop="moveBox(-1, 0)">←</button>
-          <button class="dpad-btn" @click.stop="moveBox(1, 0)">→</button>
+      <div class="controls-row">
+        <!-- Left eye rotation -->
+        <div class="rotate-controls">
+          <button class="dpad-btn" @click.stop="rotateLeftBox(-1)">↺</button>
+          <button class="dpad-btn" @click.stop="rotateLeftBox(1)">↻</button>
         </div>
-        <button class="dpad-btn" @click.stop="moveBox(0, 1)">↓</button>
-      </div>
 
-      <div class="rotate-controls mt-4">
-        <button class="dpad-btn" @click.stop="rotateBox(-1)">↺</button>
-        <button class="dpad-btn" @click.stop="rotateBox(1)">↻</button>
+        <!-- Center D-pad -->
+        <div class="dpad">
+          <button class="dpad-btn" @click.stop="moveBox(0, -1)">↑</button>
+          <div class="dpad-row">
+            <button class="dpad-btn" @click.stop="moveBox(-1, 0)">←</button>
+            <button class="dpad-btn" @click.stop="moveBox(1, 0)">→</button>
+          </div>
+          <button class="dpad-btn" @click.stop="moveBox(0, 1)">↓</button>
+        </div>
+
+        <!-- Right eye rotation -->
+        <div class="rotate-controls">
+          <button class="dpad-btn" @click.stop="rotateRightBox(-1)">↺</button>
+          <button class="dpad-btn" @click.stop="rotateRightBox(1)">↻</button>
+        </div>
       </div>
       
       <v-btn
@@ -87,7 +101,8 @@ const getRandomOffset = () => {
 const position = ref({ 
   x: getRandomOffset(), 
   y: getRandomOffset(),
-  r: Math.floor(Math.random() * 31) - 15
+  rLeft: Math.floor(Math.random() * 31) - 15,
+  rRight: Math.floor(Math.random() * 31) - 15
 })
 const isDragging = ref(false)
 const dragStartPos = ref({ x: 0, y: 0 })
@@ -114,7 +129,8 @@ const handlePointerMove = (e: PointerEvent) => {
   position.value = {
     x: e.clientX - dragStartPos.value.x,
     y: e.clientY - dragStartPos.value.y,
-    r: position.value.r
+    rLeft: position.value.rLeft,
+    rRight: position.value.rRight
   }
 }
 
@@ -146,12 +162,22 @@ const handleKeyDown = (e: KeyboardEvent) => {
       break
     case 'q':
     case 'Q':
-      position.value.r -= step
+      position.value.rLeft -= step
       e.preventDefault()
       break
     case 'e':
     case 'E':
-      position.value.r += step
+      position.value.rLeft += step
+      e.preventDefault()
+      break
+    case 'u':
+    case 'U':
+      position.value.rRight -= step
+      e.preventDefault()
+      break
+    case 'o':
+    case 'O':
+      position.value.rRight += step
       e.preventDefault()
       break
   }
@@ -162,12 +188,21 @@ const moveBox = (dx: number, dy: number) => {
   position.value.y += dy
 }
 
-const rotateBox = (dr: number) => {
-  position.value.r += dr
+const rotateLeftBox = (dr: number) => {
+  position.value.rLeft += dr
+}
+
+const rotateRightBox = (dr: number) => {
+  position.value.rRight += dr
 }
 
 const handleConfirm = () => {
-  settingsStore.setAlignmentOffset({ x: position.value.x, y: position.value.y, r: position.value.r })
+  settingsStore.setAlignmentOffset({ 
+    x: position.value.x, 
+    y: position.value.y, 
+    rLeft: position.value.rLeft, 
+    rRight: position.value.rRight 
+  })
   goNext(route.name as string)
 }
 </script>
@@ -196,6 +231,21 @@ const handleConfirm = () => {
   height: 100%;
   background: #000;
   z-index: 0;
+}
+
+.reference-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: center center;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .instructions {
@@ -277,6 +327,15 @@ const handleConfirm = () => {
   align-items: center;
 }
 
+.controls-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
 .dpad {
   display: flex;
   flex-direction: column;
@@ -291,7 +350,8 @@ const handleConfirm = () => {
 
 .rotate-controls {
   display: flex;
-  gap: 40px;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .dpad-btn {

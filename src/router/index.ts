@@ -360,6 +360,7 @@ const router = createRouter({
 })
 
 router.afterEach(async () => {
+  if (import.meta.env.DEV) return // Skip version check in dev/test environment
   try {
     const res = await fetch(`/twoeyes-vue/version.json?t=${Date.now()}`)
     const data = await res.json()

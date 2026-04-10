@@ -21,15 +21,22 @@
             <span class="ml-2 text-info" v-else-if="offset.y < 0">(向上偏移)</span>
           </div>
 
-          <div class="advice-text text-grey mb-4" v-if="offset.r !== undefined">
-            旋转偏移量 (Torsional Offset): 
-            <span class="text-white font-weight-bold ml-2">{{ offset.r }} °</span>
-            <span class="ml-2 text-info" v-if="offset.r > 0">(顺时针/外旋)</span>
-            <span class="ml-2 text-info" v-else-if="offset.r < 0">(逆时针/内旋)</span>
+          <div class="advice-text text-grey mb-4" v-if="offset.rLeft !== undefined && offset.rLeft !== 0">
+            左眼旋转偏移量 (L Torsional Offset): 
+            <span class="text-white font-weight-bold ml-2">{{ offset.rLeft }} °</span>
+            <span class="ml-2 text-info" v-if="offset.rLeft > 0">(顺时针/外旋)</span>
+            <span class="ml-2 text-info" v-else-if="offset.rLeft < 0">(逆时针/内旋)</span>
+          </div>
+
+          <div class="advice-text text-grey mb-4" v-if="offset.rRight !== undefined && offset.rRight !== 0">
+            右眼旋转偏移量 (R Torsional Offset): 
+            <span class="text-white font-weight-bold ml-2">{{ offset.rRight }} °</span>
+            <span class="ml-2 text-info" v-if="offset.rRight > 0">(顺时针/外旋)</span>
+            <span class="ml-2 text-info" v-else-if="offset.rRight < 0">(逆时针/内旋)</span>
           </div>
 
           <v-alert
-            v-if="offset.r !== undefined && Math.abs(offset.r) > 2"
+            v-if="hasSevereCyclotropia"
             type="error"
             variant="tonal"
             class="mb-6"
@@ -38,29 +45,31 @@
             系统检测到您的眼球存在明显的旋转偏斜（&gt; 2度）。视觉康复训练（Vision Therapy）对旋转斜视的改善效果极为有限，强烈建议您尽快前往正规医院斜视与小儿眼科就诊，寻求斜视手术或特殊棱镜的临床评估。
           </v-alert>
 
-          <v-divider class="my-4" color="rgba(255,255,255,0.2)"></v-divider>
+          <template v-else>
+            <v-divider class="my-4" color="rgba(255,255,255,0.2)"></v-divider>
 
-          <div class="text-h6 text-white mb-4">根据您的立体视筛查结果：</div>
+            <div class="text-h6 text-white mb-4">根据您的立体视筛查结果：</div>
 
-          <div class="advice-text text-grey mb-4">
-            立体视觉敏锐度: 
-            <span class="font-weight-bold ml-2" :class="stereopsisColorClass">{{ stereopsisText }}</span>
-          </div>
+            <div class="advice-text text-grey mb-4">
+              立体视觉敏锐度: 
+              <span class="font-weight-bold ml-2" :class="stereopsisColorClass">{{ stereopsisText }}</span>
+            </div>
 
-          <v-divider class="my-4" color="rgba(255,255,255,0.2)"></v-divider>
+            <v-divider class="my-4" color="rgba(255,255,255,0.2)"></v-divider>
 
-          <div class="text-h5 text-white mb-2">{{ adviceTitle }}</div>
-          <div class="advice-text text-grey mb-4">
-            {{ adviceDesc }}
-          </div>
+            <div class="text-h5 text-white mb-2">{{ adviceTitle }}</div>
+            <div class="advice-text text-grey mb-4">
+              {{ adviceDesc }}
+            </div>
 
-          <div class="text-body-1 text-success mt-4 pa-4 target-action-box">
-            {{ targetAction }}
-          </div>
+            <div class="text-body-1 text-success mt-4 pa-4 target-action-box">
+              {{ targetAction }}
+            </div>
 
-          <div class="text-body-1 text-success mt-4 pa-4 target-action-box" v-if="stereopsisAdvice">
-            {{ stereopsisAdvice }}
-          </div>
+            <div class="text-body-1 text-success mt-4 pa-4 target-action-box" v-if="stereopsisAdvice">
+              {{ stereopsisAdvice }}
+            </div>
+          </template>
 
           <div class="text-body-2 text-warning mt-6">
             免责声明：本系统的测试结果仅供康复训练参考，不作为临床医疗诊断依据。如有不适请及时就医。
@@ -96,6 +105,11 @@ onMounted(() => {
 })
 
 const offset = computed(() => settingsStore.alignmentOffset)
+
+const hasSevereCyclotropia = computed(() => {
+  return (offset.value.rLeft !== undefined && Math.abs(offset.value.rLeft) > 2) || 
+         (offset.value.rRight !== undefined && Math.abs(offset.value.rRight) > 2)
+})
 
 const adviceTitle = computed(() => {
   if (offset.value.x > 5) return '矫正方向：强化分开 (Divergence)'
