@@ -5,6 +5,7 @@ import TrainingMenuLevel from '../views/TrainingMenuLevel.vue'
 import TheoryLevel from '../views/TheoryLevel.vue'
 import PaperDetailLevel from '../views/PaperDetailLevel.vue'
 import UserProfileLevel from '../views/UserProfileLevel.vue'
+import ObjectiveTestLevel from '../views/ObjectiveTestLevel.vue'
 
 const routes = [
   {
@@ -57,13 +58,14 @@ const routes = [
     name: 'SectionIntroExam',
     component: () => import('../views/SectionIntroLevel.vue'),
     props: {
-      title: '斜视与双眼视觉检查',
-      subtitle: '请在佩戴红蓝眼镜后，尝试将十字准星与圆圈中心对齐',
+      title: '临床级视功能检查',
+      subtitle: '本测试将客观测算您的主导眼、抑制程度及隐斜视偏离度',
       notes: [
         '请准备并佩戴好红蓝（或红青）3D眼镜',
-        '在接下来的界面中选择您眼镜的对应颜色',
-        '保持头部平正，调整眼睛与屏幕的距离',
-        '尝试让左眼的红方块和右眼的蓝方块重合'
+        '系统将首先为您进行物理色彩通道的硬件校准',
+        '接下来将通过客观双眼竞争游戏（找 E 字方向），精准判断您的强弱眼',
+        '最后将通过十字准星为您测量双眼隐斜视像素偏离度',
+        '所有测试数据将自动应用于后续的康复训练'
       ]
     }
   },
@@ -92,6 +94,11 @@ const routes = [
     }
   },
   {
+    path: '/exam/distance-advice',
+    name: 'DistanceAdvice',
+    component: () => import('../views/DistanceAdviceLevel.vue')
+  },
+  {
     path: '/exam/alignment-exercise',
     name: 'AlignmentExercise',
     component: () => import('../views/exercises/AlignmentExercise.vue')
@@ -104,7 +111,42 @@ const routes = [
   {
     path: '/exam/suppression-test',
     name: 'SuppressionTest',
-    component: () => import('../views/SuppressionTestLevel.vue')
+    component: ObjectiveTestLevel
+  },
+  {
+    path: '/exam/contrast-test',
+    name: 'ContrastTest',
+    component: () => import('../views/ContrastTestLevel.vue')
+  },
+  {
+    path: '/vision/intro',
+    name: 'SectionIntroVision',
+    component: () => import('../views/SectionIntroLevel.vue'),
+    props: {
+      title: '普通视力检查',
+      subtitle: '本测试将评估您双眼在正常照明下的视力水平',
+      notes: [
+        '请在明亮的光线下进行测试，无需佩戴红蓝眼镜',
+        '我们将为您提供视力测量（如 1.0, 4.8 等）',
+        '请在接下来的测试中，根据屏幕上的提示进行操作',
+        '根据国际标准，本次测试默认在40cm距离下进行'
+      ]
+    }
+  },
+  {
+    path: '/vision/distance',
+    name: 'VisionDistanceAdvice',
+    component: () => import('../views/vision/VisionDistanceAdviceLevel.vue')
+  },
+  {
+    path: '/vision/test',
+    name: 'VisionTest',
+    component: () => import('../views/vision/VisionTestLevel.vue')
+  },
+  {
+    path: '/vision/advice',
+    name: 'VisionAdvice',
+    component: () => import('../views/vision/VisionAdviceLevel.vue')
   },
   {
     path: '/training/intro',

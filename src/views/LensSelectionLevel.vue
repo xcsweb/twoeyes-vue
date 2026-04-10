@@ -1,6 +1,7 @@
 <template>
   <v-container fluid class="level-container fill-height bg-black">
     <div class="content-wrapper">
+      <div class="text-subtitle-1 text-grey text-center mb-2">第一步：3D眼镜硬件校准</div>
       <h1 class="hint-top text-white text-center mb-10">
         系统需要确认您的镜片方向
       </h1>
@@ -20,26 +21,28 @@
         </p>
         
         <div class="btn-group">
+          <!-- 戴红镜片时：红正方形隐形(变红底色), 青圆形变黑/深色，所以看到的是“青色圆形变黑” -->
           <v-btn
             color="#333"
             class="test-btn"
-            height="100"
+            height="110"
             @click="handleObjectiveComplete(true)"
           >
-            <div class="d-flex flex-column align-center">
-              <span class="text-h6 font-weight-bold text-white">青色圆形</span>
-              <span class="text-caption text-grey mt-1">(红色正方形消失了)</span>
+            <div class="d-flex flex-column align-center px-1">
+              <span class="text-subtitle-1 font-weight-bold text-white text-wrap line-height-tight mb-1">深色/黑色的圆形</span>
+              <span class="text-caption text-grey text-wrap line-height-tight">(红正方形消失)</span>
             </div>
           </v-btn>
+          <!-- 戴青镜片时：青圆形隐形(变青底色), 红正方形变黑/深色，所以看到的是“红色正方形变黑” -->
           <v-btn
             color="#333"
             class="test-btn"
-            height="100"
+            height="110"
             @click="handleObjectiveComplete(false)"
           >
-            <div class="d-flex flex-column align-center">
-              <span class="text-h6 font-weight-bold text-white">红色正方形</span>
-              <span class="text-caption text-grey mt-1">(青色圆形消失了)</span>
+            <div class="d-flex flex-column align-center px-1">
+              <span class="text-subtitle-1 font-weight-bold text-white text-wrap line-height-tight mb-1">深色/黑色的正方形</span>
+              <span class="text-caption text-grey text-wrap line-height-tight">(青圆形消失)</span>
             </div>
           </v-btn>
         </div>
@@ -97,18 +100,20 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
+import { useExamFlow } from '../composables/useExamFlow'
 import { useSettingsStore } from '../store/settings'
 
-const router = useRouter()
+const route = useRoute()
 const settingsStore = useSettingsStore()
+const { goNext } = useExamFlow()
 
 const useObjectiveTest = ref(false)
 const lensConfig = computed(() => settingsStore.lensConfig)
 
 const nextLevel = () => {
   setTimeout(() => {
-    router.push({ name: 'LensConfirmation' })
+    goNext(route.name as string)
   }, 300)
 }
 
@@ -219,5 +224,9 @@ const handleSelectCyanRed = () => {
 .cyan-lens {
   background-color: cyan;
   box-shadow: 0 0 15px cyan;
+}
+
+.line-height-tight {
+  line-height: 1.2 !important;
 }
 </style>

@@ -32,6 +32,20 @@
           </div>
         </div>
 
+        <!-- Vision Test Card -->
+        <div class="elegant-card" @click="goToVision">
+          <div class="card-img-wrapper">
+            <img class="card-img" src="../assets/images/exam.jpg" alt="vision" />
+            <div class="card-gradient"></div>
+          </div>
+          <div class="card-content">
+            <h2 class="card-title">普通视力检查</h2>
+            <p class="card-text">
+              通过 E 字视标，测试您的单眼和双眼视力水平。
+            </p>
+          </div>
+        </div>
+
         <!-- Exam Card -->
         <div class="elegant-card" @click="goToExam">
           <div class="card-img-wrapper">
@@ -154,6 +168,10 @@ const resetSystem = () => {
 
 const goToIntro = () => {
   router.push({ name: 'Intro' })
+}
+
+const goToVision = () => {
+  router.push({ name: 'SectionIntroVision' })
 }
 
 const goToExam = () => {

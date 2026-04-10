@@ -43,10 +43,14 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { routeBottomNavConfig, type BottomNavAction, type NavTarget } from './config/routeBottomNav'
 import { useProgressStore } from './store/progress'
+import { useExamFlow } from './composables/useExamFlow'
+import { useVisionFlow } from './composables/useVisionFlow'
 
 const route = useRoute()
 const router = useRouter()
 const progressStore = useProgressStore()
+const { goNext: goExamNext, goBack: goExamBack } = useExamFlow()
+const { goNext: goVisionNext, goBack: goVisionBack } = useVisionFlow()
 const navValue = ref<string>('')
 
 const navBgColor = computed(() => '#121212')
@@ -59,14 +63,62 @@ const routeSpec = computed(() => {
 })
 
 const showNav = computed(() => routeSpec.value?.showNav ?? false)
-const nextLabel = computed(() => routeSpec.value?.nextLabel ?? '下一步')
+const nextLabel = computed(() => {
+  const spec = routeSpec.value
+  if (!spec) return '下一步'
+  
+  if (route.name === 'SuppressionTest' || route.name === 'ContrastTest') {
+    if (route.query.step === 'test') return '' // Hide next during test
+    if (route.query.step === 'result') return '确认结果'
+    return '开始测试'
+  }
+  
+  return spec.nextLabel ?? '下一步'
+})
 
 const btnBack = computed(() => routeSpec.value?.buttons.back)
-const btnNext = computed(() => routeSpec.value?.buttons.next)
+const btnNext = computed(() => {
+  if ((route.name === 'SuppressionTest' || route.name === 'ContrastTest') && route.query.step === 'test') {
+    return undefined // Hide next button completely during test
+  }
+  return routeSpec.value?.buttons.next
+})
 const btnHome = computed(() => routeSpec.value?.buttons.home)
 const btnMenu = computed(() => routeSpec.value?.buttons.menu)
 
-const runTarget = (target: NavTarget) => {
+const runTarget = (target: NavTarget, action: BottomNavAction) => {
+  if (target.type === 'exam_flow') {
+    const currentRouteName = route.name as string
+    if (action === 'next') {
+      goExamNext(currentRouteName)
+    } else if (action === 'back') {
+      goExamBack(currentRouteName)
+    }
+    return
+  }
+  if (target.type === 'exam_flow_test') {
+    const currentRouteName = route.name as string
+    if (currentRouteName === 'SuppressionTest' || currentRouteName === 'ContrastTest') {
+      if (route.query.step === 'test') {
+        // already testing, shouldn't click next, but just in case
+      } else if (route.query.step === 'result') {
+        goExamNext(currentRouteName)
+      } else {
+        // from intro -> start test
+        router.replace({ query: { ...route.query, step: 'test' } })
+      }
+    }
+    return
+  }
+  if (target.type === 'vision_flow') {
+    const currentRouteName = route.name as string
+    if (action === 'next') {
+      goVisionNext(currentRouteName)
+    } else if (action === 'back') {
+      goVisionBack(currentRouteName)
+    }
+    return
+  }
   if (target.type === 'history') {
     router.go(target.delta)
     return
@@ -92,7 +144,7 @@ const handleNavChange = (value: string) => {
     }
   }
 
-  runTarget(btn.target)
+  runTarget(btn.target, action)
 
   setTimeout(() => {
     navValue.value = ''

@@ -5,6 +5,9 @@ export type BottomNavAction = 'back' | 'next' | 'home' | 'menu'
 export type NavTarget =
   | { type: 'route'; to: RouteLocationRaw }
   | { type: 'history'; delta: number }
+  | { type: 'exam_flow' }
+  | { type: 'exam_flow_test' }
+  | { type: 'vision_flow' }
 
 export type BottomNavButtonSpec = {
   label?: string
@@ -54,36 +57,58 @@ export const routeBottomNavConfig: Record<string, RouteBottomNavSpec> = {
     showNav: true,
     nextLabel: '开始体验',
     buttons: {
-      next: { target: { type: 'route', to: { name: 'LensSelection' } } },
+      next: { target: { type: 'exam_flow' } },
       home: { target: { type: 'route', to: { name: 'Home' } } }
     }
   },
   LensSelection: {
     showNav: true,
     buttons: {
-      back: { target: { type: 'route', to: { name: 'SectionIntroExam' } } },
+      back: { target: { type: 'exam_flow' } },
       home: { target: { type: 'route', to: { name: 'Home' } } },
     },
   },
   LensConfirmation: {
     showNav: true,
+    nextLabel: '确认配置',
     buttons: {
-      back: { target: { type: 'route', to: { name: 'LensSelection' } } },
+      back: { target: { type: 'exam_flow' } },
+      next: { target: { type: 'exam_flow' } },
       home: { target: { type: 'route', to: { name: 'Home' } } },
     },
   },
+  DistanceAdvice: {
+    showNav: true,
+    nextLabel: '开始测试',
+    buttons: {
+      back: { target: { type: 'exam_flow' } },
+      next: { target: { type: 'exam_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } }
+    }
+  },
   SuppressionTest: {
     showNav: true,
+    nextLabel: '开始测试',
     buttons: {
-      back: { target: { type: 'route', to: { name: 'LensConfirmation' } } },
+      back: { target: { type: 'exam_flow' } },
+      next: { target: { type: 'exam_flow_test' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
+  ContrastTest: {
+    showNav: true,
+    nextLabel: '开始测试',
+    buttons: {
+      back: { target: { type: 'exam_flow' } },
+      next: { target: { type: 'exam_flow_test' } },
       home: { target: { type: 'route', to: { name: 'Home' } } },
     },
   },
   SectionIntroAlignment: {
     showNav: true,
     buttons: {
-      back: { target: { type: 'route', to: { name: 'SuppressionTest' } } },
-      next: { target: { type: 'route', to: { name: 'AlignmentExercise' } } },
+      back: { target: { type: 'exam_flow' } },
+      next: { target: { type: 'exam_flow' } },
       home: { target: { type: 'route', to: { name: 'Home' } } }
     }
   },
@@ -92,15 +117,48 @@ export const routeBottomNavConfig: Record<string, RouteBottomNavSpec> = {
   AlignmentExercise: {
     showNav: true,
     buttons: {
-      back: { target: { type: 'route', to: { name: 'SectionIntroAlignment' } } },
+      back: { target: { type: 'exam_flow' } },
       home: { target: { type: 'route', to: { name: 'Home' } } },
     },
   },
   AlignmentAdvice: {
     showNav: true,
+    nextLabel: '回到主页',
     buttons: {
-      back: { target: { type: 'history', delta: -1 } }, // 回到对齐训练（通常上一页）
+      back: { target: { type: 'exam_flow' } }, // 回到对齐训练（通常上一页）
       next: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
+
+  SectionIntroVision: {
+    showNav: true,
+    nextLabel: '开始体验',
+    buttons: {
+      next: { target: { type: 'vision_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
+  VisionDistanceAdvice: {
+    showNav: true,
+    nextLabel: '开始测试',
+    buttons: {
+      back: { target: { type: 'vision_flow' } },
+      next: { target: { type: 'vision_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
+  VisionTest: {
+    showNav: true,
+    buttons: {
+      back: { target: { type: 'vision_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
+  VisionAdvice: {
+    showNav: true,
+    buttons: {
+      back: { target: { type: 'vision_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
     },
   },
 

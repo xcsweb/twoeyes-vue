@@ -41,14 +41,29 @@
         </div>
       </div>
 
+      <!-- 针对没有子游戏列表且不是检查流程首页的普通介绍页，显示开始大按钮 -->
+      <div v-else-if="route.name !== 'SectionIntroExam' && route.name !== 'SectionIntroAlignment' && route.name !== 'SectionIntroVision'" class="start-btn-wrapper mt-10 delayed-2">
+        <v-btn
+          color="white"
+          size="x-large"
+          class="start-btn text-black font-weight-bold px-12"
+          height="64"
+          @click="startGame('')"
+        >
+          我已准备好，开始
+        </v-btn>
+      </div>
+
     </div>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useProgressStore } from '../store/progress'
 import trainingImg from '../assets/images/training.jpg'
+import { useExamFlow } from '../composables/useExamFlow'
+import { useVisionFlow } from '../composables/useVisionFlow'
 
 const props = defineProps<{
   title: string
@@ -67,9 +82,22 @@ const bgStyleColor = '#000000'
 const hintStyleColor = '#ffffff'
 
 const router = useRouter()
+const route = useRoute()
 const progressStore = useProgressStore()
+const { goNext: examGoNext } = useExamFlow()
+const { goNext: visionGoNext } = useVisionFlow()
 
 const startGame = (routeName: string) => {
+  if (route.name === 'SectionIntroExam' || route.name === 'SectionIntroAlignment') {
+    examGoNext(route.name as string)
+    return
+  }
+
+  if (route.name === 'SectionIntroVision') {
+    visionGoNext(route.name as string)
+    return
+  }
+
   // 如果有前置阶段限制，做个保护（尽管路由进入时应该已经拦截）
   if (props.requiredStageToEnter && progressStore.unlockedStage < props.requiredStageToEnter) {
     alert(`此阶段尚未解锁！(需要完成阶段 ${props.requiredStageToEnter - 1} 并在其游戏内累计满60秒)`)

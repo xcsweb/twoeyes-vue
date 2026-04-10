@@ -2,9 +2,34 @@
   <v-container fluid class="level-container fill-height bg-black">
     <div class="content-wrapper">
       <div class="header text-center mb-8">
-        <h1 class="title text-white">原理解析与文献参考</h1>
+        <h1 class="title text-white">系统的临床逻辑与理论基础</h1>
         <p class="text-grey mt-2">双眼分视训练（Dichoptic Training）的临床逻辑与数据关联</p>
       </div>
+
+      <!-- System Rules Timeline -->
+      <v-card class="glass-card mb-8">
+        <v-card-title class="text-h5 text-primary pb-4">
+          <v-icon icon="mdi-source-branch" class="mr-2"></v-icon>临床闭环系统设计逻辑
+        </v-card-title>
+        <v-card-text>
+          <p class="text-body-1 mb-6 text-grey-lighten-1">
+            本系统的所有测试与康复训练并非随意安排，而是严格遵循现代双眼视觉（Dichoptic Vision）的临床评估标准。我们构建了从“客观检测”到“定制参数”，再到“数据驱动训练”的完整闭环：
+          </p>
+          <v-timeline density="compact" align="start" class="ml-2">
+            <v-timeline-item
+              v-for="(rule, index) in systemRules"
+              :key="index"
+              dot-color="primary"
+              size="small"
+            >
+              <div class="mb-4">
+                <div class="text-subtitle-1 font-weight-bold text-white">{{ rule.step }}</div>
+                <div class="text-body-2 text-grey mt-1">{{ rule.desc }}</div>
+              </div>
+            </v-timeline-item>
+          </v-timeline>
+        </v-card-text>
+      </v-card>
 
       <v-card class="theory-card mb-6" variant="outlined">
         <v-card-text>
@@ -125,7 +150,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { papers } from '../data/papers'
+import { papers, systemRules } from '../data/papers'
 
 const router = useRouter()
 

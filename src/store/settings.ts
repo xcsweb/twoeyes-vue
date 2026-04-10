@@ -1,5 +1,17 @@
 import { defineStore } from 'pinia'
 
+export interface AlignmentRecord {
+  date: string
+  x: number
+  y: number
+}
+
+export interface VisionRecord {
+  date: string
+  left: number
+  right: number
+}
+
 export interface RGBColor {
   r: number
   g: number
@@ -12,24 +24,35 @@ export const useSettingsStore = defineStore('settings', {
     leftLense: { r: 255, g: 0, b: 0 },
     rightLense: { r: 0, g: 255, b: 255 },
     alignmentOffset: { x: 0, y: 0 },
+    alignmentHistory: [] as AlignmentRecord[],
+    visionAcuity: { left: 1.0, right: 1.0 },
+    visionHistory: [] as VisionRecord[],
     suppressionStatus: 'none' as 'none' | 'left' | 'right' | 'diplopia',
+    penalizationFactor: 0.3, // default to 30%
     hasSeenIntro: false
   }),
   getters: {
     leftEyeColorStr(state) {
       // If left eye is dominant (right is suppressed), penalize left eye
-      let factor = state.suppressionStatus === 'right' ? 0.3 : 1.0
+      let factor = state.suppressionStatus === 'right' ? state.penalizationFactor : 1.0
       return `rgb(${Math.round(state.leftLense.r * factor)}, ${Math.round(state.leftLense.g * factor)}, ${Math.round(state.leftLense.b * factor)})`
     },
     rightEyeColorStr(state) {
       // If right eye is dominant (left is suppressed), penalize right eye
-      let factor = state.suppressionStatus === 'left' ? 0.3 : 1.0
+      let factor = state.suppressionStatus === 'left' ? state.penalizationFactor : 1.0
       return `rgb(${Math.round(state.rightLense.r * factor)}, ${Math.round(state.rightLense.g * factor)}, ${Math.round(state.rightLense.b * factor)})`
     }
   },
   actions: {
-    changeLensConfig(config: string) {
+    changeLensConfig(config: 'red-cyan' | 'cyan-red') {
       this.lensConfig = config
+      if (config === 'red-cyan') {
+        this.leftLense = { r: 255, g: 0, b: 0 }
+        this.rightLense = { r: 0, g: 255, b: 255 }
+      } else {
+        this.leftLense = { r: 0, g: 255, b: 255 }
+        this.rightLense = { r: 255, g: 0, b: 0 }
+      }
     },
     changeLeftLense(color: RGBColor) {
       this.leftLense = color
@@ -39,9 +62,49 @@ export const useSettingsStore = defineStore('settings', {
     },
     setAlignmentOffset(offset: { x: number; y: number }) {
       this.alignmentOffset = offset
+      
+      const today = new Date().toISOString().split('T')[0] // 'YYYY-MM-DD'
+      
+      // Initialize if missing
+      if (!this.alignmentHistory) {
+        this.alignmentHistory = []
+      }
+      
+      // Find if we already have a record for today
+      const existingIndex = this.alignmentHistory.findIndex(r => r.date === today)
+      
+      if (existingIndex >= 0) {
+        // Overwrite today's record
+        this.alignmentHistory[existingIndex].x = offset.x
+        this.alignmentHistory[existingIndex].y = offset.y
+      } else {
+        // Add new record
+        this.alignmentHistory.push({ date: today, x: offset.x, y: offset.y })
+      }
+    },
+    setVisionAcuity(acuity: { left: number; right: number }) {
+      this.visionAcuity = acuity
+
+      const today = new Date().toISOString().split('T')[0] // 'YYYY-MM-DD'
+      
+      if (!this.visionHistory) {
+        this.visionHistory = []
+      }
+      
+      const existingIndex = this.visionHistory.findIndex(r => r.date === today)
+      
+      if (existingIndex >= 0) {
+        this.visionHistory[existingIndex].left = acuity.left
+        this.visionHistory[existingIndex].right = acuity.right
+      } else {
+        this.visionHistory.push({ date: today, left: acuity.left, right: acuity.right })
+      }
     },
     setSuppressionStatus(status: 'none' | 'left' | 'right' | 'diplopia') {
       this.suppressionStatus = status
+    },
+    setPenalizationFactor(factor: number) {
+      this.penalizationFactor = factor
     },
     setHasSeenIntro(value: boolean) {
       this.hasSeenIntro = value

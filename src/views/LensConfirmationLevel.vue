@@ -34,41 +34,22 @@
               </div>
             </div>
           </div>
-
-          <div class="text-grey text-body-2 mt-6">
+          <div class="text-caption text-grey mt-6">
             * 该配置已保存。在接下来的训练中，系统将根据此配置为您精准推送防抑制视觉图像。
           </div>
         </v-card-text>
       </v-card>
-
-      <div class="btn-wrapper mt-10">
-        <v-btn
-          color="primary"
-          size="x-large"
-          block
-          class="confirm-btn"
-          @click="nextLevel"
-        >
-          确认配置并进入下一步
-        </v-btn>
-      </div>
     </div>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 
-const router = useRouter()
 const settingsStore = useSettingsStore()
 
 const isLeftRed = computed(() => settingsStore.lensConfig === 'red-cyan')
-
-const nextLevel = () => {
-  router.push({ name: 'SuppressionTest' })
-}
 </script>
 
 <style scoped>

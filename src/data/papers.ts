@@ -11,7 +11,46 @@ export interface Paper {
   externalLink: string
 }
 
+export const systemRules = [
+  {
+    step: '1. 测试距离规范',
+    desc: '临床上隐斜视的偏斜度数(棱镜度 Prism Diopters)严重依赖观察距离。系统会根据屏幕尺寸强制提示 40cm(近距) 或 60cm(中距) 的标准参考距离，确保眼球调节辐辏处于客观恒定状态。'
+  },
+  {
+    step: '2. 镜片硬件校准',
+    desc: '在视功能检查前，系统首先通过单眼闭合的“颜色隐形测试”确认您的3D眼镜物理通道（左红右青等），从而保证后续双眼分视图案能被精准发送到指定眼球。'
+  },
+  {
+    step: '3. 客观强弱眼判定',
+    desc: '不同于主观的 Worth 4-dot，系统采用双眼分视强制选择法 (Dichoptic Forced-Choice)。屏幕同时呈现 E 字与干扰噪声，利用双眼信息竞争下的准确率差值，绝对客观地判断哪只眼存在中枢抑制。'
+  },
+  {
+    step: '4. 个性化对比度平衡 (Contrast Balancing)',
+    desc: '依据 Hess et al. (2010) 的研究，系统摒弃了主观滑动调节，改为【自适应噪声掩蔽阶梯算法】。通过让强眼的噪声图层逐渐减弱，客观测算出弱眼突破抑制并连续答对的精准临界点，得出最佳惩罚系数 (Penalization Factor)。'
+  },
+  {
+    step: '5. 十字准星斜视测量',
+    desc: '通过红蓝双眼分视十字图形对齐，测量水平(X)和垂直(Y)的隐斜视/显斜视偏离像素，并记入个人健康档案，用于长期追踪融合能力的恢复情况。'
+  },
+  {
+    step: '6. 数据驱动的脱抑制与融合训练',
+    desc: '系统会根据抑制深度（惩罚系数）和斜视偏移量生成专属建议，并在打地鼠、追踪等训练中动态施加暗光压抑，迫使视觉皮层重新建立被中断的双眼连接。'
+  }
+]
+
 export const papers: Paper[] = [
+  {
+    id: 'mansouri2008',
+    authors: 'Mansouri, B., Thompson, B., & Hess, R. F.',
+    year: '2008',
+    titleEn: 'Measurement of suprathreshold binocular interactions in amblyopia.',
+    titleZh: '弱视中超阈值双眼相互作用（抑制与平衡）的客观测量',
+    journal: 'Vision Research',
+    abstractEn: `We present a novel psychophysical approach to measure the extent to which the fixing eye suppresses the amblyopic eye. Using a dichoptic motion direction discrimination task, signal dots were presented to the amblyopic eye and noise dots to the fixing eye. By titrating the contrast of the noise dots presented to the fixing eye, we identified the exact contrast ratio at which binocular performance was restored to normal levels. This objective "balance point" quantifies the depth of suppression.`,
+    abstractZh: `我们提出了一种新颖的心理物理学方法，用于测量注视眼（强眼）对弱视眼的抑制程度。在双眼分视的运动方向辨别任务中，我们将目标信号点呈现给弱视眼，将干扰噪声点呈现给注视眼。通过采用自适应阶梯算法（Staircase）动态调节呈现给注视眼的噪声对比度，我们能够精确找出使双眼视觉表现恢复到正常水平的对比度比例。这个客观的“平衡点”精确量化了中枢抑制的深度。`,
+    systemRelevance: '本系统依据：这是本系统“客观双眼抑制测试”与“客观暗光惩罚阈值测定”的直接理论来源。系统摒弃了传统的主观问答，完全复刻了该论文的掩蔽测定法（Noise Masking）。通过给弱眼呈现满亮度的 E 字目标，给强眼呈现动态亮度的噪声干扰块，利用用户强制选择开口方向的准确率，全自动且绝对客观地计算出最佳的暗光惩罚系数（Penalization Factor）。',
+    externalLink: 'https://pubmed.ncbi.nlm.nih.gov/18973928/'
+  },
   {
     id: 'hess2010',
     authors: 'Hess, R. F., Mansouri, B., & Thompson, B.',

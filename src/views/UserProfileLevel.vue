@@ -37,6 +37,54 @@
 
           <v-divider class="my-8 border-opacity-25"></v-divider>
 
+          <!-- 智能康复建议 -->
+          <div class="info-section mb-6" v-if="hasExamData">
+            <h3 class="section-title mb-4"><v-icon icon="mdi-lightbulb-on-outline" class="mr-2" color="warning"></v-icon>个性化康复建议</h3>
+            <v-alert
+              type="info"
+              variant="tonal"
+              class="text-left"
+              border="start"
+            >
+              <div class="text-body-1" v-html="smartAdvice"></div>
+            </v-alert>
+          </div>
+
+          <!-- 基础视力档案 -->
+          <div class="info-section mb-6" v-if="hasVisionData">
+            <h3 class="section-title">
+              <v-icon icon="mdi-eye-outline" class="mr-2" color="primary"></v-icon>
+              基础视力档案
+            </h3>
+
+            <div class="data-list mt-4">
+              <div class="data-item">
+                <div class="data-label">最新视力结果</div>
+                <div class="data-value">
+                  左眼: {{ settingsStore.visionAcuity.left.toFixed(2) }} | 
+                  右眼: {{ settingsStore.visionAcuity.right.toFixed(2) }}
+                </div>
+              </div>
+              <div class="data-item">
+                <div class="data-label">近视度数估算</div>
+                <div class="data-value text-warning">
+                  左眼: {{ estimateDegrees(settingsStore.visionAcuity.left) }} | 
+                  右眼: {{ estimateDegrees(settingsStore.visionAcuity.right) }}
+                </div>
+              </div>
+            </div>
+
+            <!-- 视力历史折线图 -->
+            <div class="mt-6" v-if="visionChartData">
+              <h4 class="text-body-2 text-grey mb-2"><v-icon icon="mdi-chart-line" class="mr-1" size="small"></v-icon>视力变化趋势</h4>
+              <div class="chart-container">
+                <Line :data="visionChartData" :options="visionChartOptions" />
+              </div>
+            </div>
+          </div>
+
+          <v-divider class="my-6 border-opacity-25" v-if="hasVisionData"></v-divider>
+
           <div class="info-section">
             <h3 class="section-title">
               <v-icon icon="mdi-clipboard-pulse" class="mr-2" color="info"></v-icon>
@@ -90,6 +138,19 @@
               <v-btn variant="outlined" color="primary" class="mt-3" size="small" @click="goToExam">前往检查</v-btn>
             </div>
           </div>
+
+          <v-divider class="my-6 border-opacity-25"></v-divider>
+
+          <!-- 斜视偏移量历史折线图 -->
+          <div class="info-section mb-6" v-if="hasExamData && chartData">
+            <h3 class="section-title mb-4"><v-icon icon="mdi-chart-line" class="mr-2" color="warning"></v-icon>隐斜视偏移量历史趋势</h3>
+            <div class="chart-container">
+              <Line :data="chartData" :options="chartOptions" />
+            </div>
+            <div class="text-caption text-grey mt-2 text-center">
+              (注：Y轴为偏移量像素值。越接近 0 越接近正常正位视)
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -101,6 +162,27 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 import { useProgressStore } from '../store/progress'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js'
+import { Line } from 'vue-chartjs'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+)
 
 const router = useRouter()
 const settingsStore = useSettingsStore()
@@ -113,6 +195,136 @@ const goToExam = () => {
 const hasExamData = computed(() => {
   return settingsStore.lensConfig !== '' || settingsStore.hasSeenIntro
 })
+
+const hasVisionData = computed(() => {
+  return settingsStore.visionHistory && settingsStore.visionHistory.length > 0
+})
+
+const estimateDegrees = (acuity: number) => {
+  if (acuity >= 1.0) return '0 度'
+  if (acuity >= 0.8) return '约 50 度'
+  if (acuity >= 0.6) return '约 100 度'
+  if (acuity >= 0.5) return '约 150 度'
+  if (acuity >= 0.4) return '约 200 度'
+  if (acuity >= 0.3) return '约 250 度'
+  if (acuity >= 0.2) return '约 300 度'
+  if (acuity >= 0.15) return '约 400 度'
+  if (acuity >= 0.1) return '约 500 度'
+  return '> 600 度'
+}
+
+// 视力历史折线图数据配置
+const visionChartData = computed(() => {
+  const history = settingsStore.visionHistory || []
+  if (history.length === 0) return null
+
+  const labels = history.map(r => {
+    const parts = r.date.split('-')
+    return parts.length === 3 ? `${parts[1]}-${parts[2]}` : r.date
+  })
+  const dataLeft = history.map(r => r.left)
+  const dataRight = history.map(r => r.right)
+
+  return {
+    labels,
+    datasets: [
+      {
+        label: '左眼视力',
+        borderColor: '#4fc3f7',
+        backgroundColor: '#4fc3f7',
+        data: dataLeft,
+        tension: 0.3
+      },
+      {
+        label: '右眼视力',
+        borderColor: '#ff5252',
+        backgroundColor: '#ff5252',
+        data: dataRight,
+        tension: 0.3
+      }
+    ]
+  }
+})
+
+const visionChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      labels: {
+        color: '#fff'
+      }
+    }
+  },
+  scales: {
+    x: {
+      ticks: { color: '#aaa' },
+      grid: { color: 'rgba(255,255,255,0.1)' }
+    },
+    y: {
+      ticks: { color: '#aaa' },
+      grid: { color: 'rgba(255,255,255,0.1)' },
+      min: 0,
+      max: 1.5
+    }
+  }
+}
+
+// 折线图数据配置
+const chartData = computed(() => {
+  const history = settingsStore.alignmentHistory || []
+  if (history.length === 0) return null
+
+  const labels = history.map(r => {
+    // extract MM-DD from YYYY-MM-DD
+    const parts = r.date.split('-')
+    return parts.length === 3 ? `${parts[1]}-${parts[2]}` : r.date
+  })
+  const dataX = history.map(r => r.x)
+  const dataY = history.map(r => r.y)
+
+  return {
+    labels,
+    datasets: [
+      {
+        label: '水平偏移 (X)',
+        borderColor: '#4fc3f7',
+        backgroundColor: '#4fc3f7',
+        data: dataX,
+        tension: 0.3
+      },
+      {
+        label: '垂直偏移 (Y)',
+        borderColor: '#ff5252',
+        backgroundColor: '#ff5252',
+        data: dataY,
+        tension: 0.3
+      }
+    ]
+  }
+})
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      labels: {
+        color: '#fff'
+      }
+    }
+  },
+  scales: {
+    x: {
+      ticks: { color: '#aaa' },
+      grid: { color: 'rgba(255,255,255,0.1)' }
+    },
+    y: {
+      ticks: { color: '#aaa' },
+      grid: { color: 'rgba(255,255,255,0.1)' }
+    }
+  }
+}
 
 const suppressionText = computed(() => {
   switch (settingsStore.suppressionStatus) {
@@ -131,16 +343,42 @@ const suppressionText = computed(() => {
 
 const suppressionColor = computed(() => {
   switch (settingsStore.suppressionStatus) {
-    case 'left':
-    case 'right':
-      return 'error'
-    case 'diplopia':
-      return 'warning'
-    case 'none':
-      return 'success'
-    default:
-      return 'grey'
+    case 'left': 
+    case 'right': return 'error'
+    case 'diplopia': return 'warning'
+    case 'none': return 'success'
+    default: return 'grey'
   }
+})
+
+const smartAdvice = computed(() => {
+  if (!hasExamData.value) return '请先完成视功能检查。'
+  
+  let advice = ''
+  const isSuppressed = settingsStore.suppressionStatus === 'left' || settingsStore.suppressionStatus === 'right'
+  const offset = settingsStore.alignmentOffset
+  const hasOffset = Math.abs(offset.x) > 5 || Math.abs(offset.y) > 5
+
+  if (isSuppressed) {
+    const weakEye = settingsStore.suppressionStatus === 'left' ? '左眼' : '右眼'
+    const strongEye = settingsStore.suppressionStatus === 'left' ? '右眼' : '左眼'
+    advice += `<strong>首要任务：打破单眼抑制</strong><br/>`
+    advice += `您的${weakEye}目前处于抑制状态。建议每天重点进行<strong>阶段1（基础脱抑制）</strong>的洗牌与方块寻找训练。<br/>`
+    advice += `系统已自动为您开启暗光压抑疗法，训练时会将${strongEye}的亮度强制降低至 <strong>${Math.round(settingsStore.penalizationFactor * 100)}%</strong>，请坚持每天打卡。`
+  } else if (hasOffset) {
+    advice += `<strong>首要任务：纠正隐斜视，提升融合范围</strong><br/>`
+    advice += `您目前没有明显的单眼抑制，但存在一定程度的隐斜视偏离（X:${offset.x}px, Y:${offset.y}px）。<br/>`
+    advice += `建议重点进行<strong>阶段2（动态融合与扫视）</strong>和<strong>阶段3（立体视恢复）</strong>的训练。请在追踪训练中努力保持两眼图像重合，缩小下方折线图中的偏移量距离。`
+  } else if (settingsStore.suppressionStatus === 'none') {
+    advice += `<strong>维持视觉健康</strong><br/>`
+    advice += `太棒了！您目前拥有良好的双眼单视功能，隐斜视偏离也在正常范围内。<br/>`
+    advice += `建议定期进行<strong>阶段3/4</strong>的立体视和复杂场景训练，以巩固您的双眼融像能力。`
+  } else if (settingsStore.suppressionStatus === 'diplopia') {
+    advice += `<strong>复视干预</strong><br/>`
+    advice += `您可能存在复视现象。请尝试调大图案并慢慢进行阶段1/2的慢速追踪训练。如果重影严重，请及时咨询视光医师。`
+  }
+
+  return advice
 })
 </script>
 
@@ -251,6 +489,12 @@ const suppressionColor = computed(() => {
   height: 12px;
   border-radius: 50%;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+.chart-container {
+  position: relative;
+  height: 250px;
+  width: 100%;
 }
 
 .empty-state {

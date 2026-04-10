@@ -64,12 +64,13 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-
+import { useRoute } from 'vue-router'
 import { useSettingsStore } from '../../store/settings'
+import { useExamFlow } from '../../composables/useExamFlow'
 
-const router = useRouter()
+const route = useRoute()
 const settingsStore = useSettingsStore()
+const { goNext } = useExamFlow()
 
 const position = ref({ x: 0, y: 0 })
 const isDragging = ref(false)
@@ -136,7 +137,7 @@ const moveBox = (dx: number, dy: number) => {
 
 const handleConfirm = () => {
   settingsStore.setAlignmentOffset({ x: position.value.x, y: position.value.y })
-  router.push({ name: 'AlignmentAdvice' })
+  goNext(route.name as string)
 }
 </script>
 
@@ -145,7 +146,8 @@ const handleConfirm = () => {
   width: 100vw;
   height: 100vh;
   position: relative;
-  overflow: hidden;
+  overflow: auto; /* changed from hidden to auto */
+  padding-bottom: 100px; /* add padding to prevent bottom nav overlap */
   background-color: #000;
   touch-action: none; /* Prevent browser scrolling while dragging */
   display: flex;

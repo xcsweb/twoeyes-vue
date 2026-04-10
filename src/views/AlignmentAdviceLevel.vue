@@ -37,28 +37,14 @@
           </div>
         </v-card-text>
       </v-card>
-
-      <div class="btn-wrapper mt-10">
-        <v-btn
-          color="primary"
-          size="x-large"
-          block
-          class="confirm-btn"
-          @click="nextLevel"
-        >
-          评估完成，返回主页准备训练
-        </v-btn>
-      </div>
     </div>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 
-const router = useRouter()
 const settingsStore = useSettingsStore()
 
 const offset = computed(() => settingsStore.alignmentOffset)
@@ -80,10 +66,6 @@ const targetAction = computed(() => {
   if (offset.value.x < -5) return '【训练重点】：您需要着重练习双眼的“集合（Convergence）”能力。在接下来的「聚散球」等康复游戏中，请多加练习将视线【由远处的球，跳跃注视到近处的球】，强迫眼部肌肉向鼻梁内侧汇聚（俗称“斗鸡眼”）。'
   return '【训练重点】：全面提升'
 })
-
-const nextLevel = () => {
-  router.push({ name: 'Home' })
-}
 </script>
 
 <style scoped>
