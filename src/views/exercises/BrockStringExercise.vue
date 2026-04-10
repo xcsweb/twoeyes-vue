@@ -6,8 +6,8 @@
     
     <div class="progress-hud">
       <span :class="{ 'text-success': stageTime >= 60, 'text-white': stageTime < 60 }">
-        本阶段累计训练: {{ stageTime }} / 60 秒
-        <span v-if="stageTime >= 60" class="ml-2">✓ 已达标，下一阶段已解锁</span>
+        本阶段今日训练: {{ stageTime }} / 60 秒
+        <span v-if="stageTime >= 60" class="ml-2">✓ 今日训练已达标</span>
       </span>
     </div>
         <div class="instruction-overlay">
