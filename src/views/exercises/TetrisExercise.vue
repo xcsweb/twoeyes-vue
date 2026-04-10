@@ -322,13 +322,13 @@ onBeforeUnmount(() => {
 .exercise-container {
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  position: relative;
   background-color: #000;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
   touch-action: none; /* Prevent scroll on mobile */
 }
 

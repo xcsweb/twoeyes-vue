@@ -1,16 +1,17 @@
 <template>
   <div class="alignment-exercise-container">
-    <div class="instructions text-center px-4 pt-6">
-      <p class="text-h6 text-white mb-2">请戴上您的 3D 眼镜。</p>
-      <p class="text-body-2 text-grey">
-        使用屏幕上的箭头按钮或键盘方向键，移动其中一个十字准星，直到两个十字准星在您的视觉中完全重合（看起来像一个发光的白色十字）。
-      </p>
-    </div>
-
     <!-- Background overlay to prevent distractions -->
     <div class="bg-black-overlay"></div>
 
-    <div class="canvas-area">
+    <div class="instructions text-center px-4 pt-6">
+      <p class="text-h6 text-white mb-2">请戴上您的 3D 眼镜。</p>
+      <p class="text-body-2 text-grey">
+        使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动其中一个十字准星，直到两个十字准星在您的视觉中完全重合（看起来像一个发光的白色十字）。
+      </p>
+    </div>
+
+    <!-- The actual test area where boxes move -->
+    <div class="canvas-area d-flex align-center justify-center">
       <!-- Static Left Box (Target) -->
       <div
         class="box left-box"
