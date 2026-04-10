@@ -11,7 +11,7 @@
     ></v-btn>
 
     <div class="bg-overlay"></div>
-    <img class="bg-image" src="../assets/images/bg.jpg" alt="background" />
+    <img class="bg-image" src="https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=1920&q=80" alt="background" />
     
     <div class="content-area">
       <h1 class="title" @click="handleSecretClick">双眼视觉康复系统</h1>
@@ -21,13 +21,13 @@
         <!-- Intro Card -->
         <div class="elegant-card" @click="goToIntro">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20futuristic%20glowing%20digital%20book%20floating%20in%20dark%20space%20with%20abstract%20data%20streams%20and%20glowing%20blue%20neon%20lights%2C%20high%20tech%2C%20sci-fi%2C%20medical%20research%2C%20cinematic%20lighting&image_size=landscape_16_9" alt="intro" />
+            <img class="card-img" src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80" alt="intro" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">应用介绍</h2>
             <p class="card-text">
-              了解双眼视觉康复的基本原理和应用使用指南。
+              了解双眼视觉康复的基本原理和系统使用指南。
             </p>
           </div>
         </div>
@@ -35,13 +35,13 @@
         <!-- Vision Test Card -->
         <div class="elegant-card" @click="goToVision">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20glowing%20holographic%20Snellen%20eye%20chart%20with%20letter%20E%2C%20modern%20medical%20clinic%20environment%2C%20dark%20background%2C%20blue%20and%20cyan%20lighting%2C%20cyberpunk%20medical%20aesthetic&image_size=landscape_16_9" alt="vision" />
+            <img class="card-img" src="https://images.unsplash.com/photo-1589820296156-245fa28bc3a6?auto=format&fit=crop&w=600&q=80" alt="vision" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">普通视力检查</h2>
             <p class="card-text">
-              测试单双眼视力水平，涵盖散光、色觉、黄斑功能及对比敏感度筛查。
+              5 项基础视功能综合筛查，评估单双眼健康水平。
             </p>
           </div>
         </div>
@@ -49,13 +49,13 @@
         <!-- Exam Card -->
         <div class="elegant-card" @click="goToExam">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Red%20and%20blue%20anaglyph%203D%20glasses%20glowing%20in%20the%20dark%2C%20cyber%20medical%20aesthetic%2C%20neon%20lights%2C%20high%20technology%2C%20holographic%20data%20overlay&image_size=landscape_16_9" alt="exam" />
+            <img class="card-img" src="https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=600&q=80" alt="exam" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">斜视检查</h2>
             <p class="card-text">
-              通过红蓝分视技术客观测量隐斜视，测算视觉偏移量。
+              通过红蓝分视技术，客观测量隐斜视并测算视觉偏移量。
             </p>
           </div>
         </div>
@@ -63,13 +63,13 @@
         <!-- Amblyopia Exam Card -->
         <div class="elegant-card" @click="goToAmblyopia">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20close%20up%20of%20a%20human%20eye%20with%20glowing%20digital%20data%20overlay%20on%20the%20pupil%2C%20medical%20technology%2C%20red%20and%20blue%20neon%20lights%2C%20dark%20background%2C%20cyber%20eye&image_size=landscape_16_9" alt="amblyopia" />
+            <img class="card-img" src="https://images.unsplash.com/photo-1516131206008-dd041a9764fd?auto=format&fit=crop&w=600&q=80" alt="amblyopia" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">弱视/抑制检查</h2>
             <p class="card-text">
-              检测是否存在单眼抑制，并精准测定弱视眼的暗光惩罚阈值。
+              检测是否存在单眼抑制，并精准测定暗光惩罚阈值。
             </p>
           </div>
         </div>
@@ -77,13 +77,13 @@
         <!-- Training Card -->
         <div class="elegant-card" @click="goToTraining">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Abstract%20floating%203D%20cubes%20in%20red%20and%20cyan%20colors%2C%20dynamic%20motion%2C%20dark%20background%2C%20cyber%20aesthetic%2C%20rehabilitation%20training%20concept&image_size=landscape_16_9" alt="training" />
+            <img class="card-img" src="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80" alt="training" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">康复训练</h2>
             <p class="card-text">
-              基于检查数据的智能推荐引擎，进行脱抑制、融合与立体视定制化训练。
+              基于检查数据的智能引擎，进行定制化脱抑制与融合训练。
             </p>
           </div>
         </div>
@@ -91,13 +91,13 @@
         <!-- Theory & References Card -->
         <div class="elegant-card" @click="goToTheory">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20futuristic%20glowing%20digital%20book%20or%20hologram%20of%20medical%20literature%20floating%20in%20dark%20space%20with%20abstract%20data%20streams%20and%20glowing%20blue%20and%20purple%20neon%20lights%2C%20high%20tech%2C%20sci-fi%2C%20medical%20research%2C%20extremely%20high%20quality%2C%208k%20resolution%2C%20cinematic%20lighting%2C%20unreal%20engine%205%20render&image_size=landscape_16_9" alt="Theory & Literature" />
+            <img class="card-img" src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=600&q=80" alt="Theory & Literature" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">原理解析与文献</h2>
             <p class="card-text">
-              了解本系统如何将检查数据与康复训练进行智能绑定。查阅核心临床指南与参考论文，包含洗牌训练（暗光惩罚疗法）、动态融合、聚散球（Brock String 视差原理）及俄罗斯方块（分视立体视建立）的医学实现原理。
+              查阅系统的核心临床指南、参考论文及医学实现原理。
             </p>
           </div>
         </div>
@@ -105,13 +105,13 @@
         <!-- User Profile Card -->
         <div class="elegant-card" @click="goToProfile">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20futuristic%20digital%20medical%20dashboard%20showing%20human%20eye%20and%20brain%20data%2C%20holographic%20projections%2C%20dark%20background%2C%20cyan%20and%20purple%20neon%20lights&image_size=landscape_16_9" alt="Profile" />
+            <img class="card-img" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=600&q=80" alt="Profile" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
-            <h2 class="card-title">个人信息与康复档案</h2>
+            <h2 class="card-title">个人信息与档案</h2>
             <p class="card-text">
-              查看您完整的 5 项基础视功能报告与斜弱视专科检查数据。
+              查看您完整的视功能报告与专科检查数据。
             </p>
           </div>
         </div>
