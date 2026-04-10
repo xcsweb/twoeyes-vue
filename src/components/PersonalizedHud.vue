@@ -22,9 +22,9 @@ import { useSettingsStore } from '../store/settings'
 
 const settingsStore = useSettingsStore()
 
-const isCollapsed = ref(false)
+const isCollapsed = ref(true)
 
-const position = ref({ x: 20, y: 60 }) // Initial position, matching original CSS
+const position = ref({ x: 20, y: 70 }) // Initial position, shifted down slightly
 const isDragging = ref(false)
 const startPos = ref({ x: 0, y: 0 })
 
@@ -165,13 +165,16 @@ onUnmounted(() => {
 }
 
 .hud-expanded {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px 12px;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
-  white-space: nowrap;
-  border-radius: 15px;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: calc(100vw - 40px);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  line-height: 1.4;
 }
 </style>

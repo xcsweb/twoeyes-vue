@@ -238,6 +238,14 @@ onBeforeUnmount(() => {
   font-weight: bold;
 }
 
+.instruction-overlay {
+  padding: 80px 20px 20px;
+  text-align: center;
+  z-index: 10;
+  max-width: 600px;
+  width: 100%;
+}
+
 .canvas-area {
   flex: 1;
   position: relative;
