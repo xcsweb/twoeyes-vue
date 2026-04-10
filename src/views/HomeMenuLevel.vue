@@ -11,7 +11,7 @@
     ></v-btn>
 
     <div class="bg-overlay"></div>
-    <img class="bg-image" src="https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=1920&q=80" alt="background" />
+    <img class="bg-image" src="../assets/images/bg-nasa.jpg" alt="background" />
     
     <div class="content-area">
       <h1 class="title" @click="handleSecretClick">双眼视觉康复系统</h1>
@@ -21,7 +21,7 @@
         <!-- Intro Card -->
         <div class="elegant-card" @click="goToIntro">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80" alt="intro" />
+            <img class="card-img" src="../assets/images/cards/intro.jpg" alt="intro" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -35,7 +35,7 @@
         <!-- Vision Test Card -->
         <div class="elegant-card" @click="goToVision">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1589820296156-245fa28bc3a6?auto=format&fit=crop&w=600&q=80" alt="vision" />
+            <img class="card-img" src="../assets/images/cards/vision.jpg" alt="vision" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -49,7 +49,7 @@
         <!-- Exam Card -->
         <div class="elegant-card" @click="goToExam">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=600&q=80" alt="exam" />
+            <img class="card-img" src="../assets/images/cards/exam.jpg" alt="exam" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -63,7 +63,7 @@
         <!-- Amblyopia Exam Card -->
         <div class="elegant-card" @click="goToAmblyopia">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1516131206008-dd041a9764fd?auto=format&fit=crop&w=600&q=80" alt="amblyopia" />
+            <img class="card-img" src="../assets/images/cards/amblyopia.jpg" alt="amblyopia" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -77,7 +77,7 @@
         <!-- Training Card -->
         <div class="elegant-card" @click="goToTraining">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=600&q=80" alt="training" />
+            <img class="card-img" src="../assets/images/cards/training.jpg" alt="training" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -91,7 +91,7 @@
         <!-- Theory & References Card -->
         <div class="elegant-card" @click="goToTheory">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=600&q=80" alt="Theory & Literature" />
+            <img class="card-img" src="../assets/images/cards/theory.jpg" alt="Theory & Literature" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -105,7 +105,7 @@
         <!-- User Profile Card -->
         <div class="elegant-card" @click="goToProfile">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=600&q=80" alt="Profile" />
+            <img class="card-img" src="../assets/images/cards/profile.jpg" alt="Profile" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
