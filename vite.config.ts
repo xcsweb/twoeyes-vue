@@ -3,6 +3,6 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './', // 确保在 GitHub Pages 上的静态资源路径引用正确
+  base: '/twoeyes-vue/', // 适配 GitHub Pages 仓库路径
   plugins: [vue()],
 })

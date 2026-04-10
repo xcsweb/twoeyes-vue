@@ -1,53 +1,59 @@
 name: Deploy to GitHub Pages
 
 on:
-  # 监听 main 分支的 push 事件
+  # 触发条件：推送到 main 分支时
   push:
-    branches:
-      - main
-      - master
-  # 允许手动触发
+    branches: [ main ]
+  # 允许在 Actions tab 中手动触发
   workflow_dispatch:
 
-# 设置权限，允许 Actions 推送到 GitHub Pages
+# 权限配置
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 确保不会同时进行多个部署
+# 控制并发，取消正在进行中的部署，保证只有最新的提交会被部署
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
+      
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
+          node-version: 20
+          cache: 'npm'
+          
       - name: Install dependencies
-        run: npm install
-
-      - name: Build project
+        run: npm ci
+        
+      - name: Build
         run: npm run build
-
+        
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 指向 vite 构建出的 dist 目录
+          # 上传 vite 构建输出的 dist 目录
           path: './dist'
 
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
