@@ -160,6 +160,13 @@
                 <li><span class="text-secondary">📚 临床依据：</span><span class="text-grey-lighten-2 text-body-2">Li, Thompson, Hess et al. (2013), Dichoptic training enables the adult amblyopic brain to learn. <sup class="text-primary">[2]</sup></span></li>
               </ul>
             </div>
+
+            <p class="mt-6 mb-0">
+              <strong class="text-white">4. 最新的临床有效性验证 (2023-2024)：</strong><br />
+              近年来的国际多中心试验进一步验证了双眼分视疗法（Dichoptic Therapy）的卓越疗效。研究表明，基于数字设备的家庭分视训练能显著提升儿童及成人弱视患者的最佳矫正视力（BCVA）和立体视。<br />
+              <span class="text-grey-lighten-2 text-body-2">[1] Ganesh S, et al. (2024). Effectiveness of Dichoptic Therapy for Treating Mild to Moderate Amblyopia. J Pediatr Ophthalmol Strabismus.</span><br />
+              <span class="text-grey-lighten-2 text-body-2">[2] Piñero DP, et al. (2023). Visual Performance of Children with Amblyopia after 6 Weeks of Home-Based Dichoptic Visual Training.</span>
+            </p>
           </div>
         </v-card-text>
       </v-card>

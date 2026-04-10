@@ -50,7 +50,7 @@ export const useSettingsStore = defineStore('settings', {
       return `rgb(${Math.round(state.rightLense.r * factor)}, ${Math.round(state.rightLense.g * factor)}, ${Math.round(state.rightLense.b * factor)})`
     },
     personalizedHUDText(state) {
-      return `[个性化] 亮度: ${Math.round(state.penalizationFactor * 100)}% | 偏移: ${state.alignmentOffset.x}px`
+      return `[个性化] 眼镜: ${state.lensConfig === 'red-cyan' ? '红青' : '红蓝'} | 亮度: ${Math.round(state.penalizationFactor * 100)}% | 偏移: X:${state.alignmentOffset.x}px Y:${state.alignmentOffset.y}px${state.visionAcuity ? ' | 视力: L'+state.visionAcuity.left+'/R'+state.visionAcuity.right : ''}`
     }
   },
   actions: {

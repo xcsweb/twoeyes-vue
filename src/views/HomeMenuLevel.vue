@@ -1,15 +1,5 @@
 <template>
   <div class="home-menu-container">
-    <!-- 右上角个人信息按钮 -->
-    <v-btn 
-      icon="mdi-account-circle" 
-      size="x-large"
-      color="white"
-      variant="text" 
-      class="profile-btn"
-      @click="goToProfile"
-    ></v-btn>
-
     <div class="bg-overlay"></div>
     <img class="bg-image" src="../assets/images/bg-nasa.jpg" alt="background" />
     
@@ -266,13 +256,6 @@ const goToProfile = () => {
 </script>
 
 <style scoped>
-.profile-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 20;
-}
-
 .home-menu-container {
   width: 100%;
   min-height: 100vh;

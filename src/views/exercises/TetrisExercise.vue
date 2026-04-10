@@ -11,9 +11,7 @@
         <span v-if="stageTime >= 60" class="ml-2">✓ 今日训练已达标</span>
       </span>
     </div>
-    <div class="personalized-hud">
-      {{ settingsStore.personalizedHUDText }}
-    </div>
+    <PersonalizedHud />
 
 
         <h2 class="score">得分: {{ score }}</h2>
@@ -50,6 +48,7 @@
 </template>
 
 <script setup lang="ts">
+import PersonalizedHud from '../../components/PersonalizedHud.vue'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
 import { useSettingsStore } from '../../store/settings'
@@ -463,18 +462,4 @@ onBeforeUnmount(() => {
   }
 }
 
-.personalized-hud {
-  position: absolute;
-  top: 60px;
-  left: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 6px 12px;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
-  white-space: nowrap;
-  border-radius: 15px;
-  backdrop-filter: blur(5px);
-  z-index: 100;
-  pointer-events: none;
-}
 </style>
