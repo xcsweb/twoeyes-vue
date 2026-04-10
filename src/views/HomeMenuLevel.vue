@@ -21,7 +21,7 @@
         <!-- Intro Card -->
         <div class="elegant-card" @click="goToIntro">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/intro.jpg" alt="intro" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20futuristic%20glowing%20digital%20book%20floating%20in%20dark%20space%20with%20abstract%20data%20streams%20and%20glowing%20blue%20neon%20lights%2C%20high%20tech%2C%20sci-fi%2C%20medical%20research%2C%20cinematic%20lighting&image_size=landscape_16_9" alt="intro" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -35,13 +35,13 @@
         <!-- Vision Test Card -->
         <div class="elegant-card" @click="goToVision">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/exam.jpg" alt="vision" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20glowing%20holographic%20Snellen%20eye%20chart%20with%20letter%20E%2C%20modern%20medical%20clinic%20environment%2C%20dark%20background%2C%20blue%20and%20cyan%20lighting%2C%20cyberpunk%20medical%20aesthetic&image_size=landscape_16_9" alt="vision" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">普通视力检查</h2>
             <p class="card-text">
-              通过 E 字视标，测试您的单眼和双眼视力水平。
+              测试单双眼视力水平，涵盖散光、色觉、黄斑功能及对比敏感度筛查。
             </p>
           </div>
         </div>
@@ -49,13 +49,13 @@
         <!-- Exam Card -->
         <div class="elegant-card" @click="goToExam">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/exam.jpg" alt="exam" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Red%20and%20blue%20anaglyph%203D%20glasses%20glowing%20in%20the%20dark%2C%20cyber%20medical%20aesthetic%2C%20neon%20lights%2C%20high%20technology%2C%20holographic%20data%20overlay&image_size=landscape_16_9" alt="exam" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">斜视检查</h2>
             <p class="card-text">
-              测试最适合双眼透光度的镜片，并通过十字准星测算偏移量。
+              通过红蓝分视技术客观测量隐斜视，测算视觉偏移量。
             </p>
           </div>
         </div>
@@ -63,13 +63,13 @@
         <!-- Amblyopia Exam Card -->
         <div class="elegant-card" @click="goToAmblyopia">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/exam.jpg" alt="amblyopia" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20close%20up%20of%20a%20human%20eye%20with%20glowing%20digital%20data%20overlay%20on%20the%20pupil%2C%20medical%20technology%2C%20red%20and%20blue%20neon%20lights%2C%20dark%20background%2C%20cyber%20eye&image_size=landscape_16_9" alt="amblyopia" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">弱视/抑制检查</h2>
             <p class="card-text">
-              测试是否存在单眼抑制（弱视），并测定弱视眼的暗光惩罚阈值。
+              检测是否存在单眼抑制，并精准测定弱视眼的暗光惩罚阈值。
             </p>
           </div>
         </div>
@@ -77,13 +77,13 @@
         <!-- Training Card -->
         <div class="elegant-card" @click="goToTraining">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/training.jpg" alt="training" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Abstract%20floating%203D%20cubes%20in%20red%20and%20cyan%20colors%2C%20dynamic%20motion%2C%20dark%20background%2C%20cyber%20aesthetic%2C%20rehabilitation%20training%20concept&image_size=landscape_16_9" alt="training" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
             <h2 class="card-title">康复训练</h2>
             <p class="card-text">
-              进行分阶段的双眼视觉康复训练，包含脱抑制、融合、集合与立体视建立。
+              基于检查数据的智能推荐引擎，进行脱抑制、融合与立体视定制化训练。
             </p>
           </div>
         </div>
@@ -98,6 +98,20 @@
             <h2 class="card-title">原理解析与文献</h2>
             <p class="card-text">
               了解本系统如何将检查数据与康复训练进行智能绑定。查阅核心临床指南与参考论文，包含洗牌训练（暗光惩罚疗法）、动态融合、聚散球（Brock String 视差原理）及俄罗斯方块（分视立体视建立）的医学实现原理。
+            </p>
+          </div>
+        </div>
+
+        <!-- User Profile Card -->
+        <div class="elegant-card" @click="goToProfile">
+          <div class="card-img-wrapper">
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20futuristic%20digital%20medical%20dashboard%20showing%20human%20eye%20and%20brain%20data%2C%20holographic%20projections%2C%20dark%20background%2C%20cyan%20and%20purple%20neon%20lights&image_size=landscape_16_9" alt="Profile" />
+            <div class="card-gradient"></div>
+          </div>
+          <div class="card-content">
+            <h2 class="card-title">个人信息与康复档案</h2>
+            <p class="card-text">
+              查看您完整的 5 项基础视功能报告与斜弱视专科检查数据。
             </p>
           </div>
         </div>
@@ -281,8 +295,9 @@ const goToProfile = () => {
 
 .cards-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 32px;
+  /* Make cards smaller and more compact on PC, down to 260px minimum width */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
   width: 100%;
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
   opacity: 0;
@@ -292,24 +307,25 @@ const goToProfile = () => {
   position: relative;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease, border-color 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
   display: flex;
   flex-direction: column;
 }
 
 .elegant-card:hover {
   transform: translateY(-8px);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 }
 
 .card-img-wrapper {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 160px; /* Reduced image height to make the card more compact */
   overflow: hidden;
 }
 
@@ -329,29 +345,29 @@ const goToProfile = () => {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50%;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+  height: 60%; /* Extended gradient to ensure text remains readable */
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
 }
 
 .card-content {
-  padding: 32px 24px;
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .card-title {
-  font-size: 1.5rem;
+  font-size: 1.35rem; /* Slightly smaller title */
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   color: #ffffff;
   letter-spacing: -0.5px;
 }
 
 .card-text {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.6);
-  line-height: 1.6;
+  font-size: 0.95rem; /* Slightly smaller description */
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
   margin: 0;
 }
 
