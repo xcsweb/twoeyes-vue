@@ -23,6 +23,15 @@
 
           <v-divider class="my-4" color="rgba(255,255,255,0.2)"></v-divider>
 
+          <div class="text-h6 text-white mb-4">根据您的立体视筛查结果：</div>
+
+          <div class="advice-text text-grey mb-4">
+            立体视觉敏锐度: 
+            <span class="font-weight-bold ml-2" :class="stereopsisColorClass">{{ stereopsisText }}</span>
+          </div>
+
+          <v-divider class="my-4" color="rgba(255,255,255,0.2)"></v-divider>
+
           <div class="text-h5 text-white mb-2">{{ adviceTitle }}</div>
           <div class="advice-text text-grey mb-4">
             {{ adviceDesc }}
@@ -30,6 +39,10 @@
 
           <div class="text-body-1 text-success mt-4 pa-4 target-action-box">
             {{ targetAction }}
+          </div>
+
+          <div class="text-body-1 text-success mt-4 pa-4 target-action-box" v-if="stereopsisAdvice">
+            {{ stereopsisAdvice }}
           </div>
 
           <div class="text-body-2 text-warning mt-6">
@@ -80,9 +93,41 @@ const adviceDesc = computed(() => {
 })
 
 const targetAction = computed(() => {
-  if (offset.value.x > 5) return '【训练重点】：您需要着重练习双眼的“分开（Divergence）”能力。在接下来的「聚散球」等康复游戏中，请多加练习将视线【由近处的球，跳跃注视到远处的球】，强迫眼部肌肉向外放松发散。'
-  if (offset.value.x < -5) return '【训练重点】：您需要着重练习双眼的“集合（Convergence）”能力。在接下来的「聚散球」等康复游戏中，请多加练习将视线【由远处的球，跳跃注视到近处的球】，强迫眼部肌肉向鼻梁内侧汇聚（俗称“斗鸡眼”）。'
-  return '【训练重点】：全面提升'
+  if (offset.value.x > 5) return '【眼位训练重点】：您需要着重练习双眼的“分开（Divergence）”能力。在接下来的「聚散球」等康复游戏中，请多加练习将视线【由近处的球，跳跃注视到远处的球】，强迫眼部肌肉向外放松发散。'
+  if (offset.value.x < -5) return '【眼位训练重点】：您需要着重练习双眼的“集合（Convergence）”能力。在接下来的「聚散球」等康复游戏中，请多加练习将视线【由远处的球，跳跃注视到近处的球】，强迫眼部肌肉向鼻梁内侧汇聚（俗称“斗鸡眼”）。'
+  return '【眼位训练重点】：全面提升双眼聚散能力。'
+})
+
+const stereopsisResult = computed(() => settingsStore.stereopsisResult)
+
+const stereopsisText = computed(() => {
+  switch (stereopsisResult.value) {
+    case 'normal': return '正常'
+    case 'mild': return '轻度受损'
+    case 'moderate': return '中度受损'
+    case 'severe': return '重度受损/缺失'
+    default: return '未测试'
+  }
+})
+
+const stereopsisColorClass = computed(() => {
+  switch (stereopsisResult.value) {
+    case 'normal': return 'text-success'
+    case 'mild':
+    case 'moderate': return 'text-warning'
+    case 'severe': return 'text-error'
+    default: return 'text-grey'
+  }
+})
+
+const stereopsisAdvice = computed(() => {
+  switch (stereopsisResult.value) {
+    case 'normal': return '【立体视训练重点】：功能完好。继续保持，可以通过“进阶立体视”游戏进一步巩固高级双眼协同与手眼配合。'
+    case 'mild': return '【立体视训练重点】：存在轻度受损。建议通过“聚散球”和“进阶立体视”训练，提升对双眼微小视差的融合敏锐度。'
+    case 'moderate': return '【立体视训练重点】：存在中度受损。建议重点进行“聚散卡片”和“进阶立体视”训练，逐步重建双眼深度知觉。'
+    case 'severe': return '【立体视训练重点】：严重受损或缺失。建议先从基础的“消除单眼抑制”开始（如洗牌、螺旋训练），待双眼能同时稳定感知画面后，再逐步进行大视差的立体视融合训练。'
+    default: return ''
+  }
 })
 </script>
 

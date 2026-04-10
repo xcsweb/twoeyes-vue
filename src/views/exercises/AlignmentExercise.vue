@@ -73,7 +73,13 @@ const route = useRoute()
 const settingsStore = useSettingsStore()
 const { goNext } = useFlowManager()
 
-const position = ref({ x: 0, y: 0 })
+const getRandomOffset = () => {
+  const sign = Math.random() > 0.5 ? 1 : -1
+  // Random offset between 30px and 80px to ensure it's clearly separated but not too far off screen
+  return sign * (Math.floor(Math.random() * 50) + 30)
+}
+
+const position = ref({ x: getRandomOffset(), y: getRandomOffset() })
 const isDragging = ref(false)
 const dragStartPos = ref({ x: 0, y: 0 })
 
