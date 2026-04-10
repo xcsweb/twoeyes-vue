@@ -60,6 +60,20 @@
           </div>
         </div>
 
+        <!-- Amblyopia Exam Card -->
+        <div class="elegant-card" @click="goToAmblyopia">
+          <div class="card-img-wrapper">
+            <img class="card-img" src="../assets/images/exam.jpg" alt="amblyopia" />
+            <div class="card-gradient"></div>
+          </div>
+          <div class="card-content">
+            <h2 class="card-title">弱视/抑制检查</h2>
+            <p class="card-text">
+              测试是否存在单眼抑制（弱视），并测定弱视眼的暗光惩罚阈值。
+            </p>
+          </div>
+        </div>
+
         <!-- Training Card -->
         <div class="elegant-card" @click="goToTraining">
           <div class="card-img-wrapper">
@@ -176,6 +190,10 @@ const goToVision = () => {
 
 const goToExam = () => {
   router.push({ name: 'SectionIntroExam' })
+}
+
+const goToAmblyopia = () => {
+  router.push({ name: 'SectionIntroAmblyopia' })
 }
 
 const goToTraining = () => {

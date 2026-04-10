@@ -53,6 +53,13 @@ export const routeBottomNavConfig: Record<string, RouteBottomNavSpec> = {
     }
   },
 
+  // === Amblyopia Exam Specific ===
+  SectionIntroAmblyopia: {
+    showNav: true,
+    back: 'Home',
+    home: 'Home'
+  },
+
   SectionIntroExam: {
     showNav: true,
     nextLabel: '开始体验',

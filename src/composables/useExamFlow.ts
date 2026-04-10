@@ -9,6 +9,8 @@ export function useExamFlow() {
   const goNext = (currentRouteName: string) => {
     switch (currentRouteName) {
       case 'SectionIntroExam':
+      case 'SectionIntroAlignment':
+      case 'SectionIntroAmblyopia':
         router.push({ name: 'LensSelection' })
         break
       case 'LensSelection':

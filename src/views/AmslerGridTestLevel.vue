@@ -124,8 +124,8 @@ const finishTest = () => {
   position: relative;
   /* Create a grid pattern with white lines on black background */
   background-image: 
-    linear-gradient(white 1px, transparent 1px),
-    linear-gradient(90deg, white 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px);
   /* 20x20 grid, so each square is 5% of the width/height */
   background-size: 5% 5%;
   background-position: center center;
@@ -149,6 +149,7 @@ const finishTest = () => {
   width: 50%;
   height: 50%;
   z-index: 5;
+  overflow: hidden; /* Contains the distortion effect within the quadrant */
 }
 .q-tl { top: 0; left: 0; }
 .q-tr { top: 0; left: 50%; }
@@ -158,12 +159,15 @@ const finishTest = () => {
 /* The artificial distortion */
 .distortion-overlay {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  /* Use a radial gradient to create a "bulge" or "smudge" effect that obscures/distorts the grid beneath */
-  background: radial-gradient(circle at center, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
-  backdrop-filter: blur(2px) contrast(150%);
+  width: 150%;
+  height: 150%;
+  top: -25%;
+  left: -25%;
+  /* Use a strong glass/water ripple effect to visibly distort the grid beneath it */
+  backdrop-filter: blur(4px) contrast(120%) saturate(200%);
+  background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%);
   border-radius: 50%;
-  transform: scale(0.7);
+  transform: scale(0.6);
+  pointer-events: none; /* Let clicks pass through to the quadrant */
 }
 </style>

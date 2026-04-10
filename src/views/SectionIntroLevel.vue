@@ -88,7 +88,11 @@ const { goNext: examGoNext } = useExamFlow()
 const { goNext: visionGoNext } = useVisionFlow()
 
 const startGame = (routeName: string) => {
-  if (route.name === 'SectionIntroExam' || route.name === 'SectionIntroAlignment') {
+  if (
+    route.name === 'SectionIntroExam' || 
+    route.name === 'SectionIntroAlignment' ||
+    route.name === 'SectionIntroAmblyopia'
+  ) {
     examGoNext(route.name as string)
     return
   }

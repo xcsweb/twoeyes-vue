@@ -70,6 +70,16 @@ const routes = [
     }
   },
   {
+    path: '/amblyopia/intro',
+    name: 'SectionIntroAmblyopia',
+    component: () => import('../views/SectionIntroLevel.vue'),
+    props: {
+      title: '弱视 / 抑制检查',
+      description: '请准备好您的红蓝 3D 眼镜。本流程将通过分视技术检测是否存在单眼抑制（弱视），并测定抑制眼的暗光惩罚阈值。',
+      nextRoute: 'LensSelection'
+    }
+  },
+  {
     path: '/exam/lens-selection',
     name: 'LensSelection',
     component: () => import('../views/LensSelectionLevel.vue')
