@@ -6,15 +6,15 @@
       <div class="test-section">
         <p class="text-h6 text-white mb-6">
           请在明亮的光线下，注视下方由彩色圆点组成的图案。<br>
-          图案中隐藏了一个由红橙色点组成的 <strong>'E'</strong> 字，请指出它的<strong>开口方向</strong>。
+          图案中隐藏了一个由红橙色点组成的<strong>数字 (0-9)</strong>，请在下方键盘中选出您看到的数字。
         </p>
 
         <div class="text-h6 text-grey mb-4">测试进度: {{ currentTrial + 1 }} / {{ totalTrials }}</div>
         
         <div class="canvas-wrapper mx-auto mb-8 bg-white d-flex align-center justify-center">
-          <div class="dot-matrix" :class="`dir-${currentDirection}`" :key="currentTrial">
+          <div class="dot-matrix" :key="currentTrial">
             <div 
-              v-for="i in 100" 
+              v-for="i in 144" 
               :key="i"
               class="dot"
               :style="getDotStyle(i - 1)"
@@ -23,17 +23,20 @@
         </div>
 
         <div class="controls mt-8">
-          <div class="text-h6 text-white mb-4">请选择 'E' 的开口方向：</div>
-          <v-row justify="center" class="mb-4">
-            <v-btn icon="mdi-arrow-up-bold" size="x-large" color="white" variant="outlined" class="mx-2" @click="submitAnswer('up')"></v-btn>
+          <div class="text-h6 text-white mb-4">请选择您看到的数字：</div>
+          <v-row justify="center" class="mb-2">
+            <v-btn v-for="n in [1, 2, 3]" :key="n" size="x-large" color="white" variant="outlined" class="mx-2 number-btn" @click="submitAnswer(n)">{{n}}</v-btn>
           </v-row>
-          <v-row justify="center" class="mb-4">
-            <v-btn icon="mdi-arrow-left-bold" size="x-large" color="white" variant="outlined" class="mx-2" @click="submitAnswer('left')"></v-btn>
-            <v-btn icon="mdi-arrow-down-bold" size="x-large" color="white" variant="outlined" class="mx-2" @click="submitAnswer('down')"></v-btn>
-            <v-btn icon="mdi-arrow-right-bold" size="x-large" color="white" variant="outlined" class="mx-2" @click="submitAnswer('right')"></v-btn>
+          <v-row justify="center" class="mb-2">
+            <v-btn v-for="n in [4, 5, 6]" :key="n" size="x-large" color="white" variant="outlined" class="mx-2 number-btn" @click="submitAnswer(n)">{{n}}</v-btn>
           </v-row>
-          <v-row justify="center">
-            <v-btn color="error" variant="text" @click="submitAnswer('none')">看不清</v-btn>
+          <v-row justify="center" class="mb-2">
+            <v-btn v-for="n in [7, 8, 9]" :key="n" size="x-large" color="white" variant="outlined" class="mx-2 number-btn" @click="submitAnswer(n)">{{n}}</v-btn>
+          </v-row>
+          <v-row justify="center" class="mb-4 align-center">
+            <v-btn size="large" color="error" variant="text" class="mx-2" @click="submitAnswer(-1)">看不清</v-btn>
+            <v-btn size="x-large" color="white" variant="outlined" class="mx-2 number-btn" @click="submitAnswer(0)">0</v-btn>
+            <v-btn size="large" color="transparent" variant="text" class="mx-2" disabled></v-btn>
           </v-row>
         </div>
       </div>
@@ -51,34 +54,51 @@ const settingsStore = useSettingsStore()
 const { goNext } = useVisionFlow()
 const route = useRoute()
 
-const directions = ['up', 'down', 'left', 'right']
-const totalTrials = 12
+const totalTrials = 6
 const currentTrial = ref(0)
-const results = ref<{ dir: string, correct: boolean }[]>([])
-const trials = ref<string[]>([])
+const results = ref<{ digit: number, correct: boolean }[]>([])
+const trials = ref<number[]>([])
 
-// A simple matrix representation of a standard 'E' facing RIGHT
-// We will use CSS transform to rotate it for other directions
-const eShapeIndices = [
-  22, 23, 24, 25, 26, 27,
-  32,
-  42, 43, 44, 45, 46,
-  52,
-  62,
-  72, 73, 74, 75, 76, 77
-]
+// 5x7 pixel art for digits 0-9
+const digitMaps: Record<number, string[]> = {
+  0: [" 111 ", "1   1", "1   1", "1   1", "1   1", "1   1", " 111 "],
+  1: ["  1  ", " 11  ", "  1  ", "  1  ", "  1  ", "  1  ", " 111 "],
+  2: [" 111 ", "1   1", "    1", "  11 ", " 1   ", "1    ", "11111"],
+  3: [" 111 ", "1   1", "    1", "  11 ", "    1", "1   1", " 111 "],
+  4: ["   1 ", "  11 ", " 1 1 ", "1  1 ", "11111", "   1 ", "   1 "],
+  5: ["11111", "1    ", "1111 ", "    1", "    1", "1   1", " 111 "],
+  6: ["  11 ", " 1   ", "1    ", "1111 ", "1   1", "1   1", " 111 "],
+  7: ["11111", "    1", "   1 ", "  1  ", " 1   ", " 1   ", " 1   "],
+  8: [" 111 ", "1   1", "1   1", " 111 ", "1   1", "1   1", " 111 "],
+  9: [" 111 ", "1   1", "1   1", " 1111", "    1", "   1 ", " 11  "]
+}
+
+// Map 5x7 digit to 12x12 matrix (center it: offset X=3, Y=2)
+const getDigitIndices = (digit: number) => {
+  const indices: number[] = []
+  const map = digitMaps[digit]
+  for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x < map[y].length; x++) {
+      if (map[y][x] === '1') {
+        const matrixX = x + 3
+        const matrixY = y + 2
+        indices.push(matrixY * 12 + matrixX)
+      }
+    }
+  }
+  return indices
+}
 
 onMounted(() => {
-  const t: string[] = []
-  for (let i = 0; i < 3; i++) {
-    t.push(...directions)
+  const t: number[] = []
+  for (let i = 0; i < totalTrials; i++) {
+    t.push(Math.floor(Math.random() * 10))
   }
-  // Shuffle
-  t.sort(() => Math.random() - 0.5)
   trials.value = t
 })
 
-const currentDirection = computed(() => trials.value[currentTrial.value] ?? 'right')
+const currentDigit = computed(() => trials.value[currentTrial.value] ?? 0)
+const targetIndices = computed(() => getDigitIndices(currentDigit.value))
 
 // Random colors (red-green confusion colors with strict luminance noise)
 const getRandomColor = (isTarget: boolean) => {
@@ -100,7 +120,7 @@ const getRandomColor = (isTarget: boolean) => {
 }
 
 const getDotStyle = (index: number) => {
-  const isTarget = eShapeIndices.includes(index)
+  const isTarget = targetIndices.value.includes(index)
   // High spatial noise: dot sizes vary randomly from 12px to 24px
   const size = Math.floor(Math.random() * 12) + 12 
   
@@ -111,9 +131,9 @@ const getDotStyle = (index: number) => {
   }
 }
 
-const submitAnswer = (answerDir: string) => {
-  const isCorrect = answerDir === currentDirection.value
-  results.value.push({ dir: currentDirection.value, correct: isCorrect })
+const submitAnswer = (answerDigit: number) => {
+  const isCorrect = answerDigit === currentDigit.value
+  results.value.push({ digit: currentDigit.value, correct: isCorrect })
 
   if (currentTrial.value < totalTrials - 1) {
     currentTrial.value++
@@ -125,8 +145,9 @@ const submitAnswer = (answerDir: string) => {
 const finishTest = () => {
   const correctCount = results.value.filter(r => r.correct).length
   
-  // Objective criteria: if they fail to see the colored E, they have color vision deficiency
-  if (correctCount >= Math.ceil(totalTrials * 0.85)) {
+  // Objective criteria: With 10 options, guessing is 10%.
+  // Getting >= 4 out of 6 correct indicates normal color vision clearly.
+  if (correctCount >= Math.floor(totalTrials * 0.6)) {
     settingsStore.setColorVisionResult('normal')
   } else {
     settingsStore.setColorVisionResult('deficient')
@@ -151,8 +172,8 @@ const finishTest = () => {
 }
 
 .canvas-wrapper {
-  width: 300px;
-  height: 300px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
   position: relative;
   box-shadow: 0 0 30px rgba(255,255,255,0.2);
@@ -160,22 +181,22 @@ const finishTest = () => {
 
 .dot-matrix {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
   width: 100%;
   height: 100%;
-  padding: 10px;
+  padding: 15px;
   gap: 2px;
   place-items: center;
 }
 
-/* Rotate the entire grid to point the 'E' in different directions */
-.dir-right { transform: rotate(0deg); }
-.dir-down { transform: rotate(90deg); }
-.dir-left { transform: rotate(180deg); }
-.dir-up { transform: rotate(-90deg); }
-
 .dot {
   border-radius: 50%;
+}
+
+.number-btn {
+  width: 64px;
+  height: 64px !important;
+  font-size: 24px;
 }
 </style>
