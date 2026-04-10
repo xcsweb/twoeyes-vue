@@ -56,8 +56,17 @@ export const routeBottomNavConfig: Record<string, RouteBottomNavSpec> = {
   // === Amblyopia Exam Specific ===
   SectionIntroAmblyopia: {
     showNav: true,
-    back: 'Home',
-    home: 'Home'
+    buttons: {
+      back: { target: { type: 'route', to: { name: 'Home' } } },
+      home: { target: { type: 'route', to: { name: 'Home' } } }
+    }
+  },
+  AmblyopiaAdvice: {
+    showNav: true,
+    buttons: {
+      back: { target: { type: 'exam_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } }
+    }
   },
 
   SectionIntroExam: {

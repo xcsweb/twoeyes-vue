@@ -61,6 +61,7 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
 import { useProgressStore } from '../store/progress'
+import { useSettingsStore } from '../store/settings'
 import trainingImg from '../assets/images/training.jpg'
 import { useExamFlow } from '../composables/useExamFlow'
 import { useVisionFlow } from '../composables/useVisionFlow'
@@ -84,10 +85,17 @@ const hintStyleColor = '#ffffff'
 const router = useRouter()
 const route = useRoute()
 const progressStore = useProgressStore()
+const settingsStore = useSettingsStore()
 const { goNext: examGoNext } = useExamFlow()
 const { goNext: visionGoNext } = useVisionFlow()
 
 const startGame = (routeName: string) => {
+  if (route.name === 'SectionIntroAmblyopia') {
+    settingsStore.setExamMode('amblyopia')
+  } else if (route.name === 'SectionIntroExam') {
+    settingsStore.setExamMode('exam')
+  }
+
   if (
     route.name === 'SectionIntroExam' || 
     route.name === 'SectionIntroAlignment' ||

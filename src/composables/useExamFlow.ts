@@ -26,13 +26,21 @@ export function useExamFlow() {
         // 客观测试结果：如果没有强弱眼或复视，直接跳过对比度平衡测试
         if (settingsStore.suppressionStatus === 'none' || settingsStore.suppressionStatus === 'diplopia') {
           settingsStore.setPenalizationFactor(1.0)
-          router.push({ name: 'SectionIntroAlignment' })
+          if (settingsStore.currentExamMode === 'amblyopia') {
+            router.push({ name: 'AmblyopiaAdvice' })
+          } else {
+            router.push({ name: 'SectionIntroAlignment' })
+          }
         } else {
           router.push({ name: 'ContrastTest' })
         }
         break
       case 'ContrastTest':
-        router.push({ name: 'SectionIntroAlignment' })
+        if (settingsStore.currentExamMode === 'amblyopia') {
+          router.push({ name: 'AmblyopiaAdvice' })
+        } else {
+          router.push({ name: 'SectionIntroAlignment' })
+        }
         break
       case 'SectionIntroAlignment':
         router.push({ name: 'AlignmentExercise' })
@@ -53,7 +61,11 @@ export function useExamFlow() {
   const goBack = (currentRouteName: string) => {
     switch (currentRouteName) {
       case 'LensSelection':
-        router.push({ name: 'SectionIntroExam' })
+        if (settingsStore.currentExamMode === 'amblyopia') {
+          router.push({ name: 'SectionIntroAmblyopia' })
+        } else {
+          router.push({ name: 'SectionIntroExam' })
+        }
         break
       case 'LensConfirmation':
         router.push({ name: 'LensSelection' })
@@ -66,6 +78,13 @@ export function useExamFlow() {
         break
       case 'ContrastTest':
         router.push({ name: 'SuppressionTest' })
+        break
+      case 'AmblyopiaAdvice':
+        if (settingsStore.suppressionStatus === 'none' || settingsStore.suppressionStatus === 'diplopia') {
+          router.push({ name: 'SuppressionTest' })
+        } else {
+          router.push({ name: 'ContrastTest' })
+        }
         break
       case 'SectionIntroAlignment':
         // 如果没有强弱眼，说明上一步是直接从 SuppressionTest 跳过来的

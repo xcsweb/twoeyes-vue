@@ -129,6 +129,11 @@ const routes = [
     component: () => import('../views/ContrastTestLevel.vue')
   },
   {
+    path: '/amblyopia/advice',
+    name: 'AmblyopiaAdvice',
+    component: () => import('../views/vision/AmblyopiaAdviceLevel.vue')
+  },
+  {
     path: '/vision/intro',
     name: 'SectionIntroVision',
     component: () => import('../views/SectionIntroLevel.vue'),
