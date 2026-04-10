@@ -34,7 +34,9 @@ export const useSettingsStore = defineStore('settings', {
     colorVisionResult: null as 'normal' | 'deficient' | null,
     macularResult: null as 'normal' | 'abnormal' | null,
     contrastSensitivityResult: null as 'normal' | 'low' | null,
-    currentExamMode: null as 'exam' | 'amblyopia' | null
+    currentExamMode: null as 'exam' | 'amblyopia' | null,
+    testFrequency: 1,
+    lastTestTime: 0
   }),
   getters: {
     leftEyeColorStr(state) {
@@ -128,6 +130,12 @@ export const useSettingsStore = defineStore('settings', {
     },
     setExamMode(mode: 'exam' | 'amblyopia' | null) {
       this.currentExamMode = mode
+    },
+    setTestFrequency(days: number) {
+      this.testFrequency = days
+    },
+    updateLastTestTime() {
+      this.lastTestTime = Date.now()
     }
   },
   persist: true

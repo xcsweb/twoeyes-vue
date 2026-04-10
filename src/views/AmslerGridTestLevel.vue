@@ -45,11 +45,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useSettingsStore } from '../store/settings'
-import { useVisionFlow } from '../composables/useVisionFlow'
+import { useFlowManager } from '../composables/useFlowManager'
 import { useRoute } from 'vue-router'
 
 const settingsStore = useSettingsStore()
-const { goNext } = useVisionFlow()
+const { goNext } = useFlowManager()
 const route = useRoute()
 
 const quadrants = ['tl', 'tr', 'bl', 'br']

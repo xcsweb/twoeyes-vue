@@ -42,12 +42,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSettingsStore } from '../../store/settings'
 
 const router = useRouter()
 const settingsStore = useSettingsStore()
+
+onMounted(() => {
+  settingsStore.updateLastTestTime()
+})
 
 const suppressionStatus = computed(() => settingsStore.suppressionStatus)
 const penalizationFactor = computed(() => settingsStore.penalizationFactor)

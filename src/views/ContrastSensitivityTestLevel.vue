@@ -41,13 +41,13 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useSettingsStore } from '../store/settings'
-import { useVisionFlow } from '../composables/useVisionFlow'
 import { useRoute } from 'vue-router'
+import { useSettingsStore } from '../store/settings'
+import { useFlowManager } from '../composables/useFlowManager'
 
-const settingsStore = useSettingsStore()
-const { goNext } = useVisionFlow()
 const route = useRoute()
+const settingsStore = useSettingsStore()
+const { goNext } = useFlowManager()
 
 // Contrasts to test (opacity on a dark gray background to simulate contrast reduction)
 const contrastLevels = [1.0, 0.5, 0.25, 0.1, 0.05, 0.02]

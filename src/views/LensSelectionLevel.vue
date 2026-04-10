@@ -101,12 +101,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useExamFlow } from '../composables/useExamFlow'
+import { useFlowManager } from '../composables/useFlowManager'
 import { useSettingsStore } from '../store/settings'
 
 const route = useRoute()
 const settingsStore = useSettingsStore()
-const { goNext } = useExamFlow()
+const { goNext } = useFlowManager()
 
 const useObjectiveTest = ref(false)
 const lensConfig = computed(() => settingsStore.lensConfig)

@@ -79,11 +79,11 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, onBeforeRouteLeave } from 'vue-router'
 import { useSettingsStore } from '../../store/settings'
-import { useVisionFlow } from '../../composables/useVisionFlow'
+import { useFlowManager } from '../../composables/useFlowManager'
 
 const route = useRoute()
 const settingsStore = useSettingsStore()
-const { goNext } = useVisionFlow()
+const { goNext } = useFlowManager()
 
 const acuityLevels = [0.1, 0.12, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.2]
 const directions = ['up', 'down', 'left', 'right']

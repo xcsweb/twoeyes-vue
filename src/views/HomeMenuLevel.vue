@@ -161,9 +161,11 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProgressStore } from '../store/progress'
+import { useSettingsStore } from '../store/settings'
 
 const router = useRouter()
 const progressStore = useProgressStore()
+const settingsStore = useSettingsStore()
 
 const showDebug = ref(false)
 let clickCount = 0
@@ -211,6 +213,11 @@ const goToAmblyopia = () => {
 }
 
 const goToTraining = () => {
+  const limit = settingsStore.testFrequency * 24 * 3600 * 1000
+  if (Date.now() - settingsStore.lastTestTime > limit) {
+    alert('您的检测数据已过期，请先进行视力或斜弱视检查')
+    return
+  }
   router.push({ name: 'TrainingMenu' })
 }
 

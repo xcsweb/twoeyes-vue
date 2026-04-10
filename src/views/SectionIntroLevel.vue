@@ -63,8 +63,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useProgressStore } from '../store/progress'
 import { useSettingsStore } from '../store/settings'
 import trainingImg from '../assets/images/training.jpg'
-import { useExamFlow } from '../composables/useExamFlow'
-import { useVisionFlow } from '../composables/useVisionFlow'
+import { useFlowManager } from '../composables/useFlowManager'
 
 const props = defineProps<{
   title: string
@@ -86,8 +85,7 @@ const router = useRouter()
 const route = useRoute()
 const progressStore = useProgressStore()
 const settingsStore = useSettingsStore()
-const { goNext: examGoNext } = useExamFlow()
-const { goNext: visionGoNext } = useVisionFlow()
+const { goNext } = useFlowManager()
 
 const startGame = (routeName: string) => {
   if (route.name === 'SectionIntroAmblyopia') {
@@ -101,12 +99,12 @@ const startGame = (routeName: string) => {
     route.name === 'SectionIntroAlignment' ||
     route.name === 'SectionIntroAmblyopia'
   ) {
-    examGoNext(route.name as string)
+    goNext(route.name as string)
     return
   }
 
   if (route.name === 'SectionIntroVision') {
-    visionGoNext(route.name as string)
+    goNext(route.name as string)
     return
   }
 

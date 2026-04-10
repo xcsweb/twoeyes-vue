@@ -101,11 +101,11 @@ const settingsStore = useSettingsStore()
 // Actually, since BottomNav triggers routing, the easiest way is to use a route query param
 // e.g. /exam/suppression?step=test
 import { useRoute, useRouter } from 'vue-router'
-import { useExamFlow } from '../composables/useExamFlow'
+import { useFlowManager } from '../composables/useFlowManager'
 
 const route = useRoute()
 const router = useRouter()
-const { goNext } = useExamFlow()
+const { goNext } = useFlowManager()
 
 const isTesting = computed(() => route.query.step === 'test' || route.query.step === 'result')
 const isFinished = computed(() => route.query.step === 'result')

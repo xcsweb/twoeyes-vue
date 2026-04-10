@@ -49,11 +49,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useExamFlow } from '../composables/useExamFlow'
+import { useFlowManager } from '../composables/useFlowManager'
 import { useRoute } from 'vue-router'
 
 const isMobile = ref(false)
-const { goNext } = useExamFlow()
+const { goNext } = useFlowManager()
 const route = useRoute()
 
 const startTest = () => {

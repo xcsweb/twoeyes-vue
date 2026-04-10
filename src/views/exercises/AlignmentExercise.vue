@@ -67,11 +67,11 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSettingsStore } from '../../store/settings'
-import { useExamFlow } from '../../composables/useExamFlow'
+import { useFlowManager } from '../../composables/useFlowManager'
 
 const route = useRoute()
 const settingsStore = useSettingsStore()
-const { goNext } = useExamFlow()
+const { goNext } = useFlowManager()
 
 const position = ref({ x: 0, y: 0 })
 const isDragging = ref(false)

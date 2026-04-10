@@ -43,14 +43,12 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { routeBottomNavConfig, type BottomNavAction, type NavTarget } from './config/routeBottomNav'
 import { useProgressStore } from './store/progress'
-import { useExamFlow } from './composables/useExamFlow'
-import { useVisionFlow } from './composables/useVisionFlow'
+import { useFlowManager } from './composables/useFlowManager'
 
 const route = useRoute()
 const router = useRouter()
 const progressStore = useProgressStore()
-const { goNext: goExamNext, goBack: goExamBack } = useExamFlow()
-const { goNext: goVisionNext, goBack: goVisionBack } = useVisionFlow()
+const { goNext, goBack } = useFlowManager()
 const navValue = ref<string>('')
 
 const navBgColor = computed(() => '#121212')
@@ -90,9 +88,9 @@ const runTarget = (target: NavTarget, action: BottomNavAction) => {
   if (target.type === 'exam_flow') {
     const currentRouteName = route.name as string
     if (action === 'next') {
-      goExamNext(currentRouteName)
+      goNext(currentRouteName)
     } else if (action === 'back') {
-      goExamBack(currentRouteName)
+      goBack(currentRouteName)
     }
     return
   }
@@ -102,7 +100,7 @@ const runTarget = (target: NavTarget, action: BottomNavAction) => {
       if (route.query.step === 'test') {
         // already testing, shouldn't click next, but just in case
       } else if (route.query.step === 'result') {
-        goExamNext(currentRouteName)
+        goNext(currentRouteName)
       } else {
         // from intro -> start test
         router.replace({ query: { ...route.query, step: 'test' } })
@@ -113,9 +111,9 @@ const runTarget = (target: NavTarget, action: BottomNavAction) => {
   if (target.type === 'vision_flow') {
     const currentRouteName = route.name as string
     if (action === 'next') {
-      goVisionNext(currentRouteName)
+      goNext(currentRouteName)
     } else if (action === 'back') {
-      goVisionBack(currentRouteName)
+      goBack(currentRouteName)
     }
     return
   }

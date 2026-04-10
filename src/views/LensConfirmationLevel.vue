@@ -57,11 +57,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useSettingsStore } from '../store/settings'
-import { useExamFlow } from '../composables/useExamFlow'
+import { useFlowManager } from '../composables/useFlowManager'
 import { useRoute } from 'vue-router'
 
 const settingsStore = useSettingsStore()
-const { goNext } = useExamFlow()
+const { goNext } = useFlowManager()
 const route = useRoute()
 
 const isLeftRed = computed(() => settingsStore.lensConfig === 'red-cyan')

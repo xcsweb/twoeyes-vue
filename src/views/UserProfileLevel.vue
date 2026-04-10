@@ -183,6 +183,32 @@
             </div>
           </div>
 
+          <v-divider class="my-6 border-opacity-25"></v-divider>
+
+          <!-- 康复训练设置 -->
+          <div class="info-section mb-6">
+            <h3 class="section-title mb-4"><v-icon icon="mdi-cog-outline" class="mr-2" color="secondary"></v-icon>训练设置</h3>
+            <v-select
+              :model-value="settingsStore.testFrequency"
+              @update:model-value="settingsStore.setTestFrequency"
+              :items="[
+                { title: '1天', value: 1 },
+                { title: '3天', value: 3 },
+                { title: '7天', value: 7 }
+              ]"
+              item-title="title"
+              item-value="value"
+              label="康复训练前置检测频率"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              class="mt-2"
+            ></v-select>
+            <div class="text-caption text-grey mt-2">
+              (设置检测数据过期时间，过期后需重新进行视力或斜弱视检查方可训练)
+            </div>
+          </div>
+
           <div class="d-flex justify-center mt-8 mb-4">
             <v-btn
               color="primary"
@@ -238,6 +264,11 @@ const goToExam = () => {
 }
 
 const goToTraining = () => {
+  const limit = settingsStore.testFrequency * 24 * 3600 * 1000
+  if (Date.now() - settingsStore.lastTestTime > limit) {
+    alert('您的检测数据已过期，请先进行视力或斜弱视检查')
+    return
+  }
   router.push({ name: 'TrainingMenu' })
 }
 
