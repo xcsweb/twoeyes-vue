@@ -10,8 +10,20 @@
         ⚙️
       </div>
     </div>
-    <div v-else class="hud-expanded" @click.stop="toggleCollapse">
-      {{ settingsStore.personalizedHUDText }}
+    <div 
+      v-else 
+      class="hud-expanded" 
+      @click.stop="toggleCollapse"
+      :style="{ maxWidth: `calc(100vw - ${position.x + 20}px)` }"
+    >
+      <div class="hud-base-info">{{ settingsStore.personalizedHUDText }}</div>
+      
+      <template v-if="gameParams && gameParams.length">
+        <div class="hud-divider"></div>
+        <div v-for="(param, idx) in gameParams" :key="idx" class="hud-param">
+          {{ param }}
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -19,6 +31,10 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
 import { useSettingsStore } from '../store/settings'
+
+const props = defineProps<{
+  gameParams?: string[]
+}>()
 
 const settingsStore = useSettingsStore()
 
@@ -165,16 +181,30 @@ onUnmounted(() => {
 }
 
 .hud-expanded {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 8px 12px;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.95);
   white-space: normal;
   word-wrap: break-word;
-  max-width: calc(100vw - 40px);
+  word-break: break-all;
   border-radius: 12px;
   backdrop-filter: blur(8px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  line-height: 1.4;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hud-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 4px 0;
+}
+
+.hud-param {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
 }
 </style>

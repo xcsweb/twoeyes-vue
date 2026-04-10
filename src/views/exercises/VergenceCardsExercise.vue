@@ -6,7 +6,7 @@
         <span v-if="isTargetReached" class="ml-2">✓ 今日训练已达标</span>
       </span>
     </div>
-    <PersonalizedHud />
+    <PersonalizedHud :gameParams="[`当前难度等级: ${currentLevel}`, `当前水平分离度: ${separation}px`]" />
 
     
         <div class="instruction-overlay">

@@ -11,7 +11,7 @@
         <span v-if="isTargetReached" class="ml-2">✓ 今日训练已达标</span>
       </span>
     </div>
-    <PersonalizedHud />
+    <PersonalizedHud :gameParams="[`当前得分: ${score}`, `方块下落速度: ${dropTime}ms`]" />
 
 
         <h2 class="score">得分: {{ score }}</h2>
