@@ -35,6 +35,18 @@
           <div class="text-body-2 text-warning mt-6">
             免责声明：本系统的测试结果仅供康复训练参考，不作为临床医疗诊断依据。如有不适请及时就医。
           </div>
+
+          <div class="mt-8 text-center">
+            <v-btn
+              color="primary"
+              size="x-large"
+              class="px-12"
+              height="56"
+              @click="router.push({ name: 'Home' })"
+            >
+              完成并回到主页
+            </v-btn>
+          </div>
         </v-card-text>
       </v-card>
     </div>
@@ -43,8 +55,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 
+const router = useRouter()
 const settingsStore = useSettingsStore()
 
 const offset = computed(() => settingsStore.alignmentOffset)

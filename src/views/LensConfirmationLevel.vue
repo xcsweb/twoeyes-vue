@@ -37,6 +37,17 @@
           <div class="text-caption text-grey mt-6">
             * 该配置已保存。在接下来的训练中，系统将根据此配置为您精准推送防抑制视觉图像。
           </div>
+          <div class="btn-wrapper mt-8 text-center">
+            <v-btn
+              color="primary"
+              size="x-large"
+              class="confirm-btn px-12"
+              height="56"
+              @click="startTest"
+            >
+              确认配置并继续
+            </v-btn>
+          </div>
         </v-card-text>
       </v-card>
     </div>
@@ -46,10 +57,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useSettingsStore } from '../store/settings'
+import { useExamFlow } from '../composables/useExamFlow'
+import { useRoute } from 'vue-router'
 
 const settingsStore = useSettingsStore()
+const { goNext } = useExamFlow()
+const route = useRoute()
 
 const isLeftRed = computed(() => settingsStore.lensConfig === 'red-cyan')
+
+const startTest = () => {
+  goNext(route.name as string)
+}
 </script>
 
 <style scoped>

@@ -29,6 +29,18 @@
             <strong>为什么需要固定距离？</strong><br/>
             接下来的双眼抑制测试和隐斜视测量，需要您在屏幕上识别不同视标并移动准星。固定且符合临床标准的参考距离，是保证结果客观准确、换算真实眼球偏斜角度（棱镜度 Prism Diopters）的前提。
           </div>
+          
+          <div class="btn-wrapper mt-8 text-center">
+            <v-btn
+              color="primary"
+              size="x-large"
+              class="confirm-btn px-12"
+              height="56"
+              @click="startTest"
+            >
+              我已了解，开始测试
+            </v-btn>
+          </div>
         </v-card-text>
       </v-card>
     </div>
@@ -37,8 +49,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useExamFlow } from '../composables/useExamFlow'
+import { useRoute } from 'vue-router'
 
 const isMobile = ref(false)
+const { goNext } = useExamFlow()
+const route = useRoute()
+
+const startTest = () => {
+  goNext(route.name as string)
+}
 
 const checkDeviceType = () => {
   // Simple heuristic: width < 768px is considered mobile/small screen

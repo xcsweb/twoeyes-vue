@@ -13,6 +13,17 @@
           屏幕会出现一个视力表上的 <strong>'E'</strong> 字，它会被另一只眼睛看到的干扰图案遮挡。<br/>
           请在下方按钮（或键盘方向键）中选择 'E' 字的开口方向。如果您看不清，请尽量猜测。
         </v-alert>
+        <div class="mt-8">
+          <v-btn
+            color="primary"
+            size="x-large"
+            class="px-12"
+            height="56"
+            @click="router.replace({ query: { ...route.query, step: 'test' } })"
+          >
+            开始测试
+          </v-btn>
+        </div>
       </div>
 
       <div v-else-if="!isFinished" class="test-section">
@@ -61,6 +72,18 @@
             左眼准确率: {{ Math.round(leftAccuracy * 100) }}% | 右眼准确率: {{ Math.round(rightAccuracy * 100) }}%
           </div>
         </v-alert>
+        
+        <div class="mt-8">
+          <v-btn
+            color="primary"
+            size="x-large"
+            class="px-12"
+            height="56"
+            @click="goNext(route.name as string)"
+          >
+            继续下一步
+          </v-btn>
+        </div>
       </div>
 
     </div>
@@ -78,8 +101,11 @@ const settingsStore = useSettingsStore()
 // Actually, since BottomNav triggers routing, the easiest way is to use a route query param
 // e.g. /exam/suppression?step=test
 import { useRoute, useRouter } from 'vue-router'
+import { useExamFlow } from '../composables/useExamFlow'
+
 const route = useRoute()
 const router = useRouter()
+const { goNext } = useExamFlow()
 
 const isTesting = computed(() => route.query.step === 'test' || route.query.step === 'result')
 const isFinished = computed(() => route.query.step === 'result')

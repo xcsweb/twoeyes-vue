@@ -65,6 +65,18 @@
             <v-icon icon="mdi-alert-circle" size="small" class="mr-1"></v-icon>
             注意：近视度数估算仅供参考，不代表实际的医学屈光度数。精确度数请前往专业眼科或视光机构进行散瞳验光获取。
           </div>
+
+          <div class="mt-8 text-center">
+            <v-btn
+              color="primary"
+              size="x-large"
+              class="px-12"
+              height="56"
+              @click="router.push({ name: 'Home' })"
+            >
+              完成并回到主页
+            </v-btn>
+          </div>
         </v-card-text>
       </v-card>
     </div>
@@ -73,8 +85,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useSettingsStore } from '../../store/settings'
 
+const router = useRouter()
 const settingsStore = useSettingsStore()
 
 const visionAcuity = computed(() => settingsStore.visionAcuity)

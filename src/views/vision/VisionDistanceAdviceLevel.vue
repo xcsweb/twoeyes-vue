@@ -29,6 +29,18 @@
             <strong>为什么需要固定 40cm 距离？</strong><br/>
             接下来的视力检查基于标准的“E”字视力表原理，通过视标在视网膜上成像的视角（5分视角）来计算您的视力水平（如 1.0, 4.8 等）。只有在固定的 40cm 距离下，软件渲染的像素才能精确转换为对应的视角大小，保证测试结果的医学准确性。
           </div>
+          
+          <div class="btn-wrapper mt-8 text-center">
+            <v-btn
+              color="primary"
+              size="x-large"
+              class="confirm-btn px-12"
+              height="56"
+              @click="startTest"
+            >
+              我已了解，开始测试
+            </v-btn>
+          </div>
         </v-card-text>
       </v-card>
     </div>
@@ -37,8 +49,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useVisionFlow } from '../../composables/useVisionFlow'
+import { useRoute } from 'vue-router'
 
 const isMobile = ref(false)
+const { goNext } = useVisionFlow()
+const route = useRoute()
+
+const startTest = () => {
+  goNext(route.name as string)
+}
 
 const checkDeviceType = () => {
   // Simple heuristic: width < 768px is considered mobile/small screen

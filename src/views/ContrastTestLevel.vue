@@ -6,11 +6,24 @@
       </h1>
       
       <div v-if="!isFinished">
-        <p v-if="route.query.step !== 'test'" class="text-grey mb-8 text-body-1">
-          系统检测到您的 <strong class="text-warning">{{ weakEyeName }}</strong> 存在视觉抑制。<br/>
-          接下来，系统将通过<strong>自适应噪声掩蔽阶梯算法</strong>，为您测算打破双眼抑制的最佳惩罚参数。<br/>
-          请<strong>双眼同时睁开</strong>，在干扰块的掩蔽下，尽力找出屏幕中 E 字的开口方向。
-        </p>
+        <div v-if="route.query.step !== 'test'" class="intro-section">
+          <p class="text-grey mb-8 text-body-1">
+            系统检测到您的 <strong class="text-warning">{{ weakEyeName }}</strong> 存在视觉抑制。<br/>
+            接下来，系统将通过<strong>自适应噪声掩蔽阶梯算法</strong>，为您测算打破双眼抑制的最佳惩罚参数。<br/>
+            请<strong>双眼同时睁开</strong>，在干扰块的掩蔽下，尽力找出屏幕中 E 字的开口方向。
+          </p>
+          <div class="mt-8">
+            <v-btn
+              color="primary"
+              size="x-large"
+              class="px-12"
+              height="56"
+              @click="router.replace({ query: { ...route.query, step: 'test' } })"
+            >
+              开始测试
+            </v-btn>
+          </div>
+        </div>
 
         <template v-else>
           <div class="text-h6 text-grey mb-4">测试进度: {{ trialCount + 1 }} / {{ maxTrials }} (难度自动调节中...)</div>
@@ -60,6 +73,17 @@
           </div>
         </v-alert>
         
+        <div class="mt-8">
+          <v-btn
+            color="primary"
+            size="x-large"
+            class="px-12"
+            height="56"
+            @click="goNext(route.name as string)"
+          >
+            继续下一步
+          </v-btn>
+        </div>
       </div>
 
     </div>
@@ -70,10 +94,12 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
+import { useExamFlow } from '../composables/useExamFlow'
 
 const router = useRouter()
 const route = useRoute()
 const settingsStore = useSettingsStore()
+const { goNext } = useExamFlow()
 
 const isFinished = computed(() => route.query.step === 'result')
 

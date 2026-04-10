@@ -41,8 +41,8 @@
         </div>
       </div>
 
-      <!-- 针对没有子游戏列表且不是检查流程首页的普通介绍页，显示开始大按钮 -->
-      <div v-else-if="route.name !== 'SectionIntroExam' && route.name !== 'SectionIntroAlignment' && route.name !== 'SectionIntroVision'" class="start-btn-wrapper mt-10 delayed-2">
+      <!-- 针对没有子游戏列表的普通介绍页，显示开始大按钮 -->
+      <div v-else class="start-btn-wrapper mt-10 delayed-2">
         <v-btn
           color="white"
           size="x-large"
