@@ -122,5 +122,17 @@ export const papers: Paper[] = [
     abstractZh: `成人弱视通常被认为是无法治疗的。我们的研究表明，通过游玩动作类电子游戏所实现的知觉学习，能够显著改善成人弱视患者的视敏度、空间注意力和立体视觉。这证明了成人弱视视觉皮层依然保留着高度的神经可塑性，而这种可塑性可以通过参与复杂且需要高度注意力的视觉任务（如电子游戏）来被重新激活。`,
     systemRelevance: '本系统依据：为系统使用“游戏化”机制（如洗牌、星空粒子、俄罗斯方块）提供了坚实的科学基础。游戏中的动态追踪和空间频率变化能够高度集中用户的视觉注意力，从而激活大脑的神经可塑性，加速双眼视觉的康复进程。',
     externalLink: 'https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001135'
+  },
+  {
+    id: 'li2013stereopsis',
+    authors: 'Li, J., Thompson, B., Deng, D., Chan, L. Y., Yu, M., & Hess, R. F.',
+    year: '2013',
+    titleEn: 'Dichoptic training improves amblyopic stereopsis.',
+    titleZh: '双眼分视训练改善弱视立体视',
+    journal: 'Investigative Ophthalmology & Visual Science',
+    abstractEn: `We assessed the effect of a novel dichoptic training approach on stereopsis in adults with amblyopia. Patients trained with a dichoptic video game that required binocular combination. The training resulted in significant improvements in both visual acuity and stereoacuity.`,
+    abstractZh: `我们评估了一种新颖的双眼分视训练方法对成人弱视立体视的改善效果。患者使用需要双眼融合的电子游戏进行训练。结果显示视敏度和立体视敏度都得到了显著提升。`,
+    systemRelevance: '本系统依据：提供了立体视敏度重建与视差训练的直接理论来源。本系统据此原理开发了基于水平视差的双眼融合和立体视测试功能。',
+    externalLink: 'https://pubmed.ncbi.nlm.nih.gov/23623554/'
   }
 ]

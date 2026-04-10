@@ -67,7 +67,7 @@ let ballGroup: THREE.Group
 
 const STAGE_NUMBER = 3 // Brock String Exercise belongs to Stage 3
 const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = useStageTimer(STAGE_NUMBER)
-const stageTime = computed(() => progressStore.stages[STAGE_NUMBER]?.totalTime || 0)
+
 
 const instructionText = computed(() => {
   const offset = settingsStore.alignmentOffset.x
@@ -230,9 +230,25 @@ onBeforeUnmount(() => {
   background-color: #000;
   overflow: hidden;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 1;
+}
+
+.instruction-overlay {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  text-align: center;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 16px 24px;
+  border-radius: 12px;
+  pointer-events: none;
 }
 
 .progress-hud {

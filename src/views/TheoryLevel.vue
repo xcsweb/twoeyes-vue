@@ -70,11 +70,19 @@
               </ul>
             </div>
 
-            <div class="mb-2">
+            <div class="mb-6">
               <strong class="text-white text-h6">5. 对比敏感度 (Contrast Sensitivity)：Pelli-Robson 原理</strong><br />
               <ul class="mt-2 ml-4">
                 <li class="mb-1"><span class="text-info">👁️ 原理：</span>视力表只测试了高对比度下的空间分辨率。对比敏感度则衡量人眼在不同对比度下分辨目标的能力。系统参考 Pelli-Robson 图表原理，在固定空间频率（字母大小不变）下，采用阶梯法逐渐降低字母的对比度，直到用户无法辨识。该指标对早期白内障、青光眼及视神经病变比普通视力更为敏感。</li>
                 <li><span class="text-info">📚 依据：</span><span class="text-grey-lighten-2 text-body-2">Pelli et al. (1988), The design of a new letter chart for measuring contrast sensitivity.</span></li>
+              </ul>
+            </div>
+
+            <div class="mb-2">
+              <strong class="text-white text-h6">6. 立体视敏度重建与视差训练</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-info">👁️ 原理：</span>立体视敏度是衡量双眼深度知觉能力的重要指标。本系统通过提供具有微小水平视差（Disparity）的立体图，促使大脑视觉中枢进行双眼融合，从而恢复和提升立体视觉功能。</li>
+                <li><span class="text-info">📚 依据：</span><span class="text-grey-lighten-2 text-body-2">Li et al. (2013), Dichoptic training improves amblyopic stereopsis.</span></li>
               </ul>
             </div>
           </div>

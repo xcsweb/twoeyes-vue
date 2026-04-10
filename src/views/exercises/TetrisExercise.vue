@@ -82,7 +82,7 @@ const progressStore = useProgressStore()
 
 const STAGE_NUMBER = 4 // Tetris Exercise belongs to Stage 4
 const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = useStageTimer(STAGE_NUMBER)
-const stageTime = computed(() => progressStore.stages[STAGE_NUMBER]?.totalTime || 0)
+
 
 const ROWS = 30
 const COLS = 15

@@ -164,6 +164,13 @@
                 </div>
                 <div class="data-value text-success" v-else>正位 (无偏移)</div>
               </div>
+
+              <div class="data-item">
+                <div class="data-label">立体视觉状态</div>
+                <div class="data-value">
+                  <v-chip :color="stereopsisColor" size="small" label>{{ stereopsisText }}</v-chip>
+                </div>
+              </div>
             </div>
 
             <div v-else class="empty-state mt-4">
@@ -434,6 +441,26 @@ const suppressionColor = computed(() => {
     case 'right': return 'error'
     case 'diplopia': return 'warning'
     case 'none': return 'success'
+    default: return 'grey'
+  }
+})
+
+const stereopsisText = computed(() => {
+  switch (settingsStore.stereopsisResult) {
+    case 'normal': return '正常'
+    case 'mild': return '轻度受损'
+    case 'moderate': return '中度受损'
+    case 'severe': return '重度受损'
+    default: return '未测试'
+  }
+})
+
+const stereopsisColor = computed(() => {
+  switch (settingsStore.stereopsisResult) {
+    case 'normal': return 'success'
+    case 'mild': 
+    case 'moderate': return 'warning'
+    case 'severe': return 'error'
     default: return 'grey'
   }
 })

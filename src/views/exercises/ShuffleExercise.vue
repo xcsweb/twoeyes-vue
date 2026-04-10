@@ -60,7 +60,7 @@ let timerId: number
 
 const STAGE_NUMBER = 1 // Shuffle Exercise belongs to Stage 1
 const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = useStageTimer(STAGE_NUMBER)
-const stageTime = computed(() => progressStore.stages[STAGE_NUMBER]?.totalTime || 0)
+
 
 const numBoxes = 10
 const boxes: { mesh: THREE.Mesh, material: THREE.MeshStandardMaterial }[] = []

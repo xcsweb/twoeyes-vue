@@ -119,6 +119,11 @@ const routes = [
     component: () => import('../views/AlignmentAdviceLevel.vue')
   },
   {
+    path: '/exam/stereopsis-test',
+    name: 'StereopsisTest',
+    component: () => import('../views/exam/StereopsisTestLevel.vue')
+  },
+  {
     path: '/exam/suppression-test',
     name: 'SuppressionTest',
     component: ObjectiveTestLevel
@@ -322,6 +327,12 @@ const routes = [
       ],
       games: [
         {
+          title: '进阶立体视 (Stereopsis)',
+          description: '持续动态寻找浮起的图形，强化立体视深度感知。',
+          routeName: 'StereopsisExercise',
+          hueRotate: '240deg'
+        },
+        {
           title: '俄罗斯方块 (Tetris)',
           description: '经典分视手眼协同训练，必须双眼配合才能拼合方块。',
           routeName: 'TetrisExercise',
@@ -335,6 +346,11 @@ const routes = [
     path: '/training/tetris',
     name: 'TetrisExercise',
     component: () => import('../views/exercises/TetrisExercise.vue')
+  },
+  {
+    path: '/exercises/stereopsis',
+    name: 'StereopsisExercise',
+    component: () => import('../views/exercises/StereopsisExercise.vue')
   }
 ]
 

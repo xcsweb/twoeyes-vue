@@ -43,8 +43,9 @@ export const examFlow: FlowNode[] = [
     prev: 'DistanceAdvice' 
   },
   { name: 'ContrastTest', next: 'SectionIntroAlignment', prev: 'SuppressionTest' },
-  { name: 'AlignmentExercise', next: 'AlignmentAdvice', prev: 'SectionIntroAlignment' },
-  { name: 'AlignmentAdvice', next: 'Home', prev: 'AlignmentExercise' }
+  { name: 'AlignmentExercise', next: 'StereopsisTest', prev: 'SectionIntroAlignment' },
+  { name: 'StereopsisTest', next: 'AlignmentAdvice', prev: 'AlignmentExercise' },
+  { name: 'AlignmentAdvice', next: 'Home', prev: 'StereopsisTest' }
 ];
 
 export const amblyopiaFlow: FlowNode[] = [

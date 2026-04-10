@@ -59,7 +59,7 @@ let instancedMesh: THREE.InstancedMesh
 
 const STAGE_NUMBER = 2 // Spiral Exercise belongs to Stage 2
 const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = useStageTimer(STAGE_NUMBER)
-const stageTime = computed(() => progressStore.stages[STAGE_NUMBER]?.totalTime || 0)
+
 const numItems = 600
 const tempObject = new THREE.Object3D()
 const tempColor = new THREE.Color()

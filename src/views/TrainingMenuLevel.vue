@@ -159,7 +159,7 @@
             <p class="card-text">
               在复杂背景下进行高级双眼协同，通过认知和空间判断重建高级手眼协调。
             </p>
-            <div class="text-caption mt-auto pt-4 text-grey">包含：双眼俄罗斯方块</div>
+            <div class="text-caption mt-auto pt-4 text-grey">包含：进阶立体视、双眼俄罗斯方块</div>
             <div v-if="unlockedStage < 4" class="text-caption mt-2 text-error">需在阶段 3 训练满 60 秒</div>
           </div>
         </div>

@@ -145,6 +145,7 @@ const STAGE_NUMBER = 3
 const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = useStageTimer(STAGE_NUMBER)
 const stageTime = computed(() => progressStore.stages[STAGE_NUMBER]?.totalTime || 0)
 
+
 const leftColorStr = computed(() => settingsStore.leftEyeColorStr)
 const rightColorStr = computed(() => settingsStore.rightEyeColorStr)
 

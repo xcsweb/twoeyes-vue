@@ -36,7 +36,8 @@ export const useSettingsStore = defineStore('settings', {
     contrastSensitivityResult: null as 'normal' | 'low' | null,
     currentExamMode: null as 'exam' | 'amblyopia' | null,
     testFrequency: 1,
-    lastTestTime: 0
+    lastTestTime: 0,
+    stereopsisResult: null as 'normal' | 'mild' | 'moderate' | 'severe' | null
   }),
   getters: {
     leftEyeColorStr(state) {
@@ -63,6 +64,15 @@ export const useSettingsStore = defineStore('settings', {
 
       if (state.visionAcuity && (state.visionAcuity.left !== 1.0 || state.visionAcuity.right !== 1.0)) {
         parts.push(`视力: L${state.visionAcuity.left}/R${state.visionAcuity.right}`)
+      }
+
+      if (state.stereopsisResult && state.stereopsisResult !== 'normal') {
+        const stereopsisMap: Record<string, string> = {
+          mild: '轻度',
+          moderate: '中度',
+          severe: '重度'
+        }
+        parts.push(`立体视: ${stereopsisMap[state.stereopsisResult]}`)
       }
 
       if (parts.length === 0) {
@@ -158,6 +168,9 @@ export const useSettingsStore = defineStore('settings', {
     },
     updateLastTestTime() {
       this.lastTestTime = Date.now()
+    },
+    setStereopsisResult(result: 'normal' | 'mild' | 'moderate' | 'severe' | null) {
+      this.stereopsisResult = result
     }
   },
   persist: true
