@@ -55,14 +55,34 @@
       </div>
 
     </div>
+
+    <!-- Snackbar for unauthorized stage access -->
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="3000"
+      color="error"
+      location="top"
+    >
+      {{ snackbarText }}
+      <template v-slot:actions>
+        <v-btn
+          color="white"
+          variant="text"
+          @click="snackbar = false"
+        >
+          关闭
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useProgressStore } from '../store/progress'
 import { useSettingsStore } from '../store/settings'
-import trainingImg from '../assets/images/training.jpg'
+import trainingImg from '../assets/images/cards/training.jpg'
 import { useFlowManager } from '../composables/useFlowManager'
 
 const props = defineProps<{
@@ -87,6 +107,9 @@ const progressStore = useProgressStore()
 const settingsStore = useSettingsStore()
 const { goNext } = useFlowManager()
 
+const snackbar = ref(false)
+const snackbarText = ref('')
+
 const startGame = (routeName: string) => {
   if (route.name === 'SectionIntroAmblyopia') {
     settingsStore.setExamMode('amblyopia')
@@ -110,7 +133,8 @@ const startGame = (routeName: string) => {
 
   // 如果有前置阶段限制，做个保护（尽管路由进入时应该已经拦截）
   if (props.requiredStageToEnter && progressStore.unlockedStage < props.requiredStageToEnter) {
-    alert(`此阶段尚未解锁！(需要完成阶段 ${props.requiredStageToEnter - 1} 并在其游戏内累计满60秒)`)
+    snackbarText.value = `此阶段尚未解锁！(需要完成阶段 ${props.requiredStageToEnter - 1} 并在其游戏内累计满60秒)`
+    snackbar.value = true
     return
   }
   router.push({ name: routeName })

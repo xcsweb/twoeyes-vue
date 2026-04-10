@@ -154,6 +154,24 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="3000"
+      :color="snackbarColor"
+      location="top"
+    >
+      {{ snackbarText }}
+      <template v-slot:actions>
+        <v-btn
+          color="white"
+          variant="text"
+          @click="snackbar = false"
+        >
+          关闭
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -168,6 +186,10 @@ const progressStore = useProgressStore()
 const settingsStore = useSettingsStore()
 
 const showDebug = ref(false)
+const snackbar = ref(false)
+const snackbarText = ref('')
+const snackbarColor = ref('error')
+
 let clickCount = 0
 let clickTimeout: ReturnType<typeof setTimeout>
 
@@ -186,7 +208,9 @@ const handleSecretClick = () => {
 const unlockAllStages = () => {
   progressStore.unlockStage(4)
   showDebug.value = false
-  alert('已成功解锁全部 4 个训练阶段！')
+  snackbarText.value = '已成功解锁全部 4 个训练阶段！'
+  snackbarColor.value = 'success'
+  snackbar.value = true
 }
 
 const resetSystem = () => {
@@ -213,9 +237,20 @@ const goToAmblyopia = () => {
 }
 
 const goToTraining = () => {
+  const lastTest = settingsStore.lastTestTime
   const limit = settingsStore.testFrequency * 24 * 3600 * 1000
-  if (Date.now() - settingsStore.lastTestTime > limit) {
-    alert('您的检测数据已过期，请先进行视力或斜弱视检查')
+  
+  if (lastTest === 0) {
+    snackbarText.value = '您尚未进行视功能检查，请先完成测试以便生成专属康复方案'
+    snackbarColor.value = 'error'
+    snackbar.value = true
+    return
+  }
+  
+  if (Date.now() - lastTest > limit) {
+    snackbarText.value = '您的检测数据已过期，请先进行视力或斜弱视检查'
+    snackbarColor.value = 'error'
+    snackbar.value = true
     return
   }
   router.push({ name: 'TrainingMenu' })
