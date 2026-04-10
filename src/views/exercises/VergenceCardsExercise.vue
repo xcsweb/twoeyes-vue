@@ -132,9 +132,11 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .exercise-container {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #000;
   overflow: hidden;
   display: flex;
@@ -142,6 +144,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   align-items: center;
   color: white;
+  z-index: 1;
 }
 
 .progress-hud {

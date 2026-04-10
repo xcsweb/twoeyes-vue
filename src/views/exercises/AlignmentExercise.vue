@@ -144,15 +144,18 @@ const handleConfirm = () => {
 
 <style scoped>
 .alignment-exercise-container {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: auto; /* changed from hidden to auto */
-  padding-bottom: 100px; /* add padding to prevent bottom nav overlap */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #000;
-  touch-action: none; /* Prevent browser scrolling while dragging */
+  overflow: auto;
+  padding-bottom: 100px; /* prevent bottom nav overlap */
   display: flex;
   flex-direction: column;
+  touch-action: none; /* Prevent browser scrolling while dragging */
+  z-index: 1;
 }
 
 .bg-black-overlay {
