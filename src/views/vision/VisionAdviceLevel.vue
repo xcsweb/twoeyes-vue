@@ -28,6 +28,39 @@
             右眼预估: <span class="text-warning font-weight-bold ml-2">{{ estimateDegrees(visionAcuity.right) }}</span>
           </div>
 
+          <template v-if="astigmatismResult || colorVisionResult || macularResult || contrastSensitivityResult">
+            <v-divider class="my-4" color="rgba(255,255,255,0.2)"></v-divider>
+            <div class="text-h6 text-white mb-2">其他视功能筛查结果</div>
+            
+            <div v-if="astigmatismResult" class="advice-text text-grey mb-2">
+              散光筛查: 
+              <span :class="astigmatismResult === 'normal' ? 'text-success' : 'text-warning'" class="font-weight-bold ml-2">
+                {{ astigmatismResult === 'normal' ? '未见明显异常' : '可能存在散光' }}
+              </span>
+            </div>
+            
+            <div v-if="colorVisionResult" class="advice-text text-grey mb-2">
+              色觉筛查: 
+              <span :class="colorVisionResult === 'normal' ? 'text-success' : 'text-warning'" class="font-weight-bold ml-2">
+                {{ colorVisionResult === 'normal' ? '色觉正常' : '可能存在色觉异常' }}
+              </span>
+            </div>
+
+            <div v-if="macularResult" class="advice-text text-grey mb-2">
+              黄斑功能筛查: 
+              <span :class="macularResult === 'normal' ? 'text-success' : 'text-error'" class="font-weight-bold ml-2">
+                {{ macularResult === 'normal' ? '未见明显异常' : '可能存在黄斑异常（扭曲/缺失/暗点）' }}
+              </span>
+            </div>
+
+            <div v-if="contrastSensitivityResult" class="advice-text text-grey mb-4">
+              对比敏感度筛查: 
+              <span :class="contrastSensitivityResult === 'normal' ? 'text-success' : 'text-warning'" class="font-weight-bold ml-2">
+                {{ contrastSensitivityResult === 'normal' ? '对比敏感度正常' : '对比敏感度偏低' }}
+              </span>
+            </div>
+          </template>
+
           <div class="text-body-2 text-warning mt-6 bg-grey-darken-4 pa-3 rounded">
             <v-icon icon="mdi-alert-circle" size="small" class="mr-1"></v-icon>
             注意：近视度数估算仅供参考，不代表实际的医学屈光度数。精确度数请前往专业眼科或视光机构进行散瞳验光获取。
@@ -45,6 +78,10 @@ import { useSettingsStore } from '../../store/settings'
 const settingsStore = useSettingsStore()
 
 const visionAcuity = computed(() => settingsStore.visionAcuity)
+const astigmatismResult = computed(() => settingsStore.astigmatismResult)
+const colorVisionResult = computed(() => settingsStore.colorVisionResult)
+const macularResult = computed(() => settingsStore.macularResult)
+const contrastSensitivityResult = computed(() => settingsStore.contrastSensitivityResult)
 
 const estimateDegrees = (acuity: number) => {
   if (acuity >= 1.0) return '0 度 (正常)'

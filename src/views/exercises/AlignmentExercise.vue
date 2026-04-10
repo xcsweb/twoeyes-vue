@@ -176,6 +176,8 @@ const handleConfirm = () => {
   position: relative;
   flex: 1 1 auto;
   width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
   min-height: 250px;
   z-index: 1;
 }
@@ -231,6 +233,9 @@ const handleConfirm = () => {
 .controls-overlay {
   position: relative;
   flex: 0 0 auto;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
   padding-bottom: 40px;
   z-index: 10;
   display: flex;

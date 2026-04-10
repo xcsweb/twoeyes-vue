@@ -19,9 +19,9 @@ const routes = [
     path: '/intro',
     name: 'Intro',
     component: () => import('../views/IntroLevel.vue'),
-    beforeEnter: (_to: any, _from: any, next: any) => {
+    beforeEnter: (to: any, _from: any, next: any) => {
       const settingsStore = useSettingsStore()
-      if (settingsStore.hasSeenIntro) {
+      if (settingsStore.hasSeenIntro && to.query?.force !== '1') {
         next({ name: 'Home' })
       } else {
         next()
@@ -142,6 +142,26 @@ const routes = [
     path: '/vision/test',
     name: 'VisionTest',
     component: () => import('../views/vision/VisionTestLevel.vue')
+  },
+  {
+    path: '/vision/astigmatism-test',
+    name: 'AstigmatismTest',
+    component: () => import('../views/AstigmatismTestLevel.vue')
+  },
+  {
+    path: '/vision/color-vision-test',
+    name: 'ColorVisionTest',
+    component: () => import('../views/ColorVisionTestLevel.vue')
+  },
+  {
+    path: '/vision/amsler-grid-test',
+    name: 'AmslerGridTest',
+    component: () => import('../views/AmslerGridTestLevel.vue')
+  },
+  {
+    path: '/vision/contrast-sensitivity-test',
+    name: 'ContrastSensitivityTest',
+    component: () => import('../views/ContrastSensitivityTestLevel.vue')
   },
   {
     path: '/vision/advice',

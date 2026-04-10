@@ -29,7 +29,11 @@ export const useSettingsStore = defineStore('settings', {
     visionHistory: [] as VisionRecord[],
     suppressionStatus: 'none' as 'none' | 'left' | 'right' | 'diplopia',
     penalizationFactor: 0.3, // default to 30%
-    hasSeenIntro: false
+    hasSeenIntro: false,
+    astigmatismResult: null as 'normal' | 'astigmatism' | null,
+    colorVisionResult: null as 'normal' | 'deficient' | null,
+    macularResult: null as 'normal' | 'abnormal' | null,
+    contrastSensitivityResult: null as 'normal' | 'low' | null
   }),
   getters: {
     leftEyeColorStr(state) {
@@ -108,6 +112,18 @@ export const useSettingsStore = defineStore('settings', {
     },
     setHasSeenIntro(value: boolean) {
       this.hasSeenIntro = value
+    },
+    setAstigmatismResult(result: 'normal' | 'astigmatism' | null) {
+      this.astigmatismResult = result
+    },
+    setColorVisionResult(result: 'normal' | 'deficient' | null) {
+      this.colorVisionResult = result
+    },
+    setMacularResult(result: 'normal' | 'abnormal' | null) {
+      this.macularResult = result
+    },
+    setContrastSensitivityResult(result: 'normal' | 'low' | null) {
+      this.contrastSensitivityResult = result
     }
   },
   persist: true

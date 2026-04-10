@@ -154,6 +154,34 @@ export const routeBottomNavConfig: Record<string, RouteBottomNavSpec> = {
       home: { target: { type: 'route', to: { name: 'Home' } } },
     },
   },
+  AstigmatismTest: {
+    showNav: true,
+    buttons: {
+      back: { target: { type: 'vision_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
+  ColorVisionTest: {
+    showNav: true,
+    buttons: {
+      back: { target: { type: 'vision_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
+  AmslerGridTest: {
+    showNav: true,
+    buttons: {
+      back: { target: { type: 'vision_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
+  ContrastSensitivityTest: {
+    showNav: true,
+    buttons: {
+      back: { target: { type: 'vision_flow' } },
+      home: { target: { type: 'route', to: { name: 'Home' } } },
+    },
+  },
   VisionAdvice: {
     showNav: true,
     buttons: {

@@ -167,7 +167,7 @@ const resetSystem = () => {
 }
 
 const goToIntro = () => {
-  router.push({ name: 'Intro' })
+  router.push({ name: 'Intro', query: { force: '1' } })
 }
 
 const goToVision = () => {

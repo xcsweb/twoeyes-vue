@@ -34,6 +34,56 @@
       <v-card class="theory-card mb-6" variant="outlined">
         <v-card-text>
           <h2 class="text-h5 text-white mb-4 d-flex align-center">
+            <v-icon color="info" class="mr-2">mdi-eye-check-outline</v-icon>
+            基础视功能筛查原理
+          </h2>
+          <div class="text-body-1 text-grey-lighten-1">
+            <div class="mb-6">
+              <strong class="text-white text-h6">1. 普通视力 (Visual Acuity) 与 MAR 视角</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-info">👁️ 原理：</span>视力是衡量人眼分辨二维物体形状和位置能力的指标。临床上通常使用最小分辨角 (Minimum Angle of Resolution, MAR) 来定义。视标（如 E 字）的每一笔画和间隙在视网膜上所张的角度即为视角。正常视力 (1.0 或 20/20) 对应于 1 分角 (1 MAR) 的分辨能力。</li>
+                <li><span class="text-info">📚 依据：</span><span class="text-grey-lighten-2 text-body-2">Bailey & Lovie (1976), New design principles for visual acuity letter charts.</span></li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <strong class="text-white text-h6">2. 客观散光 (Astigmatism)：子午线各向异性与光栅辨识</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-info">👁️ 原理：</span>散光是由于角膜或晶状体在不同子午线上的屈光力不同所致。本系统利用光栅（正弦波条纹）在不同方向（如水平、垂直、斜向）的对比度敏感度差异，客观评估散光轴位和程度。这种方法利用了视觉系统的子午线各向异性 (Meridional Anisotropy)。</li>
+                <li><span class="text-info">📚 依据：</span><span class="text-grey-lighten-2 text-body-2">Mitchell et al. (1973), Meridional amblyopia: evidence for modification of the human visual system by early visual experience.</span></li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <strong class="text-white text-h6">3. 客观色觉 (Color Vision)：CCT 亮度噪声与伪等色图</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-info">👁️ 原理：</span>传统的伪等色图（如石原氏表）容易受屏幕亮度和色差影响。本系统引入类似剑桥色觉测试 (Cambridge Colour Test, CCT) 的动态亮度噪声 (Luminance Noise) 掩蔽技术，随机改变背景和目标的亮度，迫使视觉系统仅依赖色度信息进行辨识，从而在普通显示器上实现更精准、客观的色觉缺陷（如红绿色盲）筛查。</li>
+                <li><span class="text-info">📚 依据：</span><span class="text-grey-lighten-2 text-body-2">Regan et al. (1994), A color television based computer vision test.</span></li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <strong class="text-white text-h6">4. 黄斑功能筛查：阿姆斯勒方格表 (Amsler Grid)</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-info">👁️ 原理：</span>阿姆斯勒方格表主要用于检测黄斑区（视网膜中心）的病变。在标准距离下，10x10cm 的高对比度网格覆盖了中心视野的 10° 到 20° 范围。如果黄斑区存在水肿、出血或新生血管（如黄斑变性 AMD），患者会观察到原本笔直的线条出现扭曲 (Metamorphopsia)、变形或中心暗点。</li>
+                <li><span class="text-info">📚 依据：</span><span class="text-grey-lighten-2 text-body-2">Amsler (1953), Earliest symptoms of diseases of the macula.</span></li>
+              </ul>
+            </div>
+
+            <div class="mb-2">
+              <strong class="text-white text-h6">5. 对比敏感度 (Contrast Sensitivity)：Pelli-Robson 原理</strong><br />
+              <ul class="mt-2 ml-4">
+                <li class="mb-1"><span class="text-info">👁️ 原理：</span>视力表只测试了高对比度下的空间分辨率。对比敏感度则衡量人眼在不同对比度下分辨目标的能力。系统参考 Pelli-Robson 图表原理，在固定空间频率（字母大小不变）下，采用阶梯法逐渐降低字母的对比度，直到用户无法辨识。该指标对早期白内障、青光眼及视神经病变比普通视力更为敏感。</li>
+                <li><span class="text-info">📚 依据：</span><span class="text-grey-lighten-2 text-body-2">Pelli et al. (1988), The design of a new letter chart for measuring contrast sensitivity.</span></li>
+              </ul>
+            </div>
+          </div>
+        </v-card-text>
+      </v-card>
+
+      <v-card class="theory-card mb-6" variant="outlined">
+        <v-card-text>
+          <h2 class="text-h5 text-white mb-4 d-flex align-center">
             <v-icon color="primary" class="mr-2">mdi-database-link</v-icon>
             检查数据如何关联康复训练？
           </h2>
