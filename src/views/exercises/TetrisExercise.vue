@@ -11,6 +11,10 @@
         <span v-if="stageTime >= 60" class="ml-2">✓ 今日训练已达标</span>
       </span>
     </div>
+    <div class="personalized-hud">
+      {{ settingsStore.personalizedHUDText }}
+    </div>
+
 
         <h2 class="score">得分: {{ score }}</h2>
     
@@ -96,8 +100,17 @@ type Piece = {
   color: string
 }
 
-const leftColor = computed(() => settingsStore.leftEyeColorStr)
-const rightColor = computed(() => settingsStore.rightEyeColorStr)
+const activeColor = computed(() => {
+  return settingsStore.suppressionStatus === 'right' 
+    ? settingsStore.rightEyeColorStr 
+    : settingsStore.leftEyeColorStr
+})
+
+const passiveColor = computed(() => {
+  return settingsStore.suppressionStatus === 'right' 
+    ? settingsStore.leftEyeColorStr 
+    : settingsStore.rightEyeColorStr
+})
 
 const board = ref<Board>(Array.from({ length: ROWS }, () => Array(COLS).fill(null)))
 const currentPiece = ref<Piece | null>(null)
@@ -120,7 +133,7 @@ const createPiece = (): Piece => {
     shape,
     x: Math.floor(COLS / 2) - Math.floor(shape[0].length / 2),
     y: 0,
-    color: leftColor.value, // Moving pieces are seen by left eye
+    color: activeColor.value, // Moving pieces use activeColor
   }
 }
 
@@ -156,7 +169,7 @@ const moveDown = () => {
       gameOver.value = true
       return
     }
-    // Merge to board (Static pieces seen by right eye)
+    // Merge to board (Static pieces use passiveColor)
     const newBoard = board.value.map(row => [...row])
     currentPiece.value.shape.forEach((row, r) => {
       row.forEach((cell, c) => {
@@ -164,7 +177,7 @@ const moveDown = () => {
           const py = currentPiece.value!.y + r
           const px = currentPiece.value!.x + c
           if (py >= 0 && py < ROWS && px >= 0 && px < COLS) {
-            newBoard[py][px] = { color: rightColor.value }
+            newBoard[py][px] = { color: passiveColor.value }
           }
         }
       })
@@ -448,5 +461,20 @@ onBeforeUnmount(() => {
     width: 16px;
     height: 16px;
   }
+}
+
+.personalized-hud {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  z-index: 100;
+  pointer-events: none;
 }
 </style>

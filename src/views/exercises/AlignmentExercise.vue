@@ -284,4 +284,19 @@ const handleConfirm = () => {
   border-radius: 12px;
   font-weight: bold;
 }
+
+.personalized-hud {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  z-index: 100;
+  pointer-events: none;
+}
 </style>

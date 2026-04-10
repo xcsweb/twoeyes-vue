@@ -8,6 +8,10 @@
       <div class="score-hud mt-2">
         <span>追踪得分: {{ score }}</span>
       </div>
+    <div class="personalized-hud">
+      {{ settingsStore.personalizedHUDText }}
+    </div>
+
     </div>
 
         <div class="instruction-overlay" v-if="showInstruction">
@@ -188,5 +192,20 @@ onBeforeUnmount(() => {
   user-select: none;
   /* 确保颜色能够穿透/发光 */
   mix-blend-mode: screen;
+}
+
+.personalized-hud {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  z-index: 100;
+  pointer-events: none;
 }
 </style>

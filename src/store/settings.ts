@@ -48,6 +48,9 @@ export const useSettingsStore = defineStore('settings', {
       // If right eye is dominant (left is suppressed), penalize right eye
       let factor = state.suppressionStatus === 'left' ? state.penalizationFactor : 1.0
       return `rgb(${Math.round(state.rightLense.r * factor)}, ${Math.round(state.rightLense.g * factor)}, ${Math.round(state.rightLense.b * factor)})`
+    },
+    personalizedHUDText(state) {
+      return `[个性化] 亮度: ${Math.round(state.penalizationFactor * 100)}% | 偏移: ${state.alignmentOffset.x}px`
     }
   },
   actions: {
