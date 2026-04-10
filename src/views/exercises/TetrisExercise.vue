@@ -256,21 +256,26 @@ const handleKeyDown = (e: KeyboardEvent) => {
 }
 
 const handleTouchStart = (e: TouchEvent) => {
+  // Only register swipe start if we didn't touch the dpad buttons
+  if ((e.target as HTMLElement).closest('.controls-overlay')) return
   touchStartX = e.touches[0].clientX
   touchStartY = e.touches[0].clientY
 }
 
 const handleTouchMove = (e: TouchEvent) => {
-  e.preventDefault() // Prevent scrolling
+  if ((e.target as HTMLElement).closest('.controls-overlay')) return
+  e.preventDefault() // Prevent scrolling only on game board
 }
 
 const handleTouchEnd = (e: TouchEvent) => {
+  if ((e.target as HTMLElement).closest('.controls-overlay')) return
   const touchEndX = e.changedTouches[0].clientX
   const touchEndY = e.changedTouches[0].clientY
   
   const dx = touchEndX - touchStartX
   const dy = touchEndY - touchStartY
 
+  // Check if it's a tap or swipe
   if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) {
     if (dx > 0) moveRight()
     else moveLeft()
@@ -340,7 +345,9 @@ onBeforeUnmount(() => {
   top: 20px;
   left: 20px;
   background: rgba(255, 255, 255, 0.1);
-  padding: 10px 20px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  white-space: nowrap;
   border-radius: 20px;
   backdrop-filter: blur(5px);
   z-index: 100;
@@ -364,7 +371,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   border: 2px solid rgba(255, 255, 255, 0.2);
   background-color: rgba(255, 255, 255, 0.05);
-  margin-bottom: 80px; /* Room for controls */
+  margin-bottom: 120px; /* Room for controls and bottom nav */
 }
 
 .tetris-row {
@@ -380,7 +387,7 @@ onBeforeUnmount(() => {
 
 .controls-overlay {
   position: absolute;
-  bottom: 30px;
+  bottom: 80px; /* Shifted up to avoid bottom nav overlap */
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;

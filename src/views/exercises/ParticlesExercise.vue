@@ -188,7 +188,9 @@ onBeforeUnmount(() => {
   top: 20px;
   left: 20px;
   background: rgba(255, 255, 255, 0.1);
-  padding: 10px 20px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  white-space: nowrap;
   border-radius: 20px;
   backdrop-filter: blur(5px);
   z-index: 100;

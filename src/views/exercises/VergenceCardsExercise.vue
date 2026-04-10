@@ -59,7 +59,50 @@
       >
         无法融合 (降低难度)
       </v-btn>
+
+      <v-btn
+        variant="text"
+        color="grey"
+        class="mt-4"
+        @click="showInfoDialog = true"
+      >
+        <v-icon start>mdi-information</v-icon> 觉得困难？了解医学原理
+      </v-btn>
     </div>
+
+    <!-- Medical Info Dialog -->
+    <v-dialog v-model="showInfoDialog" max-width="500">
+      <v-card class="bg-grey-darken-4 text-white">
+        <v-card-title class="text-h6 pt-4 px-4">
+          关于聚散度与融合训练
+        </v-card-title>
+        <v-card-text class="text-body-2 pt-2 px-4 pb-4">
+          <p class="mb-3">
+            您在做的正是临床上经典的<strong>自由空间融合训练（Free-Space Fusion）</strong>。
+          </p>
+          <p class="mb-3">
+            <strong>为什么觉得“斗鸡眼”很难？</strong><br/>
+            很多人天生存在“集合不足（Convergence Insufficiency, CI）”，即两眼无法长时间向内聚焦。如果您是外斜视患者，做“斗鸡眼”动作会非常吃力，这正是您的双眼视功能薄弱环节。
+          </p>
+          <p class="mb-3">
+            <strong>医学证明有效吗？</strong><br/>
+            CITT（集合不足治疗试验）等多项国际多中心双盲研究已经证实，以 Base-Out（BO，集合训练）为核心的视觉康复训练，能有效缓解眼疲劳，改善隐斜视。
+          </p>
+          <p>
+            <strong>建议：</strong>如果您无法融合两个圆环，说明当前的难度超出了您的融像范围。您可以尝试把手机拿远一点，或者盯着手指尖慢慢靠近鼻梁来辅助。如果实在无法完成，可以点击下方按钮暂时跳过。
+          </p>
+        </v-card-text>
+        <v-card-actions class="px-4 pb-4">
+          <v-spacer></v-spacer>
+          <v-btn color="error" variant="text" @click="skipStage">
+            暂时跳过 (算作达标)
+          </v-btn>
+          <v-btn color="primary" variant="flat" @click="showInfoDialog = false">
+            继续挑战
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -82,6 +125,8 @@ const rightColorStr = computed(() => settingsStore.rightEyeColorStr)
 // 负数 -> 外斜视 (Exophoria) -> 需要训练集合 (Convergence, BO)
 // 正数 -> 内斜视 (Esophoria) -> 需要训练散开 (Divergence, BI)
 const isExophoria = computed(() => settingsStore.alignmentOffset.x <= 0)
+
+const showInfoDialog = ref(false)
 
 const instructionText = computed(() => {
   if (isExophoria.value) {
@@ -118,6 +163,11 @@ const decreaseDifficulty = () => {
   }
 }
 
+const skipStage = () => {
+  progressStore.addStageTime(STAGE_NUMBER, 60 - stageTime.value)
+  showInfoDialog.value = false
+}
+
 let timerId: number
 onMounted(() => {
   timerId = window.setInterval(() => {
@@ -152,7 +202,9 @@ onBeforeUnmount(() => {
   top: 20px;
   left: 20px;
   background: rgba(255, 255, 255, 0.1);
-  padding: 10px 20px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  white-space: nowrap;
   border-radius: 20px;
   backdrop-filter: blur(5px);
   z-index: 100;
