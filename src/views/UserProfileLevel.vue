@@ -72,6 +72,30 @@
                   右眼: {{ estimateDegrees(settingsStore.visionAcuity.right) }}
                 </div>
               </div>
+              <div class="data-item">
+                <div class="data-label">散光测试</div>
+                <div class="data-value" :class="settingsStore.astigmatismResult === 'astigmatism' ? 'text-warning' : 'text-success'">
+                  {{ settingsStore.astigmatismResult === 'astigmatism' ? '异常 (疑似散光)' : (settingsStore.astigmatismResult === 'normal' ? '正常' : '未测试') }}
+                </div>
+              </div>
+              <div class="data-item">
+                <div class="data-label">色觉测试</div>
+                <div class="data-value" :class="settingsStore.colorVisionResult === 'deficient' ? 'text-warning' : 'text-success'">
+                  {{ settingsStore.colorVisionResult === 'deficient' ? '异常 (色觉缺陷)' : (settingsStore.colorVisionResult === 'normal' ? '正常' : '未测试') }}
+                </div>
+              </div>
+              <div class="data-item">
+                <div class="data-label">黄斑测试</div>
+                <div class="data-value" :class="settingsStore.macularResult === 'abnormal' ? 'text-warning' : 'text-success'">
+                  {{ settingsStore.macularResult === 'abnormal' ? '异常' : (settingsStore.macularResult === 'normal' ? '正常' : '未测试') }}
+                </div>
+              </div>
+              <div class="data-item">
+                <div class="data-label">对比敏感度</div>
+                <div class="data-value" :class="settingsStore.contrastSensitivityResult === 'low' ? 'text-warning' : 'text-success'">
+                  {{ settingsStore.contrastSensitivityResult === 'low' ? '偏低' : (settingsStore.contrastSensitivityResult === 'normal' ? '正常' : '未测试') }}
+                </div>
+              </div>
             </div>
 
             <!-- 视力历史折线图 -->
@@ -121,6 +145,13 @@
                 </div>
               </div>
 
+              <div class="data-item" v-if="settingsStore.suppressionStatus === 'left' || settingsStore.suppressionStatus === 'right'">
+                <div class="data-label">惩罚阈值</div>
+                <div class="data-value text-warning">
+                  {{ Math.round(settingsStore.penalizationFactor * 100) }}% 亮度保留
+                </div>
+              </div>
+
               <div class="data-item">
                 <div class="data-label">隐斜视偏移量</div>
                 <div class="data-value" v-if="settingsStore.alignmentOffset.x !== 0 || settingsStore.alignmentOffset.y !== 0">
@@ -150,6 +181,20 @@
             <div class="text-caption text-grey mt-2 text-center">
               (注：Y轴为偏移量像素值。越接近 0 越接近正常正位视)
             </div>
+          </div>
+
+          <div class="d-flex justify-center mt-8 mb-4">
+            <v-btn
+              color="primary"
+              size="x-large"
+              prepend-icon="mdi-rocket-launch"
+              @click="goToTraining"
+              elevation="8"
+              class="px-8 font-weight-bold"
+              rounded="pill"
+            >
+              生成定制化康复训练计划
+            </v-btn>
           </div>
         </div>
       </div>
@@ -190,6 +235,10 @@ const progressStore = useProgressStore()
 
 const goToExam = () => {
   router.push({ name: 'SectionIntroExam' })
+}
+
+const goToTraining = () => {
+  router.push({ name: 'TrainingMenu' })
 }
 
 const hasExamData = computed(() => {

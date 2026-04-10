@@ -8,6 +8,27 @@
         <h1 class="title">选择训练阶段</h1>
         <p class="subtitle mb-0">根据您的解锁进度，选择对应的视功能康复阶段进行训练</p>
       </div>
+
+      <!-- Recommendation Summary Panel -->
+      <div class="recommendation-panel mb-8 w-100" style="animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; opacity: 0;">
+        <v-card color="rgba(255, 255, 255, 0.1)" variant="outlined" class="pa-4 recommendation-card" style="border-radius: 16px;">
+          <div class="d-flex align-start">
+            <v-icon color="info" size="32" class="mr-3 mt-1">mdi-clipboard-text-search-outline</v-icon>
+            <div>
+              <h3 class="text-h6 font-weight-bold mb-1 text-white">综合训练建议</h3>
+              <p class="text-body-1 mb-2 text-white" style="opacity: 0.9;">
+                {{ recommendationSummary }}
+              </p>
+              <div v-if="isPenalizationActive" class="d-flex align-center mt-2 px-3 py-2 rounded" style="background: rgba(255, 152, 0, 0.2); border-left: 4px solid #ff9800;">
+                <v-icon size="small" color="warning" class="mr-2">mdi-alert-circle</v-icon>
+                <span class="text-body-2 text-white">
+                  <strong>亮度惩罚机制已启用：</strong> 检测到您的{{ suppressedEyeName }}存在抑制，训练中优势眼的亮度已降至 {{ Math.round(settingsStore.penalizationFactor * 100) }}%，以强迫弱视眼/被抑制眼参与视觉处理。
+                </span>
+              </div>
+            </div>
+          </div>
+        </v-card>
+      </div>
       
       <div class="cards-wrapper">
         <!-- Stage 1 -->
@@ -27,6 +48,12 @@
             <div class="d-flex justify-space-between align-center mb-2">
               <h2 class="card-title mb-0">阶段 1：基础脱抑制</h2>
               <v-chip v-if="unlockedStage >= 1" color="success" size="small" variant="tonal">已解锁</v-chip>
+            </div>
+            <!-- Stage 1 Badges -->
+            <div class="badges-wrapper mb-3" v-if="hasAmblyopia">
+              <v-chip color="warning" size="small" variant="flat" class="mr-2 font-weight-bold">
+                <v-icon start size="small">mdi-star</v-icon> 针对弱视
+              </v-chip>
             </div>
             <p class="card-text">
               通过简单的颜色匹配和移动，唤醒被抑制的眼睛，建立基础的双眼同时视。
@@ -52,6 +79,15 @@
             <div class="d-flex justify-space-between align-center mb-2">
               <h2 class="card-title mb-0">阶段 2：动态融合</h2>
               <v-chip v-if="unlockedStage >= 2" color="success" size="small" variant="tonal">已解锁</v-chip>
+            </div>
+            <!-- Stage 2 Badges -->
+            <div class="badges-wrapper mb-3" v-if="hasAmblyopia || hasStrabismus">
+              <v-chip v-if="hasAmblyopia" color="warning" size="small" variant="flat" class="mr-2 mb-1 font-weight-bold">
+                <v-icon start size="small">mdi-star</v-icon> 针对弱视
+              </v-chip>
+              <v-chip v-if="hasStrabismus" color="info" size="small" variant="flat" class="mr-2 mb-1 font-weight-bold">
+                <v-icon start size="small">mdi-star</v-icon> 针对斜视
+              </v-chip>
             </div>
             <p class="card-text">
               追踪动态粒子和螺旋，增强双眼在运动中的持续融合能力，防止视界消失。
@@ -79,6 +115,15 @@
               <h2 class="card-title mb-0">阶段 3：集合与分开</h2>
               <v-chip v-if="unlockedStage >= 3" color="success" size="small" variant="tonal">已解锁</v-chip>
             </div>
+            <!-- Stage 3 Badges -->
+            <div class="badges-wrapper mb-3">
+              <v-chip v-if="hasStrabismus" color="info" size="small" variant="flat" class="mr-2 mb-1 font-weight-bold">
+                <v-icon start size="small">mdi-star</v-icon> 针对斜视
+              </v-chip>
+              <v-chip color="success" size="small" variant="flat" class="mr-2 mb-1 font-weight-bold">
+                <v-icon start size="small">mdi-star</v-icon> 缓解疲劳/近视
+              </v-chip>
+            </div>
             <p class="card-text">
               经典的聚散球 (Brock String) 训练，锻炼眼部肌肉控制斗鸡眼与放松的能力。
             </p>
@@ -105,6 +150,12 @@
               <h2 class="card-title mb-0">阶段 4：立体视建立</h2>
               <v-chip v-if="unlockedStage >= 4" color="success" size="small" variant="tonal">已解锁</v-chip>
             </div>
+            <!-- Stage 4 Badges -->
+            <div class="badges-wrapper mb-3">
+              <v-chip color="primary" size="small" variant="flat" class="mr-2 mb-1 font-weight-bold">
+                <v-icon start size="small">mdi-star</v-icon> 综合提升
+              </v-chip>
+            </div>
             <p class="card-text">
               在复杂背景下进行高级双眼协同，通过认知和空间判断重建高级手眼协调。
             </p>
@@ -122,11 +173,48 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProgressStore } from '../store/progress'
+import { useSettingsStore } from '../store/settings'
 
 const router = useRouter()
 const progressStore = useProgressStore()
+const settingsStore = useSettingsStore()
 
 const unlockedStage = computed(() => progressStore.unlockedStage)
+
+// Diagnostics Logic
+const hasAmblyopia = computed(() => {
+  return settingsStore.visionAcuity.left <= 0.8 || 
+         settingsStore.visionAcuity.right <= 0.8 || 
+         settingsStore.suppressionStatus === 'left' || 
+         settingsStore.suppressionStatus === 'right'
+})
+
+const hasStrabismus = computed(() => {
+  return Math.abs(settingsStore.alignmentOffset.x) > 0 || 
+         Math.abs(settingsStore.alignmentOffset.y) > 0 || 
+         settingsStore.suppressionStatus === 'diplopia'
+})
+
+const isPenalizationActive = computed(() => {
+  return settingsStore.suppressionStatus === 'left' || settingsStore.suppressionStatus === 'right'
+})
+
+const suppressedEyeName = computed(() => {
+  if (settingsStore.suppressionStatus === 'left') return '左眼'
+  if (settingsStore.suppressionStatus === 'right') return '右眼'
+  return ''
+})
+
+const recommendationSummary = computed(() => {
+  let issues = []
+  if (hasAmblyopia.value) issues.push('弱视/单眼抑制')
+  if (hasStrabismus.value) issues.push('斜视/隐斜视')
+  
+  if (issues.length === 0) {
+    return '系统检测到您的双眼视功能相对稳定。建议您进行“缓解疲劳/近视”相关训练，保持眼部健康。'
+  }
+  return `根据您的检测结果，系统发现您可能存在：${issues.join('、')}。已为您推荐带有 ⭐ 标记的专属训练方案。`
+})
 
 const goToStage = (stage: number) => {
   if (stage === 1) router.push({ name: 'SectionIntroTraining' })
