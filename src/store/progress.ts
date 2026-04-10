@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const TARGET_STAGE_TIME = 60
+export const TARGET_STAGE_TIME = 900
 
 export interface StageData {
   stage: number

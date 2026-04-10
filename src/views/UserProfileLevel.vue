@@ -104,6 +104,9 @@
               <div class="chart-container">
                 <Line :data="visionChartData" :options="visionChartOptions" />
               </div>
+              <div class="text-caption text-grey mt-2 text-center">
+                (注：绿线为正常视力标准 1.0)
+              </div>
             </div>
           </div>
 
@@ -179,7 +182,7 @@
               <Line :data="chartData" :options="chartOptions" />
             </div>
             <div class="text-caption text-grey mt-2 text-center">
-              (注：Y轴为偏移量像素值。越接近 0 越接近正常正位视)
+              (注：Y轴为偏移量像素值。越接近 0 越接近正常正位视，绿线为正常标准 0)
             </div>
           </div>
 
@@ -343,7 +346,9 @@ const visionChartOptions = {
     },
     y: {
       ticks: { color: '#aaa' },
-      grid: { color: 'rgba(255,255,255,0.1)' },
+      grid: { 
+        color: (ctx: any) => ctx.tick.value === 1.0 ? '#4ade80' : 'rgba(255,255,255,0.1)' 
+      },
       min: 0,
       max: 1.5
     }
@@ -401,7 +406,9 @@ const chartOptions = {
     },
     y: {
       ticks: { color: '#aaa' },
-      grid: { color: 'rgba(255,255,255,0.1)' }
+      grid: { 
+        color: (ctx: any) => ctx.tick.value === 0 ? '#4ade80' : 'rgba(255,255,255,0.1)' 
+      }
     }
   }
 }

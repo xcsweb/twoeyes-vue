@@ -4,17 +4,40 @@
       当前环境无法创建 WebGL 渲染上下文，已自动切换为兼容模式。请使用支持 WebGL 的浏览器继续训练。
     </div>
     <div class="progress-hud">
-      <span :class="{ 'text-success': stageTime >= 60, 'text-white': stageTime < 60 }">
-        本阶段今日训练: {{ stageTime }} / 60 秒
-        <span v-if="stageTime >= 60" class="ml-2">✓ 今日训练已达标</span>
+      <span :class="{ 'text-success': isTargetReached, 'text-white': !isTargetReached }">
+        剩余训练时间: {{ formattedTime }}
+        <span v-if="isTargetReached" class="ml-2">✓ 今日训练已达标</span>
       </span>
     </div>
     <PersonalizedHud />
 
       </div>
+
+    <v-dialog v-model="showCompletionDialog" max-width="400" persistent>
+      <v-card color="grey-darken-4" class="text-center pa-4">
+        <v-card-title class="text-h5 text-success mb-4">
+          🎉 恭喜完成今日训练！
+        </v-card-title>
+        <v-card-text class="text-body-1 mb-4">
+          您已达到本阶段每日建议的训练时长（15分钟）。
+          继续训练可能导致眼睛疲劳，建议您现在休息。
+        </v-card-text>
+        <v-card-actions class="justify-center">
+          <v-btn color="primary" variant="elevated" @click="returnToMenu">
+            返回菜单
+          </v-btn>
+          <v-btn color="grey" variant="text" @click="showCompletionDialog = false">
+            继续训练
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
 </template>
 
 <script setup lang="ts">
+import { useStageTimer } from '../../composables/useStageTimer'
+
 import PersonalizedHud from '../../components/PersonalizedHud.vue'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
@@ -35,6 +58,7 @@ let timerId: number
 let instancedMesh: THREE.InstancedMesh
 
 const STAGE_NUMBER = 2 // Particles Exercise belongs to Stage 2
+const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = useStageTimer(STAGE_NUMBER)
 const stageTime = computed(() => progressStore.stages[STAGE_NUMBER]?.totalTime || 0)
 const numParticles = 1000
 const tempObject = new THREE.Object3D()
@@ -190,7 +214,7 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 20px;
   left: 20px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.85);
   padding: 8px 16px;
   font-size: 0.85rem;
   white-space: nowrap;
