@@ -1,33 +1,41 @@
 <template>
   <v-container fluid class="level-container fill-height bg-black">
     <div class="content-wrapper text-center">
-      <h1 class="title mb-4 text-white">黄斑功能筛查</h1>
+      <h1 class="title mb-4 text-white">客观黄斑功能筛查</h1>
       
       <div class="test-section">
         <p class="text-h6 text-white mb-6">
           请在明亮的光线下，戴上老花镜或近视眼镜（如有）。<br>
-          遮住一只眼，用另一只眼注视下方表格<strong>正中心的白点</strong>。<br>
-          保持注视中心点，观察周围的方格线条。
+          遮住一只眼，用另一只眼注视下方表格<strong>正中心的红点</strong>。<br>
+          在这个方格网中，有**一个区域**的线条被人工扭曲了。<br>
+          请点击您认为线条扭曲的那个区域。
         </p>
+
+        <div class="text-h6 text-grey mb-4">测试进度: {{ currentTrial + 1 }} / {{ totalTrials }}</div>
         
         <div class="canvas-wrapper mx-auto mb-8 d-flex align-center justify-center">
           <div class="amsler-grid">
             <div class="center-dot"></div>
+            <!-- Quadrant Overlays for clicking -->
+            <div class="quadrant q-tl" @click="submitAnswer('tl')">
+              <div v-if="distortedQuadrant === 'tl'" class="distortion-overlay"></div>
+            </div>
+            <div class="quadrant q-tr" @click="submitAnswer('tr')">
+              <div v-if="distortedQuadrant === 'tr'" class="distortion-overlay"></div>
+            </div>
+            <div class="quadrant q-bl" @click="submitAnswer('bl')">
+              <div v-if="distortedQuadrant === 'bl'" class="distortion-overlay"></div>
+            </div>
+            <div class="quadrant q-br" @click="submitAnswer('br')">
+              <div v-if="distortedQuadrant === 'br'" class="distortion-overlay"></div>
+            </div>
           </div>
         </div>
 
-        <div class="controls mt-8">
-          <div class="text-h6 text-white mb-4">您看到的方格线条是否出现以下情况？</div>
-          <p class="text-body-1 text-grey mb-6">线条扭曲、模糊、缺失，或者有黑影/暗点遮挡</p>
-          
-          <v-row justify="center" class="mb-4">
-            <v-btn size="x-large" color="error" variant="outlined" class="mx-4 action-btn" @click="submitResult('abnormal')">
-              有扭曲/暗点/缺失
-            </v-btn>
-            <v-btn size="x-large" color="success" variant="outlined" class="mx-4 action-btn" @click="submitResult('normal')">
-              完全正常（平直清晰）
-            </v-btn>
-          </v-row>
+        <div class="controls mt-4">
+          <v-btn size="x-large" color="error" variant="outlined" @click="submitAnswer('none')">
+            我看不出哪里扭曲（或到处都扭曲）
+          </v-btn>
         </div>
       </div>
     </div>
@@ -35,6 +43,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useSettingsStore } from '../store/settings'
 import { useVisionFlow } from '../composables/useVisionFlow'
 import { useRoute } from 'vue-router'
@@ -43,8 +52,42 @@ const settingsStore = useSettingsStore()
 const { goNext } = useVisionFlow()
 const route = useRoute()
 
-const submitResult = (result: 'normal' | 'abnormal') => {
-  settingsStore.setMacularResult(result)
+const quadrants = ['tl', 'tr', 'bl', 'br']
+const totalTrials = 4
+const currentTrial = ref(0)
+const distortedQuadrant = ref('')
+const correctAnswers = ref(0)
+
+const generateTrial = () => {
+  const randomIndex = Math.floor(Math.random() * quadrants.length)
+  distortedQuadrant.value = quadrants[randomIndex]
+}
+
+onMounted(() => {
+  generateTrial()
+})
+
+const submitAnswer = (answer: string) => {
+  if (answer === distortedQuadrant.value) {
+    correctAnswers.value++
+  }
+
+  if (currentTrial.value < totalTrials - 1) {
+    currentTrial.value++
+    generateTrial()
+  } else {
+    finishTest()
+  }
+}
+
+const finishTest = () => {
+  // If user gets at least 3 out of 4 correct, they can clearly see the artificial distortion.
+  // If they have macular degeneration, their own distortion masks the artificial one, causing errors.
+  if (correctAnswers.value >= 3) {
+    settingsStore.setMacularResult('normal')
+  } else {
+    settingsStore.setMacularResult('abnormal')
+  }
   goNext(route.name as string)
 }
 </script>
@@ -72,6 +115,7 @@ const submitResult = (result: 'normal' | 'abnormal') => {
   position: relative;
   background-color: black;
   border: 2px solid white;
+  cursor: crosshair;
 }
 
 .amsler-grid {
@@ -92,14 +136,34 @@ const submitResult = (result: 'normal' | 'abnormal') => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 12px;
-  height: 12px;
-  background-color: white;
+  width: 14px;
+  height: 14px;
+  background-color: red;
   border-radius: 50%;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+  z-index: 10;
 }
 
-.action-btn {
-  min-width: 200px;
+/* 4 Quadrants for click detection */
+.quadrant {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  z-index: 5;
+}
+.q-tl { top: 0; left: 0; }
+.q-tr { top: 0; left: 50%; }
+.q-bl { top: 50%; left: 0; }
+.q-br { top: 50%; left: 50%; }
+
+/* The artificial distortion */
+.distortion-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* Use a radial gradient to create a "bulge" or "smudge" effect that obscures/distorts the grid beneath */
+  background: radial-gradient(circle at center, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+  backdrop-filter: blur(2px) contrast(150%);
+  border-radius: 50%;
+  transform: scale(0.7);
 }
 </style>
