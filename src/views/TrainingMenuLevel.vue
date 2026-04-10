@@ -50,8 +50,8 @@
               <v-chip v-if="unlockedStage >= 1" color="success" size="small" variant="tonal">已解锁</v-chip>
             </div>
             <!-- Stage 1 Badges -->
-            <div class="badges-wrapper mb-3" v-if="hasAmblyopia">
-              <v-chip color="warning" size="small" variant="flat" class="mr-2 font-weight-bold">
+            <div class="badges-wrapper mb-3" v-if="hasAmblyopia || hasMyopiaOrFatigue">
+              <v-chip v-if="hasAmblyopia" color="warning" size="small" variant="flat" class="mr-2 font-weight-bold">
                 <v-icon start size="small">mdi-star</v-icon> 针对弱视
               </v-chip>
             </div>
@@ -116,11 +116,11 @@
               <v-chip v-if="unlockedStage >= 3" color="success" size="small" variant="tonal">已解锁</v-chip>
             </div>
             <!-- Stage 3 Badges -->
-            <div class="badges-wrapper mb-3">
+            <div class="badges-wrapper mb-3" v-if="hasStrabismus || hasMyopiaOrFatigue">
               <v-chip v-if="hasStrabismus" color="info" size="small" variant="flat" class="mr-2 mb-1 font-weight-bold">
                 <v-icon start size="small">mdi-star</v-icon> 针对斜视
               </v-chip>
-              <v-chip color="success" size="small" variant="flat" class="mr-2 mb-1 font-weight-bold">
+              <v-chip v-if="hasMyopiaOrFatigue" color="success" size="small" variant="flat" class="mr-2 mb-1 font-weight-bold">
                 <v-icon start size="small">mdi-star</v-icon> 缓解疲劳/近视
               </v-chip>
             </div>
@@ -195,6 +195,13 @@ const hasStrabismus = computed(() => {
          settingsStore.suppressionStatus === 'diplopia'
 })
 
+const hasMyopiaOrFatigue = computed(() => {
+  // If visual acuity is low but no suppression/strabismus, likely simple refractive error/fatigue.
+  // Or just generally beneficial for anyone who took the test.
+  return settingsStore.visionAcuity.left < 1.0 || settingsStore.visionAcuity.right < 1.0 || 
+         (!hasAmblyopia.value && !hasStrabismus.value)
+})
+
 const isPenalizationActive = computed(() => {
   return settingsStore.suppressionStatus === 'left' || settingsStore.suppressionStatus === 'right'
 })
@@ -210,10 +217,17 @@ const recommendationSummary = computed(() => {
   if (hasAmblyopia.value) issues.push('弱视/单眼抑制')
   if (hasStrabismus.value) issues.push('斜视/隐斜视')
   
-  if (issues.length === 0) {
-    return '系统检测到您的双眼视功能相对稳定。建议您进行“缓解疲劳/近视”相关训练，保持眼部健康。'
+  if (issues.length > 0) {
+    let summary = `系统根据您的最新视功能检查数据，发现您可能存在：${issues.join('、')}。已为您推荐带有 ⭐ 标记的专属康复训练方案。`
+    if (hasAmblyopia.value && hasStrabismus.value) {
+      summary += ' 针对您的复合情况，建议先从“阶段1”的基础脱抑制做起，再逐步挑战“阶段3”的聚散融合训练。'
+    }
+    return summary
+  } else if (hasMyopiaOrFatigue.value) {
+    return '系统检测到您的双眼视功能稳定，但可能存在视力下降或视疲劳。建议您优先进行带有 ⭐ 标记的眼动与放松训练。'
+  } else {
+    return '您的双眼视功能非常健康！您可以自由探索各个阶段的视觉游戏，保持眼部活力。'
   }
-  return `根据您的检测结果，系统发现您可能存在：${issues.join('、')}。已为您推荐带有 ⭐ 标记的专属训练方案。`
 })
 
 const goToStage = (stage: number) => {
