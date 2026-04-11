@@ -49,5 +49,26 @@ test.describe('Strabismus Exam Flow', () => {
 
     // Should skip contrast test and go to Alignment Intro
     await expect(page.locator('text=十字准星对齐测试')).toBeVisible();
+    
+    // Click start test
+    await page.locator('button:has-text("我已准备好，开始")').click();
+
+    // Now in AlignmentExercise
+    await expect(page.locator('text=请先确保每个十字都与背景的白色网格完全平行')).toBeVisible();
+    
+    // Take a screenshot to verify UI (grid, buttons, etc.)
+    await page.waitForTimeout(500);
+    await page.screenshot({ path: 'public/screenshots/alignment_exercise_ui.png' });
+
+    // Test rotation controls
+    const rotateBtn = page.locator('.rotate-controls button').first();
+    await rotateBtn.click();
+    await page.waitForTimeout(100);
+
+    // Confirm Alignment
+    await page.locator('button:has-text("确认对齐")').click();
+
+    // After Alignment, check next page load
+    await expect(page.locator('.level-container')).toBeVisible({ timeout: 10000 });
   });
 });

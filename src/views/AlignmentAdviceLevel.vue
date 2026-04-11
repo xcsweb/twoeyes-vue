@@ -61,7 +61,7 @@
             class="mb-6"
             title="⚠️ 警告：检测到明显的旋转斜视 (Cyclotropia)"
           >
-            系统检测到您的眼球存在明显的旋转偏斜（&gt; 2度）。视觉康复训练（Vision Therapy）对旋转斜视的改善效果极为有限，强烈建议您尽快前往正规医院斜视与小儿眼科就诊，寻求斜视手术或特殊棱镜的临床评估。
+            系统检测到您的眼球存在明显的旋转偏斜（&gt; 5度）。视觉康复训练（Vision Therapy）对旋转斜视的改善效果极为有限，强烈建议您尽快前往正规医院斜视与小儿眼科就诊，寻求斜视手术或特殊棱镜的临床评估。
           </v-alert>
 
           <template v-else>
@@ -128,13 +128,13 @@ const offset = computed(() => settingsStore.alignmentOffset)
 const isDiagonalAlignmentError = computed(() => {
   const rL = Math.abs(offset.value.rLeft ?? 0)
   const rR = Math.abs(offset.value.rRight ?? 0)
-  return rL > 2 && rR > 2 && Math.abs(rL - rR) <= 2
+  return rL > 5 && rR > 5 && Math.abs(rL - rR) <= 2
 })
 
 const hasSevereCyclotropia = computed(() => {
   if (isDiagonalAlignmentError.value) return false
-  return (offset.value.rLeft !== undefined && Math.abs(offset.value.rLeft) > 2) || 
-         (offset.value.rRight !== undefined && Math.abs(offset.value.rRight) > 2)
+  return (offset.value.rLeft !== undefined && Math.abs(offset.value.rLeft) > 5) || 
+         (offset.value.rRight !== undefined && Math.abs(offset.value.rRight) > 5)
 })
 
 const adviceTitle = computed(() => {
