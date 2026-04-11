@@ -1,12 +1,12 @@
 <template>
-  <v-container fluid class="fill-height bg-grey-lighten-4">
-    <v-row justify="center" align="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-card class="elevation-4 rounded-xl pa-6">
-          <v-card-title class="text-h4 text-center mb-6 font-weight-bold">
+  <v-container fluid class="fill-height bg-grey-darken-4 pa-0">
+    <v-row justify="center" align="center" class="ma-0 w-100">
+      <v-col cols="12" sm="8" md="6" lg="4" class="pa-4">
+        <v-card class="elevation-4 rounded-xl pa-4 pa-sm-6 w-100 bg-grey-darken-3">
+          <v-card-title class="text-h4 text-center mb-4 mb-sm-6 font-weight-bold text-white text-wrap">
             基本信息
           </v-card-title>
-          <v-card-subtitle class="text-center mb-6 text-body-1">
+          <v-card-subtitle class="text-center mb-4 mb-sm-6 text-body-1 text-grey-lighten-1 text-wrap" style="white-space: normal;">
             为了提供更个性化的训练方案，我们需要了解您的基本信息
           </v-card-subtitle>
           

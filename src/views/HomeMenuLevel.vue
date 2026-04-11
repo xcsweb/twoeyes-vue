@@ -208,7 +208,7 @@ const unlockAllStages = () => {
 const resetSystem = () => {
   if (confirm('确认清空所有本地数据并重置应用吗？此操作不可逆。')) {
     localStorage.clear()
-    window.location.href = '/'
+    window.location.reload() // Use reload instead of href='/' to clear memory cache without routing weirdness
   }
 }
 
