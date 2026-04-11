@@ -11,6 +11,28 @@
 
       <div class="profile-card">
         <div class="card-body">
+          <!-- 基本信息 -->
+          <div class="info-section mb-6" v-if="settingsStore.age !== null">
+            <h3 class="section-title">
+              <v-icon icon="mdi-card-account-details-outline" class="mr-2" color="purple"></v-icon>
+              基本信息
+            </h3>
+            <div class="data-list mt-4">
+              <div class="data-item">
+                <div class="data-label">年龄</div>
+                <div class="data-value">{{ settingsStore.age }} 岁</div>
+              </div>
+              <div class="data-item">
+                <div class="data-label">性别</div>
+                <div class="data-value">{{ genderText }}</div>
+              </div>
+              <div class="data-item">
+                <div class="data-label">神经可塑性评估</div>
+                <div class="data-value text-success">{{ neuroplasticityText }}</div>
+              </div>
+            </div>
+          </div>
+
           <div class="info-section">
             <h3 class="section-title">
               <v-icon icon="mdi-chart-timeline-variant" class="mr-2" color="success"></v-icon>
@@ -313,6 +335,20 @@ const hasExamData = computed(() => {
 
 const hasVisionData = computed(() => {
   return settingsStore.visionHistory && settingsStore.visionHistory.length > 0
+})
+
+const genderText = computed(() => {
+  if (settingsStore.gender === 'male') return '男'
+  if (settingsStore.gender === 'female') return '女'
+  if (settingsStore.gender === 'other') return '其他'
+  return '未设置'
+})
+
+const neuroplasticityText = computed(() => {
+  if (settingsStore.age === null) return '未知'
+  if (settingsStore.age <= 12) return '高可塑性儿童期，建议 10 分钟/阶段'
+  if (settingsStore.age <= 17) return '中度可塑性青少年期，建议 15 分钟/阶段'
+  return '成人期，建议 20 分钟/阶段'
 })
 
 const estimateDegrees = (acuity: number) => {

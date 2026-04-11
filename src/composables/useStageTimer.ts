@@ -1,14 +1,16 @@
 import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useProgressStore, TARGET_STAGE_TIME } from '../store/progress'
+import { useProgressStore } from '../store/progress'
+import { useSettingsStore } from '../store/settings'
 
 export function useStageTimer(stageNumber: number) {
   const progressStore = useProgressStore()
+  const settingsStore = useSettingsStore()
   const router = useRouter()
   
   const stageTime = computed(() => progressStore.stages[stageNumber]?.totalTime || 0)
   
-  const remainingTime = computed(() => Math.max(0, TARGET_STAGE_TIME - stageTime.value))
+  const remainingTime = computed(() => Math.max(0, settingsStore.requiredTrainingTime - stageTime.value))
   
   const formattedTime = computed(() => {
     const mins = Math.floor(remainingTime.value / 60)
@@ -16,7 +18,7 @@ export function useStageTimer(stageNumber: number) {
     return `${mins}:${secs.toString().padStart(2, '0')}`
   })
 
-  const isTargetReached = computed(() => stageTime.value >= TARGET_STAGE_TIME)
+  const isTargetReached = computed(() => stageTime.value >= settingsStore.requiredTrainingTime)
   const showCompletionDialog = ref(false)
 
   // Show dialog only once when it transitions to reached during the session

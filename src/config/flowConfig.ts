@@ -9,8 +9,9 @@ export interface FlowNode {
 }
 
 export const visionFlow: FlowNode[] = [
-  { name: 'SectionIntroVision', next: 'VisionDistanceAdvice' },
-  { name: 'VisionDistanceAdvice', next: 'VisionTest', prev: 'SectionIntroVision' },
+  { name: 'SectionIntroVision', next: (store) => store.age !== null ? 'VisionDistanceAdvice' : 'UserInfoForm' },
+  { name: 'UserInfoForm', next: 'VisionDistanceAdvice', prev: 'SectionIntroVision' },
+  { name: 'VisionDistanceAdvice', next: 'VisionTest', prev: (store) => store.age !== null ? 'SectionIntroVision' : 'UserInfoForm' },
   { name: 'VisionTest', next: 'AstigmatismTest', prev: 'VisionDistanceAdvice' },
   { name: 'AstigmatismTest', next: 'ColorVisionTest', prev: 'VisionTest' },
   { name: 'ColorVisionTest', next: 'AmslerGridTest', prev: 'AstigmatismTest' },
@@ -20,7 +21,8 @@ export const visionFlow: FlowNode[] = [
 ];
 
 export const examFlow: FlowNode[] = [
-  { name: 'SectionIntroExam', next: 'LensSelection' },
+  { name: 'SectionIntroExam', next: (store) => store.age !== null ? 'LensSelection' : 'UserInfoForm' },
+  { name: 'UserInfoForm', next: 'LensSelection', prev: 'SectionIntroExam' },
   { name: 'SectionIntroAlignment', next: 'AlignmentExercise', 
     prev: (store) => {
       if (store.suppressionStatus === 'none' || store.suppressionStatus === 'diplopia') {
@@ -29,7 +31,7 @@ export const examFlow: FlowNode[] = [
       return 'ContrastTest';
     } 
   },
-  { name: 'LensSelection', next: 'LensConfirmation', prev: 'SectionIntroExam' },
+  { name: 'LensSelection', next: 'LensConfirmation', prev: (store) => store.age !== null ? 'SectionIntroExam' : 'UserInfoForm' },
   { name: 'LensConfirmation', next: 'DistanceAdvice', prev: 'LensSelection' },
   { name: 'DistanceAdvice', next: 'SuppressionTest', prev: 'LensConfirmation' },
   { name: 'SuppressionTest', 
@@ -49,8 +51,9 @@ export const examFlow: FlowNode[] = [
 ];
 
 export const amblyopiaFlow: FlowNode[] = [
-  { name: 'SectionIntroAmblyopia', next: 'LensSelection' },
-  { name: 'LensSelection', next: 'LensConfirmation', prev: 'SectionIntroAmblyopia' },
+  { name: 'SectionIntroAmblyopia', next: (store) => store.age !== null ? 'LensSelection' : 'UserInfoForm' },
+  { name: 'UserInfoForm', next: 'LensSelection', prev: 'SectionIntroAmblyopia' },
+  { name: 'LensSelection', next: 'LensConfirmation', prev: (store) => store.age !== null ? 'SectionIntroAmblyopia' : 'UserInfoForm' },
   { name: 'LensConfirmation', next: 'DistanceAdvice', prev: 'LensSelection' },
   { name: 'DistanceAdvice', next: 'SuppressionTest', prev: 'LensConfirmation' },
   { name: 'SuppressionTest', 

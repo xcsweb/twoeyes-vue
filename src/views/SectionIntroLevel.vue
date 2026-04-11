@@ -115,6 +115,8 @@ const startGame = (routeName: string) => {
     settingsStore.setExamMode('amblyopia')
   } else if (route.name === 'SectionIntroExam') {
     settingsStore.setExamMode('exam')
+  } else if (route.name === 'SectionIntroVision') {
+    settingsStore.setExamMode('vision')
   }
 
   if (
@@ -133,7 +135,8 @@ const startGame = (routeName: string) => {
 
   // 如果有前置阶段限制，做个保护（尽管路由进入时应该已经拦截）
   if (props.requiredStageToEnter && progressStore.unlockedStage < props.requiredStageToEnter) {
-    snackbarText.value = `此阶段尚未解锁！(需要完成阶段 ${props.requiredStageToEnter - 1} 并在其游戏内累计满60秒)`
+    const requiredMinutes = Math.floor(settingsStore.requiredTrainingTime / 60)
+    snackbarText.value = `此阶段尚未解锁！(需要完成阶段 ${props.requiredStageToEnter - 1} 并在其游戏内累计满 ${requiredMinutes} 分钟)`
     snackbar.value = true
     return
   }

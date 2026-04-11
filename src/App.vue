@@ -60,6 +60,7 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { routeBottomNavConfig, type BottomNavAction, type NavTarget } from './config/routeBottomNav'
 import { useProgressStore } from './store/progress'
+import { useSettingsStore } from './store/settings'
 import { useFlowManager } from './composables/useFlowManager'
 
 const route = useRoute()
@@ -172,7 +173,9 @@ const handleNavChange = (value: string) => {
 
   if (action === 'next' && spec?.requiredStageToEnter !== undefined) {
     if (progressStore.unlockedStage < spec.requiredStageToEnter) {
-      alert(`请先在阶段 ${spec.requiredStageToEnter - 1} 训练满规定时间（60秒）后再进入本阶段！`)
+      const settingsStore = useSettingsStore()
+      const requiredMinutes = Math.floor(settingsStore.requiredTrainingTime / 60)
+      alert(`请先在阶段 ${spec.requiredStageToEnter - 1} 训练满规定时间（${requiredMinutes}分钟）后再进入本阶段！`)
       navValue.value = ''
       return
     }

@@ -1,29 +1,36 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Strabismus Exam Flow', () => {
-  test('Normal suppression flow skips contrast test and proceeds to alignment', async ({ page }) => {
+  test('Normal suppression flow with UserInfoForm skips contrast test and proceeds to alignment', async ({ page }) => {
     await page.goto('/#/home');
     
     // Click "斜视检查"
     await page.locator('.cards-wrapper .elegant-card:has-text("斜视检查")').click();
     
-    // SectionIntroExam -> LensSelection
+    // SectionIntroExam -> UserInfoForm
     await expect(page.locator('text=临床级视功能检查')).toBeVisible();
     await page.locator('button:has-text("我已准备好，开始")').click();
 
-    // LensSelection -> LensConfirmation
+    // Fill UserInfoForm
+    await expect(page.getByText('基本信息', { exact: true })).toBeVisible();
+    await page.getByLabel('年龄 (岁)').fill('25');
+    await page.locator('.v-select').click();
+    await page.locator('.v-list-item:has-text("男")').click();
+    await page.locator('button:has-text("继续")').click();
+
+    // UserInfoForm -> LensSelection
     await expect(page.locator('text=系统需要确认您的镜片方向')).toBeVisible();
     await page.locator('.lens-btn').first().click();
 
-    // LensConfirmation -> DistanceAdvice
+    // LensSelection -> LensConfirmation
     await expect(page.locator('text=系统校准成功')).toBeVisible();
     await page.locator('button:has-text("确认配置并继续")').click();
 
-    // DistanceAdvice -> SuppressionTest
+    // LensConfirmation -> DistanceAdvice
     await expect(page.locator('text=测试距离提示')).toBeVisible();
     await page.locator('button:has-text("我已了解，开始测试")').click();
 
-    // SuppressionTest Intro -> Start Test
+    // DistanceAdvice -> SuppressionTest
     await expect(page.locator('text=客观双眼抑制测试')).toBeVisible();
     await page.locator('button:has-text("开始测试")').click();
 

@@ -36,12 +36,20 @@ export const useSettingsStore = defineStore('settings', {
     colorVisionResult: null as 'normal' | 'deficient' | null,
     macularResult: null as 'normal' | 'abnormal' | null,
     contrastSensitivityResult: null as 'normal' | 'low' | null,
-    currentExamMode: null as 'exam' | 'amblyopia' | null,
+    currentExamMode: null as 'exam' | 'amblyopia' | 'vision' | null,
     testFrequency: 1,
     lastTestTime: 0,
-    stereopsisResult: null as 'normal' | 'mild' | 'moderate' | 'severe' | null
+    stereopsisResult: null as 'normal' | 'mild' | 'moderate' | 'severe' | null,
+    age: null as number | null,
+    gender: null as 'male' | 'female' | 'other' | null
   }),
   getters: {
+    requiredTrainingTime(state) {
+      if (state.age === null) return 900
+      if (state.age <= 12) return 600
+      if (state.age <= 17) return 900
+      return 1200
+    },
     leftEyeColorStr(state) {
       // If left eye is dominant (right is suppressed), penalize left eye
       let factor = state.suppressionStatus === 'right' ? state.penalizationFactor : 1.0
@@ -176,7 +184,7 @@ export const useSettingsStore = defineStore('settings', {
     setContrastSensitivityResult(result: 'normal' | 'low' | null) {
       this.contrastSensitivityResult = result
     },
-    setExamMode(mode: 'exam' | 'amblyopia' | null) {
+    setExamMode(mode: 'exam' | 'amblyopia' | 'vision' | null) {
       this.currentExamMode = mode
     },
     setTestFrequency(days: number) {
@@ -187,6 +195,12 @@ export const useSettingsStore = defineStore('settings', {
     },
     setStereopsisResult(result: 'normal' | 'mild' | 'moderate' | 'severe' | null) {
       this.stereopsisResult = result
+    },
+    setAge(age: number | null) {
+      this.age = age
+    },
+    setGender(gender: 'male' | 'female' | 'other' | null) {
+      this.gender = gender
     }
   },
   persist: true

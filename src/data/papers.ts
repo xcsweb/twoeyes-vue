@@ -146,5 +146,17 @@ export const papers: Paper[] = [
     abstractZh: `双马氏杆测试是一种测量旋转斜视的主观方法。该测试在患者的一只眼前放置红色的马氏杆，在另一只眼前放置白色的马氏杆。患者旋转马氏杆，直到观察到的两条线平行。旋转的角度即表示旋转偏斜的程度。这项测试对于诊断和处理旋转垂直性斜视（如上斜肌麻痹）至关重要。`,
     systemRelevance: '本系统依据：这是本系统“旋转斜视测量”功能的直接临床依据。通过屏幕上的红蓝分视线条模拟传统双马氏杆测试，本系统能够精准量化用户的旋转偏移角度，并在偏移量过大（大于2度）时发出临床就医预警，避免无效的视觉训练。',
     externalLink: 'https://pubmed.ncbi.nlm.nih.gov/2757099/'
+  },
+  {
+    id: 'bavelier2010',
+    authors: 'Bavelier, D., Levi, D. M., Li, R. W., Dan, Y., & Hensch, T. K.',
+    year: '2010',
+    titleEn: 'Removing brakes on adult brain plasticity: from molecular to behavioral interventions.',
+    titleZh: '解除成人大脑可塑性的“刹车”：从分子到行为干预',
+    journal: 'Journal of Neuroscience',
+    abstractEn: `While neural plasticity is maximal during early critical periods, recent work highlights that the adult brain retains significant capacity for reorganization. This review discusses how behavioral interventions, such as perceptual learning and action video games, can lift the "brakes" on plasticity in the adult visual cortex. This has profound implications for treating conditions like amblyopia well past the traditional developmental window.`,
+    abstractZh: `虽然神经可塑性在早期关键期达到顶峰，但最近的研究强调成年人的大脑仍保留着显著的重组能力。这篇综述讨论了行为干预（如知觉学习和动作类电子游戏）如何解除成人视觉皮层可塑性的“刹车”。这对于在传统发育窗口期之后治疗弱视等疾病具有深远的意义。`,
+    systemRelevance: '本系统依据：本系统的训练时长计算（requiredTrainingTime）基于该年龄与神经可塑性模型。12岁以下由于可塑性强，单次训练时间较短（600秒）；成年人（18岁以上）由于大脑存在“可塑性刹车”，需要更长时间（1200秒）的知觉学习刺激才能诱发视觉皮层的重组。',
+    externalLink: 'https://pubmed.ncbi.nlm.nih.gov/20962213/'
   }
 ]

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const TARGET_STAGE_TIME = 900
+import { useSettingsStore } from './settings'
 
 export interface StageData {
   stage: number
@@ -62,8 +62,9 @@ export const useProgressStore = defineStore('progress', {
         this.stages[stage].totalTime += timePassed
         
         // If they reached the target time today, unlock the next stage
+        const settingsStore = useSettingsStore()
         if (
-          this.stages[stage].totalTime >= TARGET_STAGE_TIME &&
+          this.stages[stage].totalTime >= settingsStore.requiredTrainingTime &&
           this.unlockedStage === stage
         ) {
           this.unlockedStage = Math.min(stage + 1, 4) // Assuming 4 is the max stage

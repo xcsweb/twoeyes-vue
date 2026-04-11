@@ -93,7 +93,7 @@
               追踪动态粒子和螺旋，增强双眼在运动中的持续融合能力，防止视界消失。
             </p>
             <div class="text-caption mt-auto pt-4 text-grey">包含：旋转螺旋、星空粒子</div>
-            <div v-if="unlockedStage < 2" class="text-caption mt-2 text-error">需在阶段 1 训练满 60 秒</div>
+            <div v-if="unlockedStage < 2" class="text-caption mt-2 text-error">需在阶段 1 训练满 {{ Math.floor(settingsStore.requiredTrainingTime / 60) }} 分钟</div>
           </div>
         </div>
 
@@ -128,7 +128,7 @@
               经典的聚散球 (Brock String) 训练，锻炼眼部肌肉控制斗鸡眼与放松的能力。
             </p>
             <div class="text-caption mt-auto pt-4 text-grey">包含：聚散卡、聚散球</div>
-            <div v-if="unlockedStage < 3" class="text-caption mt-2 text-error">需在阶段 2 训练满 60 秒</div>
+            <div v-if="unlockedStage < 3" class="text-caption mt-2 text-error">需在阶段 2 训练满 {{ Math.floor(settingsStore.requiredTrainingTime / 60) }} 分钟</div>
           </div>
         </div>
 
@@ -160,7 +160,7 @@
               在复杂背景下进行高级双眼协同，通过认知和空间判断重建高级手眼协调。
             </p>
             <div class="text-caption mt-auto pt-4 text-grey">包含：进阶立体视、双眼俄罗斯方块</div>
-            <div v-if="unlockedStage < 4" class="text-caption mt-2 text-error">需在阶段 3 训练满 60 秒</div>
+            <div v-if="unlockedStage < 4" class="text-caption mt-2 text-error">需在阶段 3 训练满 {{ Math.floor(settingsStore.requiredTrainingTime / 60) }} 分钟</div>
           </div>
         </div>
 

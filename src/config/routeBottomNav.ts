@@ -23,6 +23,13 @@ export type RouteBottomNavSpec = {
 
 export const routeBottomNavConfig: Record<string, RouteBottomNavSpec> = {
   Home: { showNav: false, buttons: {} },
+  UserInfoForm: {
+    showNav: true,
+    buttons: {
+      back: { target: { type: 'history', delta: -1 } },
+      home: { target: { type: 'route', to: { name: 'Home' } } }
+    }
+  },
   Intro: { showNav: false, buttons: {} },
   UserProfile: {
     showNav: true,

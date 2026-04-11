@@ -74,6 +74,11 @@ const routes = [
     }
   },
   {
+    path: '/exam/user-info',
+    name: 'UserInfoForm',
+    component: () => import('../views/UserInfoFormLevel.vue')
+  },
+  {
     path: '/exam/lens-selection',
     name: 'LensSelection',
     component: () => import('../views/LensSelectionLevel.vue')
@@ -186,28 +191,32 @@ const routes = [
     path: '/training/intro',
     name: 'SectionIntroTraining',
     component: () => import('../views/SectionIntroLevel.vue'),
-    props: {
-      title: '阶段 1：基础脱抑制',
-      subtitle: '通过简单的颜色匹配和移动，唤醒被抑制的眼睛',
-      notes: [
-        '目标：在屏幕上同时看到红蓝两种颜色的方块',
-        '时长要求：本阶段至少训练 60 秒'
-      ],
-      games: [
-        {
-          title: '洗牌训练 (Shuffle)',
-          description: '追踪快速移动的红蓝方块，唤醒弱视眼。',
-          routeName: 'ShuffleExercise',
-          hueRotate: '0deg'
-        },
-        {
-          title: '方块阵列 (Boxes)',
-          description: '在密集的方块阵列中寻找红蓝闪烁的目标。',
-          routeName: 'BoxesExercise',
-          hueRotate: '30deg'
-        }
-      ],
-      requiredStageToEnter: 1
+    props: () => {
+      const settingsStore = useSettingsStore()
+      const requiredMinutes = Math.floor(settingsStore.requiredTrainingTime / 60)
+      return {
+        title: '阶段 1：基础脱抑制',
+        subtitle: '通过简单的颜色匹配和移动，唤醒被抑制的眼睛',
+        notes: [
+          '目标：在屏幕上同时看到红蓝两种颜色的方块',
+          `时长要求：本阶段至少训练 ${requiredMinutes} 分钟`
+        ],
+        games: [
+          {
+            title: '洗牌训练 (Shuffle)',
+            description: '追踪快速移动的红蓝方块，唤醒弱视眼。',
+            routeName: 'ShuffleExercise',
+            hueRotate: '0deg'
+          },
+          {
+            title: '方块阵列 (Boxes)',
+            description: '在密集的方块阵列中寻找红蓝闪烁的目标。',
+            routeName: 'BoxesExercise',
+            hueRotate: '30deg'
+          }
+        ],
+        requiredStageToEnter: 1
+      }
     }
   },
   {
@@ -224,34 +233,38 @@ const routes = [
     path: '/training/intro-2',
     name: 'SectionIntroTraining2',
     component: () => import('../views/SectionIntroLevel.vue'),
-    props: {
-      title: '阶段 2：动态融合与扫视',
-      subtitle: '追踪动态粒子和螺旋，增强双眼在运动中的融合能力',
-      notes: [
-        '目标：在动态场景中保持双眼信号的持续输入，不出现某一眼视界消失的情况',
-        '时长要求：本阶段至少训练 60 秒'
-      ],
-      games: [
-        {
-          title: '扫视追踪 (Saccadic)',
-          description: '快速追踪红蓝交替闪烁的视标，提升扫视能力。',
-          routeName: 'SaccadicTrackingExercise',
-          hueRotate: '90deg'
-        },
-        {
-          title: '旋转螺旋 (Spiral)',
-          description: '注视旋转的螺旋线，增强中心凹与周边视野的融合。',
-          routeName: 'SpiralExercise',
-          hueRotate: '120deg'
-        },
-        {
-          title: '星空粒子 (Particles)',
-          description: '在漫天飞舞的粒子中保持双眼稳定注视。',
-          routeName: 'ParticlesExercise',
-          hueRotate: '150deg'
-        }
-      ],
-      requiredStageToEnter: 2
+    props: () => {
+      const settingsStore = useSettingsStore()
+      const requiredMinutes = Math.floor(settingsStore.requiredTrainingTime / 60)
+      return {
+        title: '阶段 2：动态融合与扫视',
+        subtitle: '追踪动态粒子和螺旋，增强双眼在运动中的融合能力',
+        notes: [
+          '目标：在动态场景中保持双眼信号的持续输入，不出现某一眼视界消失的情况',
+          `时长要求：本阶段至少训练 ${requiredMinutes} 分钟`
+        ],
+        games: [
+          {
+            title: '扫视追踪 (Saccadic)',
+            description: '快速追踪红蓝交替闪烁的视标，提升扫视能力。',
+            routeName: 'SaccadicTrackingExercise',
+            hueRotate: '90deg'
+          },
+          {
+            title: '旋转螺旋 (Spiral)',
+            description: '注视旋转的螺旋线，增强中心凹与周边视野的融合。',
+            routeName: 'SpiralExercise',
+            hueRotate: '120deg'
+          },
+          {
+            title: '星空粒子 (Particles)',
+            description: '在漫天飞舞的粒子中保持双眼稳定注视。',
+            routeName: 'ParticlesExercise',
+            hueRotate: '150deg'
+          }
+        ],
+        requiredStageToEnter: 2
+      }
     }
   },
   {
@@ -273,29 +286,33 @@ const routes = [
     path: '/training/intro-3',
     name: 'SectionIntroTraining3',
     component: () => import('../views/SectionIntroLevel.vue'),
-    props: {
-      title: '阶段 3：集合与分开',
-      subtitle: '裂隙尺聚散卡与聚散球视觉训练',
-      notes: [
-        '目标：随着目标物的靠近和远离，控制双眼肌肉进行斗鸡眼（集合）和放松（分开）',
-        '系统将根据您的外斜/内斜检查结果自动生成对应的训练模式',
-        '时长要求：本阶段至少训练 60 秒'
-      ],
-      games: [
-        {
-          title: '聚散卡 (Vergence Cards)',
-          description: '基于裂隙尺原理，训练阶梯式的集合与分开。',
-          routeName: 'VergenceCardsExercise',
-          hueRotate: '180deg'
-        },
-        {
-          title: '聚散球 (Brock String)',
-          description: '经典的眼科训练，在3D空间中控制双眼肌肉捏合。',
-          routeName: 'BrockStringExercise',
-          hueRotate: '210deg'
-        }
-      ],
-      requiredStageToEnter: 3
+    props: () => {
+      const settingsStore = useSettingsStore()
+      const requiredMinutes = Math.floor(settingsStore.requiredTrainingTime / 60)
+      return {
+        title: '阶段 3：集合与分开',
+        subtitle: '裂隙尺聚散卡与聚散球视觉训练',
+        notes: [
+          '目标：随着目标物的靠近和远离，控制双眼肌肉进行斗鸡眼（集合）和放松（分开）',
+          '系统将根据您的外斜/内斜检查结果自动生成对应的训练模式',
+          `时长要求：本阶段至少训练 ${requiredMinutes} 分钟`
+        ],
+        games: [
+          {
+            title: '聚散卡 (Vergence Cards)',
+            description: '基于裂隙尺原理，训练阶梯式的集合与分开。',
+            routeName: 'VergenceCardsExercise',
+            hueRotate: '180deg'
+          },
+          {
+            title: '聚散球 (Brock String)',
+            description: '经典的眼科训练，在3D空间中控制双眼肌肉捏合。',
+            routeName: 'BrockStringExercise',
+            hueRotate: '210deg'
+          }
+        ],
+        requiredStageToEnter: 3
+      }
     }
   },
   {

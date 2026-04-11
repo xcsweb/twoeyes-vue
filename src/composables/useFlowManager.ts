@@ -7,17 +7,21 @@ export function useFlowManager() {
   const settingsStore = useSettingsStore()
 
   const getFlowName = (routeName: string): 'vision' | 'exam' | 'amblyopia' | null => {
-    // If it's a vision flow route, return vision
-    const isVision = flows.vision.some(n => n.name === routeName)
-    if (isVision) return 'vision'
-    
-    // Otherwise it's exam or amblyopia flow
-    // Differentiate using currentExamMode if available, fallback to exam
-    if (settingsStore.currentExamMode === 'amblyopia') {
-      return 'amblyopia'
-    } else {
-      return 'exam'
+    if (settingsStore.currentExamMode === 'vision') {
+      // Still verify it's part of vision flow just in case
+      if (flows.vision.some(n => n.name === routeName)) return 'vision'
+    } else if (settingsStore.currentExamMode === 'amblyopia') {
+      if (flows.amblyopia.some(n => n.name === routeName)) return 'amblyopia'
+    } else if (settingsStore.currentExamMode === 'exam') {
+      if (flows.exam.some(n => n.name === routeName)) return 'exam'
     }
+
+    // Fallback: search across all flows if currentExamMode is out of sync
+    if (flows.vision.some(n => n.name === routeName)) return 'vision'
+    if (flows.amblyopia.some(n => n.name === routeName)) return 'amblyopia'
+    if (flows.exam.some(n => n.name === routeName)) return 'exam'
+    
+    return null
   }
 
   const goNext = (currentRouteName: string) => {

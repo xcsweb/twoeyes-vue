@@ -186,9 +186,12 @@ const decreaseDifficulty = () => {
 }
 
 const skipStage = () => {
-  progressStore.addStageTime(STAGE_NUMBER, 60 - stageTime.value)
-  showInfoDialog.value = false
-}
+    const requiredTime = settingsStore.requiredTrainingTime
+    if (stageTime.value < requiredTime) {
+      progressStore.addStageTime(STAGE_NUMBER, requiredTime - stageTime.value)
+    }
+    showInfoDialog.value = false
+  }
 
 let timerId: number
 onMounted(() => {
