@@ -203,6 +203,19 @@
             </div>
           </div>
 
+          <v-divider class="my-6 border-opacity-25" v-if="hasExamData && torsionChartData"></v-divider>
+
+          <!-- 旋转偏斜量历史折线图 -->
+          <div class="info-section mb-6" v-if="hasExamData && torsionChartData">
+            <h3 class="section-title mb-4"><v-icon icon="mdi-rotate-3d-variant" class="mr-2" color="purple-lighten-2"></v-icon>旋转偏斜量历史趋势</h3>
+            <div class="chart-container">
+              <Line :data="torsionChartData" :options="torsionChartOptions" />
+            </div>
+            <div class="text-caption text-grey mt-2 text-center">
+              (注：Y轴为旋转角度。越接近 0 越正常，绿线为正常标准 0°)
+            </div>
+          </div>
+
           <v-divider class="my-6 border-opacity-25"></v-divider>
 
           <!-- 康复训练设置 -->
@@ -407,6 +420,66 @@ const chartData = computed(() => {
 })
 
 const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      labels: {
+        color: '#fff'
+      }
+    }
+  },
+  scales: {
+    x: {
+      ticks: { color: '#aaa' },
+      grid: { color: 'rgba(255,255,255,0.1)' }
+    },
+    y: {
+      ticks: { color: '#aaa' },
+      grid: { 
+        color: (ctx: any) => ctx.tick.value === 0 ? '#4ade80' : 'rgba(255,255,255,0.1)' 
+      }
+    }
+  }
+}
+
+// 旋转偏斜量历史折线图数据配置
+const torsionChartData = computed(() => {
+  const history = settingsStore.alignmentHistory || []
+  const hasTorsionData = history.some(r => r.rLeft !== undefined || r.rRight !== undefined)
+  if (history.length === 0 || !hasTorsionData) return null
+
+  const labels = history.map(r => {
+    const parts = r.date.split('-')
+    return parts.length === 3 ? `${parts[1]}-${parts[2]}` : r.date
+  })
+  
+  // 保留一位小数的浮点数
+  const dataLeft = history.map(r => parseFloat(Number(r.rLeft || 0).toFixed(1)))
+  const dataRight = history.map(r => parseFloat(Number(r.rRight || 0).toFixed(1)))
+
+  return {
+    labels,
+    datasets: [
+      {
+        label: '左眼旋转偏移 (°)',
+        borderColor: '#ce93d8', // 紫色
+        backgroundColor: '#ce93d8',
+        data: dataLeft,
+        tension: 0.3
+      },
+      {
+        label: '右眼旋转偏移 (°)',
+        borderColor: '#ffb74d', // 橙色
+        backgroundColor: '#ffb74d',
+        data: dataRight,
+        tension: 0.3
+      }
+    ]
+  }
+})
+
+const torsionChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
