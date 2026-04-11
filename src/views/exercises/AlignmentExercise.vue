@@ -197,39 +197,39 @@ const handleKeyDown = (e: KeyboardEvent) => {
   const step = 0.5
   switch (e.key) {
     case 'ArrowUp':
-      position.value.y -= step
+      moveBox(0, -step)
       e.preventDefault()
       break
     case 'ArrowDown':
-      position.value.y += step
+      moveBox(0, step)
       e.preventDefault()
       break
     case 'ArrowLeft':
-      position.value.x -= step
+      moveBox(-step, 0)
       e.preventDefault()
       break
     case 'ArrowRight':
-      position.value.x += step
+      moveBox(step, 0)
       e.preventDefault()
       break
     case 'q':
     case 'Q':
-      position.value.rLeft -= step
+      rotateLeftBox(-0.2)
       e.preventDefault()
       break
     case 'e':
     case 'E':
-      position.value.rLeft += step
+      rotateLeftBox(0.2)
       e.preventDefault()
       break
     case 'u':
     case 'U':
-      position.value.rRight -= step
+      rotateRightBox(-0.2)
       e.preventDefault()
       break
     case 'o':
     case 'O':
-      position.value.rRight += step
+      rotateRightBox(0.2)
       e.preventDefault()
       break
   }
@@ -240,23 +240,43 @@ const handleKeyUp = () => {
 }
 
 const applyMagneticSnap = () => {
+  // Check translation
   if (Math.abs(position.value.x) <= 1.5) position.value.x = 0
   if (Math.abs(position.value.y) <= 1.5) position.value.y = 0
+  // Check rotation
   if (Math.abs(position.value.rLeft) <= 0.4) position.value.rLeft = 0
   if (Math.abs(position.value.rRight) <= 0.4) position.value.rRight = 0
 }
 
 const moveBox = (dx: number, dy: number) => {
-  position.value.x += dx
-  position.value.y += dy
+  // If it was magnetically snapped to 0, pressing a key should break it out of the snap
+  if (position.value.x === 0 && dx !== 0) {
+    position.value.x = dx > 0 ? 1.6 : -1.6
+  } else {
+    position.value.x += dx
+  }
+  
+  if (position.value.y === 0 && dy !== 0) {
+    position.value.y = dy > 0 ? 1.6 : -1.6
+  } else {
+    position.value.y += dy
+  }
 }
 
 const rotateLeftBox = (dr: number) => {
-  position.value.rLeft += dr
+  if (position.value.rLeft === 0 && dr !== 0) {
+    position.value.rLeft = dr > 0 ? 0.5 : -0.5
+  } else {
+    position.value.rLeft += dr
+  }
 }
 
 const rotateRightBox = (dr: number) => {
-  position.value.rRight += dr
+  if (position.value.rRight === 0 && dr !== 0) {
+    position.value.rRight = dr > 0 ? 0.5 : -0.5
+  } else {
+    position.value.rRight += dr
+  }
 }
 
 let timeoutId: number | undefined
@@ -328,10 +348,10 @@ const handleConfirm = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  /* Using a single vertical and horizontal line intersecting at center */
+  /* Offset the reference lines so they don't perfectly overlap with the target cross when centered */
   background-image: 
-    linear-gradient(to right, transparent calc(50% - 1px), rgba(255,255,255,0.3) calc(50% - 1px), rgba(255,255,255,0.3) calc(50% + 1px), transparent calc(50% + 1px)),
-    linear-gradient(to bottom, transparent calc(50% - 1px), rgba(255,255,255,0.3) calc(50% - 1px), rgba(255,255,255,0.3) calc(50% + 1px), transparent calc(50% + 1px));
+    linear-gradient(to right, transparent calc(40% - 1px), rgba(255,255,255,0.4) calc(40% - 1px), rgba(255,255,255,0.4) calc(40% + 1px), transparent calc(40% + 1px)),
+    linear-gradient(to bottom, transparent calc(30% - 1px), rgba(255,255,255,0.4) calc(30% - 1px), rgba(255,255,255,0.4) calc(30% + 1px), transparent calc(30% + 1px));
   z-index: 10; /* Bring it above the canvas area so it's not hidden by the colored boxes */
   pointer-events: none;
 }
