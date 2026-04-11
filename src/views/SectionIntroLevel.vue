@@ -26,10 +26,14 @@
           @click="startGame(game.routeName)"
         >
           <div class="card-img-wrapper">
-            <img class="card-img" :src="trainingImg" :alt="game.title" :style="{ filter: 'hue-rotate(' + game.hueRotate + ')' }" />
+            <img 
+              class="card-img" 
+              :src="getImageUrl(game.image)" 
+              :alt="game.title" 
+            />
             <div class="card-gradient"></div>
             <div class="play-overlay">
-              <v-icon size="48" color="white">mdi-play-circle</v-icon>
+              <v-icon size="48" color="white">mdi-play-circle-outline</v-icon>
             </div>
           </div>
           <div class="card-content">
@@ -80,8 +84,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import trainingImg from '../assets/images/cards/training.jpg'
 import { useFlowManager } from '../composables/useFlowManager'
+
+// Import helper for dynamic image resolving in Vite
+const gamesImages = import.meta.glob('../assets/images/games/*.webp', { eager: true, as: 'url' })
+
+const getImageUrl = (path?: string) => {
+  if (!path) return new URL('../assets/images/cards/training.webp', import.meta.url).href
+  
+  if (gamesImages[path]) {
+    return gamesImages[path]
+  }
+  
+  return path
+}
 
 const props = defineProps<{
   title: string
@@ -92,7 +108,7 @@ const props = defineProps<{
     title: string
     description: string
     routeName: string
-    hueRotate: string
+    image?: string
   }[]
 }>()
 

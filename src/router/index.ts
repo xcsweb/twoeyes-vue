@@ -202,19 +202,19 @@ const routes = [
           `时长要求：本阶段至少训练 ${requiredMinutes} 分钟`
         ],
         games: [
-          {
-            title: '洗牌训练 (Shuffle)',
-            description: '追踪快速移动的红蓝方块，唤醒弱视眼。',
-            routeName: 'ShuffleExercise',
-            hueRotate: '0deg'
-          },
-          {
-            title: '方块阵列 (Boxes)',
-            description: '在密集的方块阵列中寻找红蓝闪烁的目标。',
-            routeName: 'BoxesExercise',
-            hueRotate: '30deg'
-          }
-        ],
+        {
+          title: '洗牌训练 (Shuffle)',
+          description: '追踪快速移动的红蓝方块，唤醒弱视眼。',
+          routeName: 'ShuffleExercise',
+          image: '../assets/images/games/shuffle.webp'
+        },
+        {
+          title: '方块阵列 (Boxes)',
+          description: '在密集的方块阵列中寻找红蓝闪烁的目标。',
+          routeName: 'BoxesExercise',
+          image: '../assets/images/games/boxes.webp'
+        }
+      ],
         requiredStageToEnter: 1
       }
     }
@@ -248,19 +248,19 @@ const routes = [
             title: '扫视追踪 (Saccadic)',
             description: '快速追踪红蓝交替闪烁的视标，提升扫视能力。',
             routeName: 'SaccadicTrackingExercise',
-            hueRotate: '90deg'
+            image: '../assets/images/games/saccadic.webp'
           },
           {
             title: '旋转螺旋 (Spiral)',
             description: '注视旋转的螺旋线，增强中心凹与周边视野的融合。',
             routeName: 'SpiralExercise',
-            hueRotate: '120deg'
+            image: '../assets/images/games/spiral.webp'
           },
           {
             title: '星空粒子 (Particles)',
             description: '在漫天飞舞的粒子中保持双眼稳定注视。',
             routeName: 'ParticlesExercise',
-            hueRotate: '150deg'
+            image: '../assets/images/games/particles.webp'
           }
         ],
         requiredStageToEnter: 2
@@ -302,13 +302,13 @@ const routes = [
             title: '聚散卡 (Vergence Cards)',
             description: '基于裂隙尺原理，训练阶梯式的集合与分开。',
             routeName: 'VergenceCardsExercise',
-            hueRotate: '180deg'
+            image: '../assets/images/games/vergence-cards.webp'
           },
           {
             title: '聚散球 (Brock String)',
             description: '经典的眼科训练，在3D空间中控制双眼肌肉捏合。',
             routeName: 'BrockStringExercise',
-            hueRotate: '210deg'
+            image: '../assets/images/games/brock-string.webp'
           }
         ],
         requiredStageToEnter: 3
@@ -341,13 +341,13 @@ const routes = [
           title: '进阶立体视 (Stereopsis)',
           description: '持续动态寻找浮起的图形，强化立体视深度感知。',
           routeName: 'StereopsisExercise',
-          hueRotate: '240deg'
+          image: '../assets/images/games/stereopsis.webp'
         },
         {
           title: '俄罗斯方块 (Tetris)',
           description: '经典分视手眼协同训练，必须双眼配合才能拼合方块。',
           routeName: 'TetrisExercise',
-          hueRotate: '270deg'
+          image: '../assets/images/games/tetris.webp'
         }
       ],
       requiredStageToEnter: 4
