@@ -58,17 +58,26 @@ const getTileUrl = (r: number, c: number) => {
 .tiles-grid {
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  /* Font size 0 completely removes baseline gaps in inline elements */
+  font-size: 0;
+  line-height: 0;
+  letter-spacing: 0;
 }
 
 .bg-tile {
-  width: 100%;
-  height: 100%;
+  width: 25%;
+  height: 25%;
   display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
   /* The wrapper guarantees perfect 16:9, so fill is safe and avoids gaps */
   object-fit: fill; 
+  /* A microscopic scale factor (1.005) is the most robust way to eliminate any sub-pixel anti-aliasing gaps between tiles on high-DPI screens, while remaining invisible to the user. */
+  transform: scale(1.005);
 }
 
 /* Subtle fade in for tiles */
