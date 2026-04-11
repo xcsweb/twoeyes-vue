@@ -267,6 +267,7 @@ const goToProfile = () => {
   align-items: center;
   color: white;
   position: relative;
+  z-index: 0;
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }

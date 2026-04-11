@@ -246,6 +246,7 @@ const goToStage = (stage: number) => {
   align-items: center;
   color: white;
   position: relative;
+  z-index: 0;
   overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   padding-bottom: 80px;
