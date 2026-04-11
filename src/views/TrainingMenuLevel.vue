@@ -37,8 +37,8 @@
           :class="{ 'locked-card': effectiveUnlockedStage < 1 }"
           @click="effectiveUnlockedStage >= 1 ? goToStage(1) : null"
         >
-          <div class="card-img-wrapper" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
-            <img class="card-img" src="https://images.unsplash.com/photo-1436891620584-47fd0e565afb?auto=format&fit=crop&w=800&q=80" alt="stage1" style="opacity: 0.6; mix-blend-mode: overlay;" />
+          <div class="card-img-wrapper">
+            <img class="card-img" src="../assets/images/stages/stage1.webp" alt="stage1"  />
             <div class="card-gradient"></div>
             <div v-if="effectiveUnlockedStage < 1" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
@@ -68,8 +68,8 @@
           :class="{ 'locked-card': effectiveUnlockedStage < 2 }"
           @click="effectiveUnlockedStage >= 2 ? goToStage(2) : null"
         >
-          <div class="card-img-wrapper" style="background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);">
-            <img class="card-img" src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80" alt="stage2" style="opacity: 0.6; mix-blend-mode: overlay;" />
+          <div class="card-img-wrapper">
+            <img class="card-img" src="../assets/images/stages/stage2.webp" alt="stage2"  />
             <div class="card-gradient"></div>
             <div v-if="effectiveUnlockedStage < 2" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
@@ -103,8 +103,8 @@
           :class="{ 'locked-card': effectiveUnlockedStage < 3 }"
           @click="effectiveUnlockedStage >= 3 ? goToStage(3) : null"
         >
-          <div class="card-img-wrapper" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
-            <img class="card-img" src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=800&q=80" alt="stage3" style="opacity: 0.6; mix-blend-mode: overlay;" />
+          <div class="card-img-wrapper">
+            <img class="card-img" src="../assets/images/stages/stage3.webp" alt="stage3"  />
             <div class="card-gradient"></div>
             <div v-if="effectiveUnlockedStage < 3" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
@@ -138,8 +138,8 @@
           :class="{ 'locked-card': effectiveUnlockedStage < 4 }"
           @click="effectiveUnlockedStage >= 4 ? goToStage(4) : null"
         >
-          <div class="card-img-wrapper" style="background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);">
-            <img class="card-img" src="https://images.unsplash.com/photo-1484589065579-248aad0d8f13?auto=format&fit=crop&w=800&q=80" alt="stage4" style="opacity: 0.6; mix-blend-mode: overlay;" />
+          <div class="card-img-wrapper">
+            <img class="card-img" src="../assets/images/stages/stage4.webp" alt="stage4"  />
             <div class="card-gradient"></div>
             <div v-if="effectiveUnlockedStage < 4" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>

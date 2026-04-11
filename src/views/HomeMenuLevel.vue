@@ -11,7 +11,7 @@
         <!-- Intro Card -->
         <div class="elegant-card" @click="goToIntro">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" alt="intro" />
+            <img class="card-img" src="../assets/images/cards/intro.webp" alt="intro" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -25,7 +25,7 @@
         <!-- Vision Test Card -->
         <div class="elegant-card" @click="goToVision">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80" alt="vision" />
+            <img class="card-img" src="../assets/images/cards/vision.webp" alt="vision" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -39,7 +39,7 @@
         <!-- Exam Card -->
         <div class="elegant-card" @click="goToExam">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=800&q=80" alt="exam" />
+            <img class="card-img" src="../assets/images/cards/exam.webp" alt="exam" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -53,7 +53,7 @@
         <!-- Amblyopia Exam Card -->
         <div class="elegant-card" @click="goToAmblyopia">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=800&q=80" alt="amblyopia" />
+            <img class="card-img" src="../assets/images/cards/amblyopia.webp" alt="amblyopia" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -67,7 +67,7 @@
         <!-- Training Card -->
         <div class="elegant-card" @click="goToTraining">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=800&q=80" alt="training" />
+            <img class="card-img" src="../assets/images/cards/training.webp" alt="training" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -81,7 +81,7 @@
         <!-- Theory & References Card -->
         <div class="elegant-card" @click="goToTheory">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=800&q=80" alt="Theory & Literature" />
+            <img class="card-img" src="../assets/images/cards/theory.webp" alt="Theory & Literature" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -95,7 +95,7 @@
         <!-- User Profile Card -->
         <div class="elegant-card" @click="goToProfile">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=800&q=80" alt="Profile" />
+            <img class="card-img" src="../assets/images/cards/profile.webp" alt="Profile" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
