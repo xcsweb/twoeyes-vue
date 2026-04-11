@@ -54,7 +54,7 @@ test.describe('Strabismus Exam Flow', () => {
     await page.locator('button:has-text("我已准备好，开始")').click();
 
     // Now in AlignmentExercise
-    await expect(page.locator('text=请先确保每个十字都与背景的白色网格完全平行')).toBeVisible();
+    await expect(page.locator('text=请先确保每个十字都与背景的白色参考线完全平行')).toBeVisible();
     
     // Take a screenshot to verify UI (grid, buttons, etc.)
     await page.waitForTimeout(500);

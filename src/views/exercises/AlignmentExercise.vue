@@ -9,7 +9,7 @@
       <p class="text-body-2 text-grey">
         使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动其中一个十字准星。使用旋转按钮或键盘 Q/E (左眼) 和 U/O (右眼) 键调整旋转角度，直到两个十字准星在您的视觉中完全重合（看起来像一个发光的白色十字）。
         <br/><br/>
-        <strong class="text-orange">请先确保每个十字都与背景的白色网格完全平行</strong>
+        <strong class="text-orange">请先确保每个十字都与背景的白色参考线完全平行</strong>
       </p>
     </div>
 
@@ -328,10 +328,11 @@ const handleConfirm = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml;utf8,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 0L0 0 0 60' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'/%3E%3C/svg%3E");
-  background-size: 60px 60px;
-  background-position: center center;
-  z-index: 1;
+  /* Using a single vertical and horizontal line intersecting at center */
+  background-image: 
+    linear-gradient(to right, transparent calc(50% - 1px), rgba(255,255,255,0.3) calc(50% - 1px), rgba(255,255,255,0.3) calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(to bottom, transparent calc(50% - 1px), rgba(255,255,255,0.3) calc(50% - 1px), rgba(255,255,255,0.3) calc(50% + 1px), transparent calc(50% + 1px));
+  z-index: 10; /* Bring it above the canvas area so it's not hidden by the colored boxes */
   pointer-events: none;
 }
 
