@@ -36,6 +36,7 @@
         }"
         tabindex="0"
         @keydown="handleKeyDown"
+        @keyup="handleKeyUp"
         @pointerdown="handlePointerDown"
         @pointermove="handlePointerMove"
         @pointerup="handlePointerUp"
@@ -70,31 +71,31 @@
         <!-- Center D-pad -->
         <div class="dpad">
           <button class="dpad-btn" 
-            @pointerdown.prevent="startContinuous(() => moveBox(0, -1))"
-            @touchstart.prevent="startContinuous(() => moveBox(0, -1))"
+            @pointerdown.prevent="startContinuous(() => moveBox(0, -0.5))"
+            @touchstart.prevent="startContinuous(() => moveBox(0, -0.5))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
             @contextmenu.prevent>↑</button>
           <div class="dpad-row">
             <button class="dpad-btn" 
-              @pointerdown.prevent="startContinuous(() => moveBox(-1, 0))"
-              @touchstart.prevent="startContinuous(() => moveBox(-1, 0))"
+              @pointerdown.prevent="startContinuous(() => moveBox(-0.5, 0))"
+              @touchstart.prevent="startContinuous(() => moveBox(-0.5, 0))"
               @pointerup="stopContinuous" 
               @pointerleave="stopContinuous" 
               @pointercancel="stopContinuous" 
               @contextmenu.prevent>←</button>
             <button class="dpad-btn" 
-              @pointerdown.prevent="startContinuous(() => moveBox(1, 0))"
-              @touchstart.prevent="startContinuous(() => moveBox(1, 0))"
+              @pointerdown.prevent="startContinuous(() => moveBox(0.5, 0))"
+              @touchstart.prevent="startContinuous(() => moveBox(0.5, 0))"
               @pointerup="stopContinuous" 
               @pointerleave="stopContinuous" 
               @pointercancel="stopContinuous" 
               @contextmenu.prevent>→</button>
           </div>
           <button class="dpad-btn" 
-            @pointerdown.prevent="startContinuous(() => moveBox(0, 1))"
-            @touchstart.prevent="startContinuous(() => moveBox(0, 1))"
+            @pointerdown.prevent="startContinuous(() => moveBox(0, 0.5))"
+            @touchstart.prevent="startContinuous(() => moveBox(0, 0.5))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
@@ -188,11 +189,12 @@ const handlePointerUp = (e: PointerEvent) => {
   isDragging.value = false
   const target = e.currentTarget as HTMLElement
   target.releasePointerCapture(e.pointerId)
+  applyMagneticSnap()
 }
 
 // Keyboard Events
 const handleKeyDown = (e: KeyboardEvent) => {
-  const step = 1
+  const step = 0.5
   switch (e.key) {
     case 'ArrowUp':
       position.value.y -= step
@@ -233,6 +235,17 @@ const handleKeyDown = (e: KeyboardEvent) => {
   }
 }
 
+const handleKeyUp = () => {
+  applyMagneticSnap()
+}
+
+const applyMagneticSnap = () => {
+  if (Math.abs(position.value.x) <= 1.5) position.value.x = 0
+  if (Math.abs(position.value.y) <= 1.5) position.value.y = 0
+  if (Math.abs(position.value.rLeft) <= 0.4) position.value.rLeft = 0
+  if (Math.abs(position.value.rRight) <= 0.4) position.value.rRight = 0
+}
+
 const moveBox = (dx: number, dy: number) => {
   position.value.x += dx
   position.value.y += dy
@@ -258,6 +271,7 @@ const stopContinuous = () => {
     window.clearInterval(intervalId)
     intervalId = undefined
   }
+  applyMagneticSnap()
 }
 
 const startContinuous = (action: () => void) => {
@@ -370,7 +384,7 @@ const handleConfirm = () => {
   top: 50%;
   left: 10%;
   width: 80%;
-  height: 4px;
+  height: 2px;
   background-color: #000;
   transform: translateY(-50%);
   pointer-events: none;
@@ -380,7 +394,7 @@ const handleConfirm = () => {
   position: absolute;
   left: 50%;
   top: 10%;
-  width: 4px;
+  width: 2px;
   height: 80%;
   background-color: #000;
   transform: translateX(-50%);
