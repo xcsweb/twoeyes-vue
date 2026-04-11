@@ -53,12 +53,14 @@
         <div class="rotate-controls">
           <button class="dpad-btn" 
             @pointerdown.prevent="startContinuous(() => rotateLeftBox(-1))"
+            @touchstart.prevent="startContinuous(() => rotateLeftBox(-1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
             @contextmenu.prevent>↺</button>
           <button class="dpad-btn" 
             @pointerdown.prevent="startContinuous(() => rotateLeftBox(1))"
+            @touchstart.prevent="startContinuous(() => rotateLeftBox(1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
@@ -69,6 +71,7 @@
         <div class="dpad">
           <button class="dpad-btn" 
             @pointerdown.prevent="startContinuous(() => moveBox(0, -1))"
+            @touchstart.prevent="startContinuous(() => moveBox(0, -1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
@@ -76,12 +79,14 @@
           <div class="dpad-row">
             <button class="dpad-btn" 
               @pointerdown.prevent="startContinuous(() => moveBox(-1, 0))"
+              @touchstart.prevent="startContinuous(() => moveBox(-1, 0))"
               @pointerup="stopContinuous" 
               @pointerleave="stopContinuous" 
               @pointercancel="stopContinuous" 
               @contextmenu.prevent>←</button>
             <button class="dpad-btn" 
               @pointerdown.prevent="startContinuous(() => moveBox(1, 0))"
+              @touchstart.prevent="startContinuous(() => moveBox(1, 0))"
               @pointerup="stopContinuous" 
               @pointerleave="stopContinuous" 
               @pointercancel="stopContinuous" 
@@ -89,6 +94,7 @@
           </div>
           <button class="dpad-btn" 
             @pointerdown.prevent="startContinuous(() => moveBox(0, 1))"
+            @touchstart.prevent="startContinuous(() => moveBox(0, 1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
@@ -99,12 +105,14 @@
         <div class="rotate-controls">
           <button class="dpad-btn" 
             @pointerdown.prevent="startContinuous(() => rotateRightBox(-1))"
+            @touchstart.prevent="startContinuous(() => rotateRightBox(-1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
             @contextmenu.prevent>↺</button>
           <button class="dpad-btn" 
             @pointerdown.prevent="startContinuous(() => rotateRightBox(1))"
+            @touchstart.prevent="startContinuous(() => rotateRightBox(1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
@@ -306,9 +314,7 @@ const handleConfirm = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.25) 1px, transparent 1px);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50'><path d='M 50 0 L 0 0 0 50' fill='none' stroke='%23ffffff' stroke-width='1' stroke-opacity='0.25'/></svg>");
   background-size: 50px 50px;
   background-position: center center;
   z-index: 1;
@@ -439,6 +445,8 @@ const handleConfirm = () => {
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
+  user-drag: none;
+  -webkit-user-drag: none;
 }
 
 .dpad-btn:active {
