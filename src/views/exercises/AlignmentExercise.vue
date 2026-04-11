@@ -285,6 +285,9 @@ const handleConfirm = () => {
   flex-direction: column;
   touch-action: none; /* Prevent browser scrolling while dragging */
   z-index: 1;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .bg-black-overlay {
@@ -304,8 +307,8 @@ const handleConfirm = () => {
   width: 100%;
   height: 100%;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.25) 1px, transparent 1px);
   background-size: 50px 50px;
   background-position: center center;
   z-index: 1;
@@ -433,6 +436,9 @@ const handleConfirm = () => {
   cursor: pointer;
   transition: background-color 0.2s;
   touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .dpad-btn:active {
