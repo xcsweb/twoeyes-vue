@@ -38,7 +38,7 @@
           @click="effectiveUnlockedStage >= 1 ? goToStage(1) : null"
         >
           <div class="card-img-wrapper" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
-            <img class="card-img" src="../assets/images/training.jpg" alt="stage1" style="opacity: 0.6; mix-blend-mode: overlay;" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20glowing%20vibrant%20nebula%20with%20scattered%20bright%20stars%2C%20deep%20space%20exploration%2C%20stunning%20colors&image_size=landscape_16_9" alt="stage1" style="opacity: 0.6; mix-blend-mode: overlay;" />
             <div class="card-gradient"></div>
             <div v-if="effectiveUnlockedStage < 1" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
@@ -69,7 +69,7 @@
           @click="effectiveUnlockedStage >= 2 ? goToStage(2) : null"
         >
           <div class="card-img-wrapper" style="background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);">
-            <img class="card-img" src="../assets/images/training.jpg" alt="stage2" style="opacity: 0.6; mix-blend-mode: overlay;" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Two%20colorful%20spiral%20galaxies%20colliding%20and%20merging%20into%20one%20massive%20glowing%20core%2C%20dynamic%20space%20art&image_size=landscape_16_9" alt="stage2" style="opacity: 0.6; mix-blend-mode: overlay;" />
             <div class="card-gradient"></div>
             <div v-if="effectiveUnlockedStage < 2" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
@@ -104,7 +104,7 @@
           @click="effectiveUnlockedStage >= 3 ? goToStage(3) : null"
         >
           <div class="card-img-wrapper" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
-            <img class="card-img" src="../assets/images/training.jpg" alt="stage3" style="opacity: 0.6; mix-blend-mode: overlay;" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20cosmic%20wormhole%20connecting%20two%20distant%20star%20systems%2C%20glowing%20energy%20beams%20in%20deep%20space%2C%20sci-fi&image_size=landscape_16_9" alt="stage3" style="opacity: 0.6; mix-blend-mode: overlay;" />
             <div class="card-gradient"></div>
             <div v-if="effectiveUnlockedStage < 3" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
@@ -139,7 +139,7 @@
           @click="effectiveUnlockedStage >= 4 ? goToStage(4) : null"
         >
           <div class="card-img-wrapper" style="background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);">
-            <img class="card-img" src="../assets/images/training.jpg" alt="stage4" style="opacity: 0.6; mix-blend-mode: overlay;" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20highly%20detailed%203D%20holographic%20projection%20of%20a%20solar%20system%20floating%20in%20a%20futuristic%20spaceship%20bridge&image_size=landscape_16_9" alt="stage4" style="opacity: 0.6; mix-blend-mode: overlay;" />
             <div class="card-gradient"></div>
             <div v-if="effectiveUnlockedStage < 4" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>

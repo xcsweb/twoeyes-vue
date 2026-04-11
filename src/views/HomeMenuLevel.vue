@@ -11,7 +11,7 @@
         <!-- Intro Card -->
         <div class="elegant-card" @click="goToIntro">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/cards/intro.jpg" alt="intro" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20breathtaking%20view%20of%20a%20futuristic%20space%20station%20observing%20a%20distant%20galaxy%2C%20cinematic%20lighting&image_size=landscape_16_9" alt="intro" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -25,7 +25,7 @@
         <!-- Vision Test Card -->
         <div class="elegant-card" @click="goToVision">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/cards/vision.jpg" alt="vision" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=An%20astronaut%20looking%20through%20a%20futuristic%20telescope%20at%20glowing%20stars%20and%20nebulas%2C%20highly%20detailed&image_size=landscape_16_9" alt="vision" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -39,7 +39,7 @@
         <!-- Exam Card -->
         <div class="elegant-card" @click="goToExam">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/cards/exam.jpg" alt="exam" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Two%20merging%20galaxies%20forming%20a%20perfect%20symmetrical%20cosmic%20eye%2C%20vibrant%20colors%2C%20deep%20space&image_size=landscape_16_9" alt="exam" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -53,7 +53,7 @@
         <!-- Amblyopia Exam Card -->
         <div class="elegant-card" @click="goToAmblyopia">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/cards/amblyopia.jpg" alt="amblyopia" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20bright%20star%20emerging%20from%20a%20dark%20nebula%2C%20cosmic%20light%20piercing%20through%20space%20dust%2C%20beautiful%20astronomy&image_size=landscape_16_9" alt="amblyopia" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -67,7 +67,7 @@
         <!-- Training Card -->
         <div class="elegant-card" @click="goToTraining">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/cards/training.jpg" alt="training" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Astronauts%20floating%20in%20zero%20gravity%20training%20in%20a%20high-tech%20space%20facility%20with%20holographic%20displays&image_size=landscape_16_9" alt="training" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -81,7 +81,7 @@
         <!-- Theory & References Card -->
         <div class="elegant-card" @click="goToTheory">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/cards/theory.jpg" alt="Theory & Literature" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Ancient%20glowing%20star%20charts%20and%20cosmic%20constellations%20floating%20in%20a%20futuristic%20space%20observatory&image_size=landscape_16_9" alt="Theory & Literature" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
@@ -95,7 +95,7 @@
         <!-- User Profile Card -->
         <div class="elegant-card" @click="goToProfile">
           <div class="card-img-wrapper">
-            <img class="card-img" src="../assets/images/cards/profile.jpg" alt="Profile" />
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20highly%20detailed%20glowing%20holographic%20data%20screen%20displaying%20a%20cosmic%20galaxy%20map%20in%20space&image_size=landscape_16_9" alt="Profile" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">

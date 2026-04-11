@@ -1,7 +1,7 @@
 <template>
   <v-app class="bg-black">
     <router-view v-slot="{ Component }">
-      <transition name="fade" mode="out-in">
+      <transition name="fade" mode="out-in" @after-leave="onAfterLeave" @after-enter="onAfterEnter">
         <keep-alive include="HomeMenuLevel,UserProfileLevel">
           <component :is="Component" />
         </keep-alive>
@@ -66,6 +66,7 @@ import { routeBottomNavConfig, type BottomNavAction, type NavTarget } from './co
 import { useProgressStore } from './store/progress'
 import { useSettingsStore } from './store/settings'
 import { useFlowManager } from './composables/useFlowManager'
+import { scrollState } from './router'
 
 const route = useRoute()
 const router = useRouter()
@@ -73,6 +74,21 @@ const progressStore = useProgressStore()
 const { navigateForward, goBack } = useFlowManager()
 const navValue = ref<string>('')
 const isLoading = ref(false)
+
+const onAfterLeave = () => {
+  if (!scrollState.savedPosition) {
+    window.scrollTo(0, 0)
+  }
+}
+
+const onAfterEnter = () => {
+  if (scrollState.savedPosition) {
+    window.scrollTo(
+      scrollState.savedPosition.left || 0,
+      scrollState.savedPosition.top || 0
+    )
+  }
+}
 
 router.beforeEach((_to, _from, next) => {
   isLoading.value = true

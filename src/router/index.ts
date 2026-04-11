@@ -365,19 +365,14 @@ const routes = [
   }
 ]
 
+export const scrollState: { savedPosition: any } = { savedPosition: null }
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
   scrollBehavior(_to, _from, savedPosition) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (savedPosition) {
-          resolve(savedPosition)
-        } else {
-          resolve({ top: 0 })
-        }
-      }, 300)
-    })
+    scrollState.savedPosition = savedPosition
+    return false
   }
 })
 
