@@ -3,12 +3,22 @@
     <div class="manifesto-content">
       <!-- Intro Section -->
       <section class="manifesto-section hero-section">
-        <transition name="fade-slide" mode="out-in">
-          <h1 class="hero-text" :key="currentHint">{{ currentHint }}</h1>
-        </transition>
-        <div class="scroll-indicator">
-          <span>向下滚动</span>
-          <v-icon icon="mdi-chevron-down" class="bounce-icon"></v-icon>
+        <h1 class="hero-title fade-in-up">双眼视觉康复系统</h1>
+        <p class="hero-subtitle fade-in-up-delay-1">治愈的双眼，才能仰望星空</p>
+        
+        <div class="hero-badges mt-6 mb-8 fade-in-up-delay-2">
+          <v-chip color="primary" variant="flat" class="mr-2 mb-2">红蓝分离技术</v-chip>
+          <v-chip color="info" variant="flat" class="mr-2 mb-2">临床数据驱动</v-chip>
+          <v-chip color="success" variant="flat" class="mb-2">智能闭环康复</v-chip>
+        </div>
+
+        <p class="hero-description text-grey-lighten-1 fade-in-up-delay-3">
+          在开始体验之前，请确保您已经准备好了 <strong class="text-white">红蓝（或红青）3D眼镜</strong>。
+        </p>
+
+        <div class="scroll-indicator fade-in-up-delay-4">
+          <span>向下滚动了解更多</span>
+          <v-icon icon="mdi-chevron-down" class="bounce-icon mt-2"></v-icon>
         </div>
       </section>
 
@@ -56,7 +66,7 @@
             class="start-btn"
             @click="startExperience"
           >
-            开始体验
+            我已准备好，开始体验
           </v-btn>
         </div>
       </section>
@@ -65,48 +75,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 
 const router = useRouter()
 const settingsStore = useSettingsStore()
 
-const hints = [
-  "欢迎来到双眼视觉康复系统",
-  "本系统将通过红蓝分离技术帮助您进行视功能训练",
-  "在开始之前，请确保您已经准备好了红蓝或红青3D眼镜"
-]
-const currentIndex = ref(0)
-const currentHint = computed(() => hints[currentIndex.value])
-
 // Basic color setup
 const bgStyleColor = '#000000'
 const hintStyleColor = '#ffffff'
-
-let intervalId: ReturnType<typeof setInterval>
 
 const startExperience = () => {
   settingsStore.setHasSeenIntro(true)
   router.push({ name: 'Home' })
 }
-
-onMounted(() => {
-  // Cycle hints automatically
-  intervalId = setInterval(() => {
-    if (currentIndex.value < hints.length - 1) {
-      currentIndex.value++
-    } else {
-      clearInterval(intervalId) // Stop once we reach the end
-    }
-  }, 4000)
-})
-
-onUnmounted(() => {
-  if (intervalId) {
-    clearInterval(intervalId)
-  }
-})
 </script>
 
 <style scoped>
@@ -142,12 +124,66 @@ onUnmounted(() => {
   min-height: 100vh;
 }
 
-.hero-text {
-  font-size: 3rem;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -0.5px;
-  margin-bottom: 2rem;
+.hero-title {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, #fff, #aaa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 2px;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.fade-in-up {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.fade-in-up-delay-1 {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.fade-in-up-delay-2 {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.fade-in-up-delay-3 {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.fade-in-up-delay-4 {
+  animation: fadeIn 1.5s ease 1.5s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 .scroll-indicator {
@@ -162,7 +198,6 @@ onUnmounted(() => {
 }
 
 .bounce-icon {
-  margin-top: 0.5rem;
   font-size: 2rem;
   animation: bounce 2s infinite;
 }
@@ -231,24 +266,12 @@ onUnmounted(() => {
   transform: translateY(-2px);
 }
 
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fade-slide-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-
 @media (max-width: 600px) {
-  .hero-text {
-    font-size: 2rem;
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.2rem;
   }
   .section-title {
     font-size: 2rem;
