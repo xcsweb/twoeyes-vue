@@ -278,6 +278,8 @@ import {
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
 
+defineOptions({ name: 'UserProfileLevel' })
+
 ChartJS.register(
   CategoryScale,
   LinearScale,

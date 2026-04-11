@@ -171,6 +171,8 @@ import { useRouter } from 'vue-router'
 import { useProgressStore } from '../store/progress'
 import { useSettingsStore } from '../store/settings'
 
+defineOptions({ name: 'HomeMenuLevel' })
+
 const router = useRouter()
 const progressStore = useProgressStore()
 const settingsStore = useSettingsStore()

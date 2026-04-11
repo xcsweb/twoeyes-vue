@@ -1,11 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
-import HomeMenuLevel from '../views/HomeMenuLevel.vue'
-import TrainingMenuLevel from '../views/TrainingMenuLevel.vue'
-import TheoryLevel from '../views/TheoryLevel.vue'
-import PaperDetailLevel from '../views/PaperDetailLevel.vue'
-import UserProfileLevel from '../views/UserProfileLevel.vue'
-import ObjectiveTestLevel from '../views/ObjectiveTestLevel.vue'
 
 const routes = [
   {
@@ -31,27 +25,27 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: HomeMenuLevel
+    component: () => import('../views/HomeMenuLevel.vue')
   },
   {
     path: '/profile',
     name: 'UserProfile',
-    component: UserProfileLevel
+    component: () => import('../views/UserProfileLevel.vue')
   },
   {
     path: '/theory',
     name: 'Theory',
-    component: TheoryLevel
+    component: () => import('../views/TheoryLevel.vue')
   },
   {
     path: '/theory/paper/:id',
     name: 'PaperDetail',
-    component: PaperDetailLevel
+    component: () => import('../views/PaperDetailLevel.vue')
   },
   {
     path: '/training/menu',
     name: 'TrainingMenu',
-    component: TrainingMenuLevel
+    component: () => import('../views/TrainingMenuLevel.vue')
   },
   {
     path: '/exam/intro',
@@ -126,7 +120,7 @@ const routes = [
   {
     path: '/exam/suppression-test',
     name: 'SuppressionTest',
-    component: ObjectiveTestLevel
+    component: () => import('../views/ObjectiveTestLevel.vue')
   },
   {
     path: '/exam/contrast-test',
