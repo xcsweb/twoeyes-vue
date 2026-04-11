@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="bg-black">
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <keep-alive include="HomeMenuLevel,UserProfileLevel">
@@ -215,6 +215,10 @@ const handleNavChange = (value: string) => {
 </script>
 
 <style>
+.v-application {
+  background-color: #000000 !important;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
