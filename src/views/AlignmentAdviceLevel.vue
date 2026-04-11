@@ -36,7 +36,26 @@
           </div>
 
           <v-alert
-            v-if="hasSevereCyclotropia"
+            v-if="isDiagonalAlignmentError"
+            type="warning"
+            variant="tonal"
+            class="mb-6"
+            title="⚠️ 警告：可能存在设备倾斜"
+          >
+            系统检测到您的双眼均存在相似的旋转偏移，这很可能是由于您佩戴设备的倾斜（未保持水平）所致，即存在对角线对齐错误。建议您调整设备水平后重新进行测试。
+            <div class="mt-4">
+              <v-btn
+                color="warning"
+                variant="elevated"
+                @click="router.push({ name: 'AlignmentExercise' })"
+              >
+                重新测试
+              </v-btn>
+            </div>
+          </v-alert>
+
+          <v-alert
+            v-else-if="hasSevereCyclotropia"
             type="error"
             variant="tonal"
             class="mb-6"
@@ -106,7 +125,14 @@ onMounted(() => {
 
 const offset = computed(() => settingsStore.alignmentOffset)
 
+const isDiagonalAlignmentError = computed(() => {
+  const rL = Math.abs(offset.value.rLeft ?? 0)
+  const rR = Math.abs(offset.value.rRight ?? 0)
+  return rL > 2 && rR > 2 && Math.abs(rL - rR) <= 2
+})
+
 const hasSevereCyclotropia = computed(() => {
+  if (isDiagonalAlignmentError.value) return false
   return (offset.value.rLeft !== undefined && Math.abs(offset.value.rLeft) > 2) || 
          (offset.value.rRight !== undefined && Math.abs(offset.value.rRight) > 2)
 })

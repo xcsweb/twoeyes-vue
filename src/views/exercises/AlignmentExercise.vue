@@ -8,6 +8,8 @@
       <p class="text-h6 text-white mb-2">请戴上您的 3D 眼镜。</p>
       <p class="text-body-2 text-grey">
         使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动其中一个十字准星。使用旋转按钮或键盘 Q/E (左眼) 和 U/O (右眼) 键调整旋转角度，直到两个十字准星在您的视觉中完全重合（看起来像一个发光的白色十字）。
+        <br/><br/>
+        <strong class="text-orange">请先确保每个十字都与背景的白色网格完全平行</strong>
       </p>
     </div>
 
@@ -49,24 +51,64 @@
       <div class="controls-row">
         <!-- Left eye rotation -->
         <div class="rotate-controls">
-          <button class="dpad-btn" @click.stop="rotateLeftBox(-1)">↺</button>
-          <button class="dpad-btn" @click.stop="rotateLeftBox(1)">↻</button>
+          <button class="dpad-btn" 
+            @pointerdown.prevent="startContinuous(() => rotateLeftBox(-1))"
+            @pointerup="stopContinuous" 
+            @pointerleave="stopContinuous" 
+            @pointercancel="stopContinuous" 
+            @contextmenu.prevent>↺</button>
+          <button class="dpad-btn" 
+            @pointerdown.prevent="startContinuous(() => rotateLeftBox(1))"
+            @pointerup="stopContinuous" 
+            @pointerleave="stopContinuous" 
+            @pointercancel="stopContinuous" 
+            @contextmenu.prevent>↻</button>
         </div>
 
         <!-- Center D-pad -->
         <div class="dpad">
-          <button class="dpad-btn" @click.stop="moveBox(0, -1)">↑</button>
+          <button class="dpad-btn" 
+            @pointerdown.prevent="startContinuous(() => moveBox(0, -1))"
+            @pointerup="stopContinuous" 
+            @pointerleave="stopContinuous" 
+            @pointercancel="stopContinuous" 
+            @contextmenu.prevent>↑</button>
           <div class="dpad-row">
-            <button class="dpad-btn" @click.stop="moveBox(-1, 0)">←</button>
-            <button class="dpad-btn" @click.stop="moveBox(1, 0)">→</button>
+            <button class="dpad-btn" 
+              @pointerdown.prevent="startContinuous(() => moveBox(-1, 0))"
+              @pointerup="stopContinuous" 
+              @pointerleave="stopContinuous" 
+              @pointercancel="stopContinuous" 
+              @contextmenu.prevent>←</button>
+            <button class="dpad-btn" 
+              @pointerdown.prevent="startContinuous(() => moveBox(1, 0))"
+              @pointerup="stopContinuous" 
+              @pointerleave="stopContinuous" 
+              @pointercancel="stopContinuous" 
+              @contextmenu.prevent>→</button>
           </div>
-          <button class="dpad-btn" @click.stop="moveBox(0, 1)">↓</button>
+          <button class="dpad-btn" 
+            @pointerdown.prevent="startContinuous(() => moveBox(0, 1))"
+            @pointerup="stopContinuous" 
+            @pointerleave="stopContinuous" 
+            @pointercancel="stopContinuous" 
+            @contextmenu.prevent>↓</button>
         </div>
 
         <!-- Right eye rotation -->
         <div class="rotate-controls">
-          <button class="dpad-btn" @click.stop="rotateRightBox(-1)">↺</button>
-          <button class="dpad-btn" @click.stop="rotateRightBox(1)">↻</button>
+          <button class="dpad-btn" 
+            @pointerdown.prevent="startContinuous(() => rotateRightBox(-1))"
+            @pointerup="stopContinuous" 
+            @pointerleave="stopContinuous" 
+            @pointercancel="stopContinuous" 
+            @contextmenu.prevent>↺</button>
+          <button class="dpad-btn" 
+            @pointerdown.prevent="startContinuous(() => rotateRightBox(1))"
+            @pointerup="stopContinuous" 
+            @pointerleave="stopContinuous" 
+            @pointercancel="stopContinuous" 
+            @contextmenu.prevent>↻</button>
         </div>
       </div>
       
@@ -194,6 +236,28 @@ const rotateLeftBox = (dr: number) => {
 
 const rotateRightBox = (dr: number) => {
   position.value.rRight += dr
+}
+
+let timeoutId: number | undefined
+let intervalId: number | undefined
+
+const stopContinuous = () => {
+  if (timeoutId) {
+    window.clearTimeout(timeoutId)
+    timeoutId = undefined
+  }
+  if (intervalId) {
+    window.clearInterval(intervalId)
+    intervalId = undefined
+  }
+}
+
+const startContinuous = (action: () => void) => {
+  stopContinuous()
+  action()
+  timeoutId = window.setTimeout(() => {
+    intervalId = window.setInterval(action, 50)
+  }, 300)
 }
 
 const handleConfirm = () => {
