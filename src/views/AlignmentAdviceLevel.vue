@@ -23,14 +23,14 @@
 
           <div class="advice-text text-grey mb-4" v-if="offset.rLeft !== undefined && offset.rLeft !== 0">
             左眼旋转偏移量 (L Torsional Offset): 
-            <span class="text-white font-weight-bold ml-2">{{ offset.rLeft }} °</span>
+            <span class="text-white font-weight-bold ml-2">{{ parseFloat(Number(offset.rLeft).toFixed(1)) }} °</span>
             <span class="ml-2 text-info" v-if="offset.rLeft > 0">(顺时针/外旋)</span>
             <span class="ml-2 text-info" v-else-if="offset.rLeft < 0">(逆时针/内旋)</span>
           </div>
 
           <div class="advice-text text-grey mb-4" v-if="offset.rRight !== undefined && offset.rRight !== 0">
             右眼旋转偏移量 (R Torsional Offset): 
-            <span class="text-white font-weight-bold ml-2">{{ offset.rRight }} °</span>
+            <span class="text-white font-weight-bold ml-2">{{ parseFloat(Number(offset.rRight).toFixed(1)) }} °</span>
             <span class="ml-2 text-info" v-if="offset.rRight > 0">(顺时针/外旋)</span>
             <span class="ml-2 text-info" v-else-if="offset.rRight < 0">(逆时针/内旋)</span>
           </div>

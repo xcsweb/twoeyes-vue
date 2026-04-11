@@ -63,10 +63,10 @@ export const useSettingsStore = defineStore('settings', {
       if (state.alignmentOffset.x !== 0 || state.alignmentOffset.y !== 0 || (state.alignmentOffset.rLeft && state.alignmentOffset.rLeft !== 0) || (state.alignmentOffset.rRight && state.alignmentOffset.rRight !== 0)) {
         let text = `偏移: X:${state.alignmentOffset.x} Y:${state.alignmentOffset.y}`
         if (state.alignmentOffset.rLeft && state.alignmentOffset.rLeft !== 0) {
-          text += ` L:${state.alignmentOffset.rLeft}°`
+          text += ` L:${parseFloat(Number(state.alignmentOffset.rLeft).toFixed(1))}°`
         }
         if (state.alignmentOffset.rRight && state.alignmentOffset.rRight !== 0) {
-          text += ` R:${state.alignmentOffset.rRight}°`
+          text += ` R:${parseFloat(Number(state.alignmentOffset.rRight).toFixed(1))}°`
         }
         parts.push(text)
       }
