@@ -40,8 +40,7 @@ export const useSettingsStore = defineStore('settings', {
     testFrequency: 1,
     lastTestTime: 0,
     stereopsisResult: null as 'normal' | 'mild' | 'moderate' | 'severe' | null,
-    age: null as number | null,
-    gender: null as 'male' | 'female' | 'other' | null
+    age: null as number | null
   }),
   getters: {
     requiredTrainingTime(state) {
@@ -198,9 +197,6 @@ export const useSettingsStore = defineStore('settings', {
     },
     setAge(age: number | null) {
       this.age = age
-    },
-    setGender(gender: 'male' | 'female' | 'other' | null) {
-      this.gender = gender
     }
   },
   persist: true

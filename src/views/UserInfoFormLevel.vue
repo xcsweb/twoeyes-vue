@@ -18,23 +18,10 @@
                 type="number"
                 :rules="ageRules"
                 variant="outlined"
-                class="mb-4"
+                class="mb-6"
                 prepend-inner-icon="mdi-calendar-account"
                 required
               ></v-text-field>
-              
-              <v-select
-                v-model="gender"
-                :items="genderOptions"
-                item-title="title"
-                item-value="value"
-                label="性别"
-                :rules="genderRules"
-                variant="outlined"
-                class="mb-6"
-                prepend-inner-icon="mdi-account"
-                required
-              ></v-select>
               
               <v-btn
                 color="primary"
@@ -68,26 +55,15 @@ const { goNext } = useFlowManager()
 const valid = ref(false)
 const formRef = ref()
 const age = ref<number | null>(store.age)
-const gender = ref<'male' | 'female' | 'other' | null>(store.gender)
-
-const genderOptions = [
-  { title: '男', value: 'male' },
-  { title: '女', value: 'female' },
-  { title: '其他', value: 'other' }
-]
 
 const ageRules = [
   (v: any) => !!v || '请输入年龄',
   (v: any) => (v > 0 && v <= 120) || '请输入有效的年龄 (1-120)'
 ]
 
-const genderRules = [
-  (v: any) => !!v || '请选择性别'
-]
-
 onMounted(() => {
   // If age is already set and valid, we might want to validate the form immediately
-  if (age.value && gender.value) {
+  if (age.value) {
     // wait for next tick or just let vuetify handle it
     setTimeout(() => {
       if (formRef.value) formRef.value.validate()
@@ -100,9 +76,8 @@ const submitForm = async () => {
   
   const { valid: isValid } = await formRef.value.validate()
   
-  if (isValid && age.value && gender.value) {
+  if (isValid && age.value) {
     store.setAge(age.value)
-    store.setGender(gender.value)
     
     if (route.name) {
       goNext(route.name as string)

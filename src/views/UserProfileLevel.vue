@@ -23,10 +23,6 @@
                 <div class="data-value">{{ settingsStore.age }} 岁</div>
               </div>
               <div class="data-item">
-                <div class="data-label">性别</div>
-                <div class="data-value">{{ genderText }}</div>
-              </div>
-              <div class="data-item">
                 <div class="data-label">神经可塑性评估</div>
                 <div class="data-value text-success">{{ neuroplasticityText }}</div>
               </div>
@@ -335,13 +331,6 @@ const hasExamData = computed(() => {
 
 const hasVisionData = computed(() => {
   return settingsStore.visionHistory && settingsStore.visionHistory.length > 0
-})
-
-const genderText = computed(() => {
-  if (settingsStore.gender === 'male') return '男'
-  if (settingsStore.gender === 'female') return '女'
-  if (settingsStore.gender === 'other') return '其他'
-  return '未设置'
 })
 
 const neuroplasticityText = computed(() => {

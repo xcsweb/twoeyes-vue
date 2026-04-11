@@ -14,8 +14,6 @@ test.describe('Strabismus Exam Flow', () => {
     // Fill UserInfoForm
     await expect(page.getByText('基本信息', { exact: true })).toBeVisible();
     await page.getByLabel('年龄 (岁)').fill('25');
-    await page.locator('.v-select').click();
-    await page.locator('.v-list-item:has-text("男")').click();
     await page.locator('button:has-text("继续")').click();
 
     // UserInfoForm -> LensSelection
