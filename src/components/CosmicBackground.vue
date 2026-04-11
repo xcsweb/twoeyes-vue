@@ -76,8 +76,6 @@ const getTileUrl = (r: number, c: number) => {
   outline: none;
   /* The wrapper guarantees perfect 16:9, so fill is safe and avoids gaps */
   object-fit: fill; 
-  /* A microscopic scale factor (1.005) is the most robust way to eliminate any sub-pixel anti-aliasing gaps between tiles on high-DPI screens, while remaining invisible to the user. */
-  transform: scale(1.005);
 }
 
 /* Subtle fade in for tiles */
