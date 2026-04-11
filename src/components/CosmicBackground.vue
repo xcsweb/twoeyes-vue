@@ -1,19 +1,7 @@
 <template>
   <div class="cosmic-bg-container">
-    <div class="tiles-grid-wrapper">
-      <!-- Grid of 16 tiles -->
-      <div class="tiles-grid">
-        <template v-for="r in 4" :key="'r'+r">
-          <img 
-            v-for="c in 4" 
-            :key="'c'+c" 
-            class="bg-tile fade-in"
-            :src="getTileUrl(r - 1, c - 1)" 
-            alt="space tile" 
-          />
-        </template>
-      </div>
-    </div>
+    <!-- Use Canvas to completely bypass CSS sub-pixel rendering gaps -->
+    <canvas ref="bgCanvas" width="1920" height="1080" class="bg-canvas fade-in"></canvas>
     
     <!-- Porthole Vignette Overlay -->
     <div class="porthole-overlay"></div>
@@ -21,13 +9,39 @@
 </template>
 
 <script setup lang="ts">
-// Import all background tiles eagerly or dynamically. We use dynamic paths with Vite helper
+import { ref, onMounted } from 'vue'
+
+const bgCanvas = ref<HTMLCanvasElement | null>(null)
+
+// Import all background tiles dynamically
 const tilesImages = import.meta.glob('../assets/images/bg_tiles/*.webp', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 
-const getTileUrl = (r: number, c: number) => {
-  const path = `../assets/images/bg_tiles/bg_tile_${r}_${c}.webp`
-  return tilesImages[path] || ''
-}
+onMounted(() => {
+  const canvas = bgCanvas.value
+  if (!canvas) return
+  
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
+  // Original image was 1920x1080, sliced into 4x4 grid
+  const tileW = 480
+  const tileH = 270
+
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 4; c++) {
+      const path = `../assets/images/bg_tiles/bg_tile_${r}_${c}.webp`
+      const url = tilesImages[path]
+      if (url) {
+        const img = new Image()
+        img.src = url
+        img.onload = () => {
+          // Draw exactly at integer pixel coordinates, preventing any sub-pixel gaps
+          ctx.drawImage(img, c * tileW, r * tileH, tileW, tileH)
+        }
+      }
+    }
+  }
+})
 </script>
 
 <style scoped>
@@ -42,7 +56,7 @@ const getTileUrl = (r: number, c: number) => {
   background-color: #000;
 }
 
-.tiles-grid-wrapper {
+.bg-canvas {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -53,37 +67,16 @@ const getTileUrl = (r: number, c: number) => {
   min-height: 100vh;
   min-width: 177.78vh;
   transform: translate(-50%, -50%);
-}
-
-.tiles-grid {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  /* Font size 0 completely removes baseline gaps in inline elements */
-  font-size: 0;
-  line-height: 0;
-  letter-spacing: 0;
-}
-
-.bg-tile {
-  width: 25%;
-  height: 25%;
+  object-fit: fill;
   display: block;
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-  /* The wrapper guarantees perfect 16:9, so fill is safe and avoids gaps */
-  object-fit: fill; 
 }
 
-/* Subtle fade in for tiles */
+/* Subtle fade in for the whole canvas */
 .fade-in {
-  animation: fadeInTile 1.5s ease-in-out forwards;
+  animation: fadeInCanvas 1.5s ease-in-out forwards;
 }
 
-@keyframes fadeInTile {
+@keyframes fadeInCanvas {
   0% { opacity: 0; }
   100% { opacity: 1; }
 }
