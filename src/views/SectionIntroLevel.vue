@@ -87,7 +87,7 @@ import { useRoute } from 'vue-router'
 import { useFlowManager } from '../composables/useFlowManager'
 
 // Import helper for dynamic image resolving in Vite
-const gamesImages = import.meta.glob('../assets/images/games/*.webp', { eager: true, as: 'url' })
+const gamesImages = import.meta.glob('../assets/images/games/*.webp', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 
 const getImageUrl = (path?: string) => {
   if (!path) return new URL('../assets/images/cards/training.webp', import.meta.url).href
