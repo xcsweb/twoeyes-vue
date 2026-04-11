@@ -1,7 +1,6 @@
 <template>
   <div class="home-menu-container">
-    <div class="bg-overlay"></div>
-    <img class="bg-image" src="../assets/images/bg-nasa.jpg" alt="background" />
+    <CosmicBackground />
     
     <div class="content-area">
       <h1 class="title" @click="handleSecretClick">双眼视觉康复系统</h1>
@@ -170,6 +169,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProgressStore } from '../store/progress'
 import { useSettingsStore } from '../store/settings'
+import CosmicBackground from '../components/CosmicBackground.vue'
 
 defineOptions({ name: 'HomeMenuLevel' })
 

@@ -1,7 +1,6 @@
 <template>
   <div class="training-menu-container">
-    <div class="bg-overlay"></div>
-    <img class="bg-image" src="../assets/images/bg.jpg" alt="background" />
+    <CosmicBackground />
     
     <div class="content-area">
       <div class="w-100 mb-8 text-center">
@@ -174,6 +173,7 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProgressStore } from '../store/progress'
 import { useSettingsStore } from '../store/settings'
+import CosmicBackground from '../components/CosmicBackground.vue'
 
 const router = useRouter()
 const progressStore = useProgressStore()
