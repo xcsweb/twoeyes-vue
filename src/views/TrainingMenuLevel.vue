@@ -179,8 +179,6 @@ const router = useRouter()
 const progressStore = useProgressStore()
 const settingsStore = useSettingsStore()
 
-const baseUnlockStage = computed(() => progressStore.unlockedStage)
-
 // Diagnostics Logic
 const hasAmblyopia = computed(() => {
   return settingsStore.suppressionStatus === 'left' || 
@@ -193,19 +191,7 @@ const hasStrabismus = computed(() => {
          settingsStore.suppressionStatus === 'diplopia'
 })
 
-const effectiveUnlockedStage = computed(() => {
-  let stage = baseUnlockStage.value
-  
-  if (hasAmblyopia.value) {
-    stage = Math.max(stage, 1)
-  } else if (!hasAmblyopia.value && hasStrabismus.value) {
-    stage = Math.max(stage, 3)
-  } else {
-    stage = Math.max(stage, 4)
-  }
-  
-  return stage
-})
+const effectiveUnlockedStage = computed(() => progressStore.effectiveUnlockedStage)
 
 const hasMyopiaOrFatigue = computed(() => {
   // If visual acuity is low but no suppression/strabismus, likely simple refractive error/fatigue.

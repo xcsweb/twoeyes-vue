@@ -35,6 +35,24 @@ export const useProgressStore = defineStore('progress', {
       const diffTime = Math.abs(today.getTime() - firstDate.getTime())
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
       return diffDays + 1 // Include the first day as day 1
+    },
+    effectiveUnlockedStage: (state) => {
+      const settingsStore = useSettingsStore()
+      
+      const hasAmblyopia = settingsStore.suppressionStatus === 'left' || settingsStore.suppressionStatus === 'right'
+      const hasStrabismus = Math.abs(settingsStore.alignmentOffset.x) > 0 || 
+                            Math.abs(settingsStore.alignmentOffset.y) > 0 || 
+                            settingsStore.suppressionStatus === 'diplopia'
+                            
+      let stage = state.unlockedStage
+      if (hasAmblyopia) {
+        stage = Math.max(stage, 1)
+      } else if (!hasAmblyopia && hasStrabismus) {
+        stage = Math.max(stage, 3)
+      } else {
+        stage = Math.max(stage, 4)
+      }
+      return stage
     }
   },
   actions: {

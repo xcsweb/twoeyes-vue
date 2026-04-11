@@ -1,14 +1,15 @@
 import { useRouter } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
+import { useProgressStore } from '../store/progress'
 import { flows, type RouteResolver } from '../config/flowConfig'
 
 export function useFlowManager() {
   const router = useRouter()
   const settingsStore = useSettingsStore()
+  const progressStore = useProgressStore()
 
   const getFlowName = (routeName: string): 'vision' | 'exam' | 'amblyopia' | null => {
     if (settingsStore.currentExamMode === 'vision') {
-      // Still verify it's part of vision flow just in case
       if (flows.vision.some(n => n.name === routeName)) return 'vision'
     } else if (settingsStore.currentExamMode === 'amblyopia') {
       if (flows.amblyopia.some(n => n.name === routeName)) return 'amblyopia'
@@ -16,7 +17,6 @@ export function useFlowManager() {
       if (flows.exam.some(n => n.name === routeName)) return 'exam'
     }
 
-    // Fallback: search across all flows if currentExamMode is out of sync
     if (flows.vision.some(n => n.name === routeName)) return 'vision'
     if (flows.amblyopia.some(n => n.name === routeName)) return 'amblyopia'
     if (flows.exam.some(n => n.name === routeName)) return 'exam'
@@ -24,30 +24,45 @@ export function useFlowManager() {
     return null
   }
 
-  const goNext = (currentRouteName: string) => {
+  // Unified navigation function for both clinical flows and training stages
+  const navigateForward = (currentRouteName: string, targetRouteName?: string, requiredStageToEnter?: number) => {
+    // 1. Handle Clinical Exam Flows
     const flowName = getFlowName(currentRouteName)
-    if (!flowName) {
-      console.warn('未知的流程节点 (next):', currentRouteName)
-      router.push({ name: 'Home' })
-      return
+    if (flowName) {
+      if (currentRouteName === 'SectionIntroAmblyopia') settingsStore.setExamMode('amblyopia')
+      else if (currentRouteName === 'SectionIntroExam') settingsStore.setExamMode('exam')
+      else if (currentRouteName === 'SectionIntroVision') settingsStore.setExamMode('vision')
+
+      const flow = flows[flowName]
+      const node = flow.find(n => n.name === currentRouteName)
+      if (node && node.next) {
+        const nextRoute = typeof node.next === 'function' ? (node.next as RouteResolver)(settingsStore) : node.next
+        router.push({ name: nextRoute })
+        return { success: true }
+      }
     }
 
-    const flow = flows[flowName]
-    const node = flow.find(n => n.name === currentRouteName)
-
-    if (node && node.next) {
-      const nextRoute = typeof node.next === 'function' ? (node.next as RouteResolver)(settingsStore) : node.next
-      router.push({ name: nextRoute })
-    } else {
-      console.warn(`节点 ${currentRouteName} 没有配置 next 跳转，或者找不到该节点`)
-      router.push({ name: 'Home' })
+    // 2. Handle Training Stages (Intelligent Unlock Check)
+    if (targetRouteName) {
+      if (requiredStageToEnter && progressStore.effectiveUnlockedStage < requiredStageToEnter) {
+        const requiredMinutes = Math.floor(settingsStore.requiredTrainingTime / 60)
+        return { 
+          success: false, 
+          error: `此阶段尚未解锁！(需要完成阶段 ${requiredStageToEnter - 1} 并在其游戏内累计满 ${requiredMinutes} 分钟)` 
+        }
+      }
+      router.push({ name: targetRouteName })
+      return { success: true }
     }
+
+    console.warn(`节点 ${currentRouteName} 无法识别或没有配置 next 跳转`)
+    router.push({ name: 'Home' })
+    return { success: true }
   }
 
   const goBack = (currentRouteName: string) => {
     const flowName = getFlowName(currentRouteName)
     if (!flowName) {
-      console.warn('未知的流程节点 (back):', currentRouteName)
       router.push({ name: 'Home' })
       return
     }
@@ -59,10 +74,9 @@ export function useFlowManager() {
       const prevRoute = typeof node.prev === 'function' ? (node.prev as RouteResolver)(settingsStore) : node.prev
       router.push({ name: prevRoute })
     } else {
-      console.warn(`节点 ${currentRouteName} 没有配置 prev 跳转，或者找不到该节点`)
       router.push({ name: 'Home' })
     }
   }
 
-  return { goNext, goBack }
+  return { getFlowName, navigateForward, goBack, goNext: (route: string) => navigateForward(route) }
 }

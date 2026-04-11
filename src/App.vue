@@ -70,7 +70,7 @@ import { useFlowManager } from './composables/useFlowManager'
 const route = useRoute()
 const router = useRouter()
 const progressStore = useProgressStore()
-const { goNext, goBack } = useFlowManager()
+const { getFlowName, navigateForward, goBack } = useFlowManager()
 const navValue = ref<string>('')
 const isLoading = ref(false)
 
@@ -135,11 +135,14 @@ const btnNext = computed(() => {
 const btnHome = computed(() => routeSpec.value?.buttons.home)
 const btnMenu = computed(() => routeSpec.value?.buttons.menu)
 
-const runTarget = (target: NavTarget, action: BottomNavAction) => {
+const runTarget = (target: NavTarget, action: BottomNavAction, spec: any) => {
   if (target.type === 'exam_flow') {
     const currentRouteName = route.name as string
     if (action === 'next') {
-      goNext(currentRouteName)
+      const result = navigateForward(currentRouteName, undefined, spec?.requiredStageToEnter)
+      if (!result.success && result.error) {
+        alert(result.error)
+      }
     } else if (action === 'back') {
       goBack(currentRouteName)
     }
@@ -151,7 +154,10 @@ const runTarget = (target: NavTarget, action: BottomNavAction) => {
       if (route.query.step === 'test') {
         // already testing, shouldn't click next, but just in case
       } else if (route.query.step === 'result') {
-        goNext(currentRouteName)
+        const result = navigateForward(currentRouteName, undefined, spec?.requiredStageToEnter)
+        if (!result.success && result.error) {
+          alert(result.error)
+        }
       } else {
         // from intro -> start test
         router.replace({ query: { ...route.query, step: 'test' } })
@@ -162,7 +168,10 @@ const runTarget = (target: NavTarget, action: BottomNavAction) => {
   if (target.type === 'vision_flow') {
     const currentRouteName = route.name as string
     if (action === 'next') {
-      goNext(currentRouteName)
+      const result = navigateForward(currentRouteName, undefined, spec?.requiredStageToEnter)
+      if (!result.success && result.error) {
+        alert(result.error)
+      }
     } else if (action === 'back') {
       goBack(currentRouteName)
     }
@@ -172,6 +181,18 @@ const runTarget = (target: NavTarget, action: BottomNavAction) => {
     router.go(target.delta)
     return
   }
+
+  // Fallback for direct router pushes (like going to Home)
+  // Check for stage lock if this is a "next" action that requires a stage
+  if (action === 'next' && spec?.requiredStageToEnter !== undefined) {
+    if (progressStore.effectiveUnlockedStage < spec.requiredStageToEnter) {
+      const settingsStore = useSettingsStore()
+      const requiredMinutes = Math.floor(settingsStore.requiredTrainingTime / 60)
+      alert(`请先在阶段 ${spec.requiredStageToEnter - 1} 训练满规定时间（${requiredMinutes}分钟）后再进入本阶段！`)
+      return
+    }
+  }
+
   router.push(target.to)
 }
 
@@ -185,17 +206,7 @@ const handleNavChange = (value: string) => {
   const btn = spec?.buttons?.[action]
   if (!btn) return
 
-  if (action === 'next' && spec?.requiredStageToEnter !== undefined) {
-    if (progressStore.unlockedStage < spec.requiredStageToEnter) {
-      const settingsStore = useSettingsStore()
-      const requiredMinutes = Math.floor(settingsStore.requiredTrainingTime / 60)
-      alert(`请先在阶段 ${spec.requiredStageToEnter - 1} 训练满规定时间（${requiredMinutes}分钟）后再进入本阶段！`)
-      navValue.value = ''
-      return
-    }
-  }
-
-  runTarget(btn.target, action)
+  runTarget(btn.target, action, spec)
 
   setTimeout(() => {
     navValue.value = ''

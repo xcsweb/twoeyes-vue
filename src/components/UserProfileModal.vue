@@ -22,9 +22,9 @@
             </v-col>
             <v-col cols="6">
               <div class="stat-box">
-                <div class="stat-label">当前康复阶段</div>
-                <div class="stat-value text-primary">阶段 {{ progressStore.unlockedStage }}</div>
-              </div>
+                  <div class="stat-label">当前康复阶段</div>
+                  <div class="stat-value text-primary">阶段 {{ progressStore.effectiveUnlockedStage }}</div>
+                </div>
             </v-col>
           </v-row>
         </div>
