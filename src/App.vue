@@ -52,6 +52,10 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-overlay :model-value="isLoading" class="align-center justify-center" persistent>
+      <v-progress-circular indeterminate size="64" color="primary"></v-progress-circular>
+    </v-overlay>
   </v-app>
 </template>
 
@@ -68,6 +72,16 @@ const router = useRouter()
 const progressStore = useProgressStore()
 const { goNext, goBack } = useFlowManager()
 const navValue = ref<string>('')
+const isLoading = ref(false)
+
+router.beforeEach((_to, _from, next) => {
+  isLoading.value = true
+  next()
+})
+
+router.afterEach(() => {
+  isLoading.value = false
+})
 
 const navBgColor = computed(() => '#121212')
 const navColor = computed(() => 'white')

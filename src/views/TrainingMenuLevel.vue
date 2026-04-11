@@ -34,20 +34,20 @@
         <!-- Stage 1 -->
         <div 
           class="elegant-card" 
-          :class="{ 'locked-card': unlockedStage < 1 }"
-          @click="unlockedStage >= 1 ? goToStage(1) : null"
+          :class="{ 'locked-card': effectiveUnlockedStage < 1 }"
+          @click="effectiveUnlockedStage >= 1 ? goToStage(1) : null"
         >
           <div class="card-img-wrapper" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
             <img class="card-img" src="../assets/images/training.jpg" alt="stage1" style="opacity: 0.6; mix-blend-mode: overlay;" />
             <div class="card-gradient"></div>
-            <div v-if="unlockedStage < 1" class="lock-overlay">
+            <div v-if="effectiveUnlockedStage < 1" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
             </div>
           </div>
           <div class="card-content">
             <div class="d-flex justify-space-between align-center mb-2">
               <h2 class="card-title mb-0">阶段 1：基础脱抑制</h2>
-              <v-chip v-if="unlockedStage >= 1" color="success" size="small" variant="tonal">已解锁</v-chip>
+              <v-chip v-if="effectiveUnlockedStage >= 1" color="success" size="small" variant="tonal">已解锁</v-chip>
             </div>
             <!-- Stage 1 Badges -->
             <div class="badges-wrapper mb-3" v-if="hasAmblyopia || hasMyopiaOrFatigue">
@@ -65,20 +65,20 @@
         <!-- Stage 2 -->
         <div 
           class="elegant-card" 
-          :class="{ 'locked-card': unlockedStage < 2 }"
-          @click="unlockedStage >= 2 ? goToStage(2) : null"
+          :class="{ 'locked-card': effectiveUnlockedStage < 2 }"
+          @click="effectiveUnlockedStage >= 2 ? goToStage(2) : null"
         >
           <div class="card-img-wrapper" style="background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);">
             <img class="card-img" src="../assets/images/training.jpg" alt="stage2" style="opacity: 0.6; mix-blend-mode: overlay;" />
             <div class="card-gradient"></div>
-            <div v-if="unlockedStage < 2" class="lock-overlay">
+            <div v-if="effectiveUnlockedStage < 2" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
             </div>
           </div>
           <div class="card-content">
             <div class="d-flex justify-space-between align-center mb-2">
               <h2 class="card-title mb-0">阶段 2：动态融合</h2>
-              <v-chip v-if="unlockedStage >= 2" color="success" size="small" variant="tonal">已解锁</v-chip>
+              <v-chip v-if="effectiveUnlockedStage >= 2" color="success" size="small" variant="tonal">已解锁</v-chip>
             </div>
             <!-- Stage 2 Badges -->
             <div class="badges-wrapper mb-3" v-if="hasAmblyopia || hasStrabismus">
@@ -93,27 +93,27 @@
               追踪动态粒子和螺旋，增强双眼在运动中的持续融合能力，防止视界消失。
             </p>
             <div class="text-caption mt-auto pt-4 text-grey">包含：旋转螺旋、星空粒子</div>
-            <div v-if="unlockedStage < 2" class="text-caption mt-2 text-error">需在阶段 1 训练满 {{ Math.floor(settingsStore.requiredTrainingTime / 60) }} 分钟</div>
+            <div v-if="effectiveUnlockedStage < 2" class="text-caption mt-2 text-error">需在阶段 1 训练满 {{ Math.floor(settingsStore.requiredTrainingTime / 60) }} 分钟</div>
           </div>
         </div>
 
         <!-- Stage 3 -->
         <div 
           class="elegant-card" 
-          :class="{ 'locked-card': unlockedStage < 3 }"
-          @click="unlockedStage >= 3 ? goToStage(3) : null"
+          :class="{ 'locked-card': effectiveUnlockedStage < 3 }"
+          @click="effectiveUnlockedStage >= 3 ? goToStage(3) : null"
         >
           <div class="card-img-wrapper" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
             <img class="card-img" src="../assets/images/training.jpg" alt="stage3" style="opacity: 0.6; mix-blend-mode: overlay;" />
             <div class="card-gradient"></div>
-            <div v-if="unlockedStage < 3" class="lock-overlay">
+            <div v-if="effectiveUnlockedStage < 3" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
             </div>
           </div>
           <div class="card-content">
             <div class="d-flex justify-space-between align-center mb-2">
               <h2 class="card-title mb-0">阶段 3：集合与分开</h2>
-              <v-chip v-if="unlockedStage >= 3" color="success" size="small" variant="tonal">已解锁</v-chip>
+              <v-chip v-if="effectiveUnlockedStage >= 3" color="success" size="small" variant="tonal">已解锁</v-chip>
             </div>
             <!-- Stage 3 Badges -->
             <div class="badges-wrapper mb-3" v-if="hasStrabismus || hasMyopiaOrFatigue">
@@ -128,27 +128,27 @@
               经典的聚散球 (Brock String) 训练，锻炼眼部肌肉控制斗鸡眼与放松的能力。
             </p>
             <div class="text-caption mt-auto pt-4 text-grey">包含：聚散卡、聚散球</div>
-            <div v-if="unlockedStage < 3" class="text-caption mt-2 text-error">需在阶段 2 训练满 {{ Math.floor(settingsStore.requiredTrainingTime / 60) }} 分钟</div>
+            <div v-if="effectiveUnlockedStage < 3" class="text-caption mt-2 text-error">需在阶段 2 训练满 {{ Math.floor(settingsStore.requiredTrainingTime / 60) }} 分钟</div>
           </div>
         </div>
 
         <!-- Stage 4 -->
         <div 
           class="elegant-card" 
-          :class="{ 'locked-card': unlockedStage < 4 }"
-          @click="unlockedStage >= 4 ? goToStage(4) : null"
+          :class="{ 'locked-card': effectiveUnlockedStage < 4 }"
+          @click="effectiveUnlockedStage >= 4 ? goToStage(4) : null"
         >
           <div class="card-img-wrapper" style="background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);">
             <img class="card-img" src="../assets/images/training.jpg" alt="stage4" style="opacity: 0.6; mix-blend-mode: overlay;" />
             <div class="card-gradient"></div>
-            <div v-if="unlockedStage < 4" class="lock-overlay">
+            <div v-if="effectiveUnlockedStage < 4" class="lock-overlay">
               <v-icon size="48" color="white">mdi-lock</v-icon>
             </div>
           </div>
           <div class="card-content">
             <div class="d-flex justify-space-between align-center mb-2">
               <h2 class="card-title mb-0">阶段 4：立体视建立</h2>
-              <v-chip v-if="unlockedStage >= 4" color="success" size="small" variant="tonal">已解锁</v-chip>
+              <v-chip v-if="effectiveUnlockedStage >= 4" color="success" size="small" variant="tonal">已解锁</v-chip>
             </div>
             <!-- Stage 4 Badges -->
             <div class="badges-wrapper mb-3">
@@ -160,7 +160,7 @@
               在复杂背景下进行高级双眼协同，通过认知和空间判断重建高级手眼协调。
             </p>
             <div class="text-caption mt-auto pt-4 text-grey">包含：进阶立体视、双眼俄罗斯方块</div>
-            <div v-if="unlockedStage < 4" class="text-caption mt-2 text-error">需在阶段 3 训练满 {{ Math.floor(settingsStore.requiredTrainingTime / 60) }} 分钟</div>
+            <div v-if="effectiveUnlockedStage < 4" class="text-caption mt-2 text-error">需在阶段 3 训练满 {{ Math.floor(settingsStore.requiredTrainingTime / 60) }} 分钟</div>
           </div>
         </div>
 
@@ -179,13 +179,11 @@ const router = useRouter()
 const progressStore = useProgressStore()
 const settingsStore = useSettingsStore()
 
-const unlockedStage = computed(() => progressStore.unlockedStage)
+const baseUnlockStage = computed(() => progressStore.unlockedStage)
 
 // Diagnostics Logic
 const hasAmblyopia = computed(() => {
-  return settingsStore.visionAcuity.left <= 0.8 || 
-         settingsStore.visionAcuity.right <= 0.8 || 
-         settingsStore.suppressionStatus === 'left' || 
+  return settingsStore.suppressionStatus === 'left' || 
          settingsStore.suppressionStatus === 'right'
 })
 
@@ -193,6 +191,20 @@ const hasStrabismus = computed(() => {
   return Math.abs(settingsStore.alignmentOffset.x) > 0 || 
          Math.abs(settingsStore.alignmentOffset.y) > 0 || 
          settingsStore.suppressionStatus === 'diplopia'
+})
+
+const effectiveUnlockedStage = computed(() => {
+  let stage = baseUnlockStage.value
+  
+  if (hasAmblyopia.value) {
+    stage = Math.max(stage, 1)
+  } else if (!hasAmblyopia.value && hasStrabismus.value) {
+    stage = Math.max(stage, 3)
+  } else {
+    stage = Math.max(stage, 4)
+  }
+  
+  return stage
 })
 
 const hasMyopiaOrFatigue = computed(() => {
