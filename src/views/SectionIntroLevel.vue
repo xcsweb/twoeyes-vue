@@ -79,9 +79,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useProgressStore } from '../store/progress'
-import { useSettingsStore } from '../store/settings'
+import { useRoute } from 'vue-router'
 import trainingImg from '../assets/images/cards/training.jpg'
 import { useFlowManager } from '../composables/useFlowManager'
 
@@ -101,10 +99,7 @@ const props = defineProps<{
 const bgStyleColor = '#000000'
 const hintStyleColor = '#ffffff'
 
-const router = useRouter()
 const route = useRoute()
-const progressStore = useProgressStore()
-const settingsStore = useSettingsStore()
 const { navigateForward } = useFlowManager()
 
 const snackbar = ref(false)
@@ -253,10 +248,19 @@ const startGame = (routeName: string) => {
   align-items: center;
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
-.elegant-card:hover .play-overlay {
-  opacity: 1;
+@media (hover: hover) {
+  .elegant-card:hover .play-overlay {
+    opacity: 1;
+  }
+}
+
+@media (hover: none) {
+  .play-overlay {
+    opacity: 0.8;
+  }
 }
 
 .card-content {

@@ -70,7 +70,7 @@ import { useFlowManager } from './composables/useFlowManager'
 const route = useRoute()
 const router = useRouter()
 const progressStore = useProgressStore()
-const { getFlowName, navigateForward, goBack } = useFlowManager()
+const { navigateForward, goBack } = useFlowManager()
 const navValue = ref<string>('')
 const isLoading = ref(false)
 
