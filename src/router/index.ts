@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 
-export type NavTarget = string | { name: string } | ((store: any) => string | { name: string }) | undefined;
+export type NavTarget = string | { name: string } | ((store: any) => string | { name: string }) | boolean | undefined;
 
 export interface NavMeta {
   show?: boolean;
@@ -473,8 +473,8 @@ const routes = [
     meta: {
       nav: {
         show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
+        back: true,
+        home: 'Home'
       }
     }
   },
@@ -485,8 +485,8 @@ const routes = [
     meta: {
       nav: {
         show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
+        back: true,
+        home: 'Home'
       }
     }
   },
@@ -543,8 +543,8 @@ const routes = [
     meta: {
       nav: {
         show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
+        back: true,
+        home: 'Home'
       }
     }
   },
@@ -555,8 +555,8 @@ const routes = [
     meta: {
       nav: {
         show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
+        back: true,
+        home: 'Home'
       }
     }
   },
@@ -567,8 +567,8 @@ const routes = [
     meta: {
       nav: {
         show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
+        back: true,
+        home: 'Home'
       }
     }
   },
@@ -620,8 +620,8 @@ const routes = [
     meta: {
       nav: {
         show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
+        back: true,
+        home: 'Home'
       }
     }
   },
@@ -632,8 +632,8 @@ const routes = [
     meta: {
       nav: {
         show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
+        back: true,
+        home: 'Home'
       }
     }
   },
@@ -680,8 +680,8 @@ const routes = [
     meta: {
       nav: {
         show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
+        back: true,
+        home: 'Home'
       }
     }
   },
@@ -692,8 +692,8 @@ const routes = [
     meta: {
       nav: {
         show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
+        back: true,
+        home: 'Home'
       }
     }
   }

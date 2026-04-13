@@ -126,7 +126,10 @@ const nextLabel = computed(() => {
   return navMeta.value.nextLabel ?? '下一步'
 })
 
-const btnBack = computed(() => !!navMeta.value.back)
+const btnBack = computed(() => {
+  if (navMeta.value.back === false) return false
+  return navMeta.value.back !== undefined
+})
 const btnNext = computed(() => {
   if ((route.name === 'SuppressionTest' || route.name === 'ContrastTest') && route.query.step === 'test') {
     return false // Hide next button completely during test
@@ -155,7 +158,12 @@ const handleNavClick = (action: 'back' | 'next' | 'home' | 'menu') => {
   const currentRouteName = route.name as string
   
   if (action === 'back') {
-    goBack(currentRouteName)
+    const backTarget = navMeta.value.back
+    if (typeof backTarget === 'string') {
+      router.push({ name: backTarget })
+    } else {
+      goBack(currentRouteName)
+    }
     return
   }
 

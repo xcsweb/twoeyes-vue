@@ -50,6 +50,11 @@ export function useFlowManager() {
   const goBack = (_currentRouteName?: string) => {
     const navMeta = route.meta.nav
     if (navMeta && navMeta.back) {
+      if (navMeta.back === true) {
+        router.go(-1)
+        return
+      }
+
       let finalTarget: any
       if (typeof navMeta.back === 'function') {
         finalTarget = navMeta.back(settingsStore)
@@ -62,12 +67,12 @@ export function useFlowManager() {
       } else if (finalTarget && typeof finalTarget === 'object') {
         router.push(finalTarget)
       } else {
-        router.push({ name: 'Home' })
+        router.go(-1)
       }
       return
     }
 
-    router.push({ name: 'Home' })
+    router.go(-1)
   }
 
   return { 

@@ -1,5 +1,8 @@
 <template>
   <div class="exercise-container" @click="handleMiss">
+    <!-- Binocular Fusion Lock: White grid background to prevent eyes from drifting -->
+    <div class="fusion-lock-grid"></div>
+
     <div class="progress-hud">
       <span :class="{ 'text-success': isTargetReached, 'text-white': !isTargetReached }">
         剩余训练时间: {{ formattedTime }}
@@ -159,6 +162,21 @@ onBeforeUnmount(() => {
   color: white;
   cursor: crosshair;
   z-index: 1;
+}
+
+.fusion-lock-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Very faint white grid visible to both eyes to maintain binocular fusion */
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: 0;
 }
 
 .progress-hud {

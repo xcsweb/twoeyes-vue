@@ -38,7 +38,7 @@ test.describe('Bottom Navigation for Exercises', () => {
       await expect(backBtn).toBeVisible();
       await backBtn.click();
       
-      // Should go back to training menu
+      // Should go back to previous page in history (which is training menu)
       await expect(page).toHaveURL(/.*#\/training\/menu/);
 
       // Now test Home button

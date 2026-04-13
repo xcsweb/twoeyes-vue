@@ -71,8 +71,8 @@ const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = u
 
 const instructionText = computed(() => {
   const offset = settingsStore.alignmentOffset.x
-  if (offset > 0) return "检测到内隐斜：请在球远离时着重练习『双眼视线发散』的能力"
-  if (offset < 0) return "检测到外隐斜：请在球靠近时着重练习『双眼视线汇聚』的能力（斗鸡眼）"
+  if (offset < -5) return "检测到内隐斜：请在球远离时着重练习『双眼视线发散』的能力"
+  if (offset > 5) return "检测到外隐斜：请在球靠近时着重练习『双眼视线汇聚』的能力（斗鸡眼）"
   return "当球靠近时努力把眼睛“斗”起来（集合），远离时放松（分开）"
 })
 
@@ -146,8 +146,8 @@ const initThree = () => {
 
   const offset = alignmentOffset.x
   const baseSpeed = 1.0 + Math.min(Math.abs(offset) / 50, 1.0)
-  const isEsophoria = offset > 0
-  const isExophoria = offset < 0
+  const isEsophoria = offset < -5
+  const isExophoria = offset > 5
   const clock = new THREE.Clock()
   let timeRef = 0
 
@@ -169,19 +169,25 @@ const initThree = () => {
     
     const normalized = (Math.sin(timeRef) + 1) / 2
     const zPosition = minZ + normalized * (maxZ - minZ)
-    
+
     ballGroup.position.z = zPosition
-    
+
     // Dynamically adjust horizontal separation based on depth (Parallax)
     // Interpolate Y position so it moves naturally
     const t = (zPosition - startZ) / (endZ - startZ);
     const yPos = -1.5 + t * (1.5 - (-1.5));
 
+    const dist = camera.position.z - zPosition
+    const worldHeight = 2 * dist * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))
+    const unitsPerPixel = worldHeight / window.innerHeight
+    const shiftX = alignmentOffset.x * unitsPerPixel / 2
+    const shiftY = alignmentOffset.y * unitsPerPixel / 2
+
     const leftBall = ballGroup.getObjectByName('leftBall')
     const rightBall = ballGroup.getObjectByName('rightBall')
     if (leftBall && rightBall) {
-      leftBall.position.set(IOD_FACTOR * zPosition, yPos, 0)
-      rightBall.position.set(-IOD_FACTOR * zPosition, yPos, 0)
+      leftBall.position.set(IOD_FACTOR * zPosition - shiftX, yPos - shiftY, 0)
+      rightBall.position.set(-IOD_FACTOR * zPosition + shiftX, yPos + shiftY, 0)
     }
 
     renderer.render(scene, camera)
