@@ -34,15 +34,19 @@
 包含普通视力、对比敏感度、阿姆斯勒黄斑测试，以及核心的斜弱视、立体视筛查。
 ![Exam](public/screenshots/welcome.png)
 
-### 2. 个性化康复训练矩阵
+### 2. 色盲/色弱检查与普通视力测试
+包含色盲色弱（石原氏）检查，采用现代响应式排版。
+![Color Vision](public/screenshots/color-vision.png)
+
+### 3. 个性化康复训练矩阵
 按临床逻辑分为四大阶段：基础脱抑制、动态融合、集合与分开、高级立体视建立。
 ![Training Menu](public/screenshots/training_menu.png)
 
-### 3. 康复训练 (Tetris 示例)
+### 4. 康复训练 (Tetris 示例)
 训练游戏（如俄罗斯方块）会自动根据您的检查结果分配弱视眼看高亮的主动下落方块，主导眼看暗光惩罚的底部方块。
 ![Tetris Exercise](public/screenshots/tetris.png)
 
-### 4. 视觉健康档案与数据追踪
+### 5. 视觉健康档案与数据追踪
 实时记录您的检查数据，并通过折线图比对正常医学基准线，直观展示康复进度。
 ![Profile](public/screenshots/profile.png)
 

@@ -33,10 +33,11 @@
           <v-row justify="center" class="mb-2">
             <v-btn v-for="n in [7, 8, 9]" :key="n" size="x-large" color="white" variant="outlined" class="mx-2 number-btn" @click="submitAnswer(n)">{{n}}</v-btn>
           </v-row>
-          <v-row justify="center" class="mb-4 align-center">
-            <v-btn size="large" color="error" variant="text" class="mx-2" @click="submitAnswer(-1)">看不清</v-btn>
+          <v-row justify="center" class="mb-4">
+            <v-btn size="x-large" color="error" variant="text" class="mx-2 number-btn" @click="submitAnswer(-1)">看不清</v-btn>
             <v-btn size="x-large" color="white" variant="outlined" class="mx-2 number-btn" @click="submitAnswer(0)">0</v-btn>
-            <v-btn size="large" color="transparent" variant="text" class="mx-2" disabled></v-btn>
+            <!-- Invisible placeholder button to maintain symmetric 3-column alignment -->
+            <v-btn size="x-large" color="transparent" variant="text" class="mx-2 number-btn" style="visibility: hidden" disabled></v-btn>
           </v-row>
         </div>
       </div>
