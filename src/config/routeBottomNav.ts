@@ -26,7 +26,7 @@ export const routeBottomNavConfig: Record<string, RouteBottomNavSpec> = {
   UserInfoForm: {
     showNav: true,
     buttons: {
-      back: { target: { type: 'history', delta: -1 } },
+      back: { target: { type: 'route', to: { name: 'SectionIntroExam' } } },
       home: { target: { type: 'route', to: { name: 'Home' } } }
     }
   },
@@ -34,7 +34,7 @@ export const routeBottomNavConfig: Record<string, RouteBottomNavSpec> = {
   UserProfile: {
     showNav: true,
     buttons: {
-      back: { target: { type: 'history', delta: -1 } },
+      back: { target: { type: 'route', to: { name: 'Home' } } },
       home: { target: { type: 'route', to: { name: 'Home' } } }
     }
   },
@@ -238,20 +238,20 @@ home: { target: { type: 'route', to: { name: 'Home' } } },
   }
 }
 
-export function getRouteBottomNavSpec(routeName: string): RouteBottomNavSpec | undefined {
-  if (routeBottomNavConfig[routeName]) {
-    return routeBottomNavConfig[routeName]
+export function getRouteBottomNavSpec(routeName: string): RouteBottomNavSpec {
+  const spec = routeBottomNavConfig[routeName];
+  if (spec) {
+    return spec;
   }
-  
-  if (routeName.endsWith('Exercise')) {
+  // Fallback for exercises
+  if (routeName && routeName.endsWith('Exercise')) {
     return {
       showNav: true,
       buttons: {
-        back: { target: { type: 'history', delta: -1 } },
+        back: { target: undefined as any }, // Let useFlowManager handle it
         home: { target: { type: 'route', to: { name: 'Home' } } }
       }
-    }
+    };
   }
-  
-  return undefined
+  return { showNav: false, buttons: {} };
 }

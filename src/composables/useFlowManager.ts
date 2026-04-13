@@ -63,7 +63,13 @@ export function useFlowManager() {
   const goBack = (currentRouteName: string) => {
     const flowName = getFlowName(currentRouteName)
     if (!flowName) {
-      router.push({ name: 'Home' })
+      // Intelligent fallback for non-flow routes like Exercises
+      if (currentRouteName.endsWith('Exercise')) {
+        // Find which stage intro leads to this exercise, or default to TrainingMenu
+        router.push({ name: 'TrainingMenu' })
+      } else {
+        router.push({ name: 'Home' })
+      }
       return
     }
 

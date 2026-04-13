@@ -23,24 +23,32 @@ test.describe('Bottom Navigation for Exercises', () => {
   ];
 
   for (const exercise of exercises) {
-    test(`Should display bottom nav with back and home buttons for ${exercise.name}`, async ({ page }) => {
-      // Navigate directly to the exercise
+    test(`Should navigate back and home for ${exercise.name}`, async ({ page }) => {
+      // First go to a known page so we have history
+      await page.goto('/#/training/menu', { waitUntil: 'networkidle' });
+      // Then navigate to the exercise
       await page.goto(exercise.path, { waitUntil: 'networkidle' });
 
       // Ensure bottom nav is visible
       const bottomNav = page.locator('.bottom-nav');
       await expect(bottomNav).toBeVisible();
 
-      // Check Back button
+      // Check Back button and click it
       const backBtn = page.locator('.bottom-nav .v-btn[value="back"]');
       await expect(backBtn).toBeVisible();
-      // Verify text (default is '上一步' based on App.vue, but checking existence is primary)
-      // await expect(backBtn).toContainText('上一步');
+      await backBtn.click();
+      
+      // Should go back to training menu
+      await expect(page).toHaveURL(/.*#\/training\/menu/);
 
-      // Check Home button
+      // Now test Home button
+      await page.goto(exercise.path, { waitUntil: 'networkidle' });
       const homeBtn = page.locator('.bottom-nav .v-btn[value="home"]');
       await expect(homeBtn).toBeVisible();
-      // await expect(homeBtn).toContainText('回到主页');
+      await homeBtn.click();
+      
+      // Should go to home
+      await expect(page).toHaveURL(/.*#\/home/);
     });
   }
 });
