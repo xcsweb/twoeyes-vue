@@ -1,0 +1,4 @@
+- [x] `getRouteBottomNavSpec` 函数已正确实现并包含针对 `Exercise` 路由的 fallback 逻辑。
+- [x] `App.vue` 成功接入了统一函数，页面正常渲染。
+- [x] 进阶立体视训练（`StereopsisExercise`）等原本缺失底部导航的页面现在能够正确显示“返回”和“主页”按钮。
+- [x] 统一的 E2E 测试用例编写完成并全部 `Pass`。

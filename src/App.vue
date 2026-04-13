@@ -60,7 +60,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { routeBottomNavConfig, type BottomNavAction } from './config/routeBottomNav'
+import { getRouteBottomNavSpec, type BottomNavAction } from './config/routeBottomNav'
 import { useFlowManager } from './composables/useFlowManager'
 import { scrollState } from './router'
 
@@ -99,7 +99,7 @@ const navColor = computed(() => 'white')
 const routeSpec = computed(() => {
   const name = route.name as string | undefined
   if (!name) return undefined
-  return routeBottomNavConfig[name]
+  return getRouteBottomNavSpec(name)
 })
 
 const showUpdateDialog = ref(false)

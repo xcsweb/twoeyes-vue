@@ -235,63 +235,23 @@ home: { target: { type: 'route', to: { name: 'Home' } } },
       back: { target: { type: 'route', to: { name: 'TrainingMenu' } } },
       home: { target: { type: 'route', to: { name: 'Home' } } }
     }
-  },
-
-  // training exercises 显示 bottom nav
-  ShuffleExercise: {
-    showNav: true,
-    buttons: {
-      back: { target: { type: 'history', delta: -1 } },
-      home: { target: { type: 'route', to: { name: 'Home' } } },
-    },
-  },
-  BoxesExercise: {
-    showNav: true,
-    buttons: {
-      back: { target: { type: 'history', delta: -1 } },
-      home: { target: { type: 'route', to: { name: 'Home' } } },
-    },
-  },
-  SaccadicTrackingExercise: {
-    showNav: true,
-    buttons: {
-      back: { target: { type: 'history', delta: -1 } },
-      home: { target: { type: 'route', to: { name: 'Home' } } },
-    },
-  },
-  SpiralExercise: {
-    showNav: true,
-    buttons: {
-      back: { target: { type: 'history', delta: -1 } },
-      home: { target: { type: 'route', to: { name: 'Home' } } },
-    },
-  },
-  ParticlesExercise: {
-    showNav: true,
-    buttons: {
-      back: { target: { type: 'history', delta: -1 } },
-      home: { target: { type: 'route', to: { name: 'Home' } } },
-    },
-  },
-  VergenceCardsExercise: {
-    showNav: true,
-    buttons: {
-      back: { target: { type: 'history', delta: -1 } },
-      home: { target: { type: 'route', to: { name: 'Home' } } },
-    },
-  },
-  BrockStringExercise: {
-    showNav: true,
-    buttons: {
-      back: { target: { type: 'history', delta: -1 } },
-      home: { target: { type: 'route', to: { name: 'Home' } } },
-    },
-  },
-  TetrisExercise: {
-    showNav: true,
-    buttons: {
-      back: { target: { type: 'history', delta: -1 } },
-      home: { target: { type: 'route', to: { name: 'Home' } } },
-    },
   }
+}
+
+export function getRouteBottomNavSpec(routeName: string): RouteBottomNavSpec | undefined {
+  if (routeBottomNavConfig[routeName]) {
+    return routeBottomNavConfig[routeName]
+  }
+  
+  if (routeName.endsWith('Exercise')) {
+    return {
+      showNav: true,
+      buttons: {
+        back: { target: { type: 'history', delta: -1 } },
+        home: { target: { type: 'route', to: { name: 'Home' } } }
+      }
+    }
+  }
+  
+  return undefined
 }
