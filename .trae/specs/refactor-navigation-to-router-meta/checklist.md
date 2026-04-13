@@ -1,0 +1,4 @@
+- [x] `src/router/index.ts` 已经拥有所有必要的 `meta.nav` 属性。
+- [x] `src/config/flowConfig.ts` 和 `src/config/routeBottomNav.ts` 已被彻底删除，项目依赖唯一的路由配置文件。
+- [x] `src/App.vue` 成功读取 `route.meta.nav` 并正确渲染了底部导航（“上一步”、“下一步”、“回到主页”、“训练菜单”）。
+- [x] 测试用例 `tests/bottom-nav-exercises.spec.ts` 和 `tests/bottom-nav.spec.ts` 能够 100% 运行通过。

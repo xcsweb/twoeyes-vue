@@ -17,22 +17,22 @@
     >
       <v-btn v-if="btnBack" value="back" @click.stop="handleNavClick('back')">
         <v-icon>mdi-arrow-left</v-icon>
-        <span>{{ btnBack.label ?? '上一步' }}</span>
+        <span>{{ navMeta.backLabel ?? '上一步' }}</span>
       </v-btn>
 
       <v-btn v-if="btnNext" value="next" @click.stop="handleNavClick('next')">
         <v-icon>mdi-arrow-right</v-icon>
-        <span>{{ btnNext.label ?? nextLabel }}</span>
+        <span>{{ nextLabel }}</span>
       </v-btn>
 
       <v-btn v-if="btnMenu" value="menu" @click.stop="handleNavClick('menu')">
         <v-icon>mdi-view-grid</v-icon>
-        <span>{{ btnMenu.label ?? '训练菜单' }}</span>
+        <span>{{ navMeta.menuLabel ?? '训练菜单' }}</span>
       </v-btn>
 
       <v-btn v-if="btnHome" value="home" @click.stop="handleNavClick('home')">
         <v-icon>mdi-home</v-icon>
-        <span>{{ btnHome.label ?? '回到主页' }}</span>
+        <span>{{ navMeta.homeLabel ?? '回到主页' }}</span>
       </v-btn>
     </v-bottom-navigation>
 
@@ -60,9 +60,8 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getRouteBottomNavSpec, type BottomNavAction } from './config/routeBottomNav'
-import { useFlowManager } from './composables/useFlowManager'
 import { scrollState } from './router'
+import { useFlowManager } from './composables/useFlowManager'
 
 const route = useRoute()
 const router = useRouter()
@@ -96,11 +95,8 @@ router.afterEach(() => {
 const navBgColor = computed(() => '#121212')
 const navColor = computed(() => 'white')
 
-const routeSpec = computed(() => {
-  const name = route.name as string | undefined
-  if (!name) return undefined
-  return getRouteBottomNavSpec(name)
-})
+const navMeta = computed(() => route.meta.nav || {})
+const showNav = computed(() => navMeta.value.show ?? false)
 
 const showUpdateDialog = ref(false)
 
@@ -121,40 +117,29 @@ onUnmounted(() => {
   window.removeEventListener('app-update-available', handleUpdateAvailable)
 })
 
-const showNav = computed(() => routeSpec.value?.showNav ?? false)
 const nextLabel = computed(() => {
-  const spec = routeSpec.value
-  if (!spec) return '下一步'
-  
   if (route.name === 'SuppressionTest' || route.name === 'ContrastTest') {
     if (route.query.step === 'test') return '' // Hide next during test
     if (route.query.step === 'result') return '确认结果'
     return '开始测试'
   }
-  
-  return spec.nextLabel ?? '下一步'
+  return navMeta.value.nextLabel ?? '下一步'
 })
 
-const btnBack = computed(() => routeSpec.value?.buttons.back)
+const btnBack = computed(() => !!navMeta.value.back)
 const btnNext = computed(() => {
   if ((route.name === 'SuppressionTest' || route.name === 'ContrastTest') && route.query.step === 'test') {
-    return undefined // Hide next button completely during test
+    return false // Hide next button completely during test
   }
-  return routeSpec.value?.buttons.next
+  return !!navMeta.value.next
 })
-const btnHome = computed(() => routeSpec.value?.buttons.home)
-const btnMenu = computed(() => routeSpec.value?.buttons.menu)
+const btnHome = computed(() => !!navMeta.value.home)
+const btnMenu = computed(() => !!navMeta.value.menu)
 
-const handleNavClick = (action: BottomNavAction) => {
-  const spec = routeSpec.value
-  const btn = spec?.buttons?.[action]
-  if (!btn) return
-
-  // Use the defined target from spec if provided, or fallback to smart defaults
-  const target = btn.target
+const handleNavClick = (action: 'back' | 'next' | 'home' | 'menu') => {
+  const target = navMeta.value[action]
   
   if (action === 'home') {
-    // Force home action
     router.push({ name: 'Home' })
     return
   }
@@ -164,16 +149,7 @@ const handleNavClick = (action: BottomNavAction) => {
     return
   }
 
-  if (target) {
-    if (target.type === 'history') {
-      router.go(target.delta)
-      return
-    }
-    if (target.type === 'route') {
-      router.push(target.to)
-      return
-    }
-  }
+  if (!target) return
 
   // For next/back, use unified flow manager
   const currentRouteName = route.name as string
@@ -195,7 +171,7 @@ const handleNavClick = (action: BottomNavAction) => {
       }
     }
 
-    const result = navigateForward(currentRouteName, undefined, spec?.requiredStageToEnter)
+    const result = navigateForward(currentRouteName, undefined, route.meta.requiredStageToEnter as number | undefined)
     if (!result.success && result.error) {
       alert(result.error)
     }

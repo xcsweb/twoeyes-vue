@@ -1,48 +1,15 @@
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 import { useProgressStore } from '../store/progress'
-import { flows, type RouteResolver } from '../config/flowConfig'
 
 export function useFlowManager() {
   const router = useRouter()
+  const route = useRoute()
   const settingsStore = useSettingsStore()
   const progressStore = useProgressStore()
 
-  const getFlowName = (routeName: string): 'vision' | 'exam' | 'amblyopia' | null => {
-    if (settingsStore.currentExamMode === 'vision') {
-      if (flows.vision.some(n => n.name === routeName)) return 'vision'
-    } else if (settingsStore.currentExamMode === 'amblyopia') {
-      if (flows.amblyopia.some(n => n.name === routeName)) return 'amblyopia'
-    } else if (settingsStore.currentExamMode === 'exam') {
-      if (flows.exam.some(n => n.name === routeName)) return 'exam'
-    }
-
-    if (flows.vision.some(n => n.name === routeName)) return 'vision'
-    if (flows.amblyopia.some(n => n.name === routeName)) return 'amblyopia'
-    if (flows.exam.some(n => n.name === routeName)) return 'exam'
-    
-    return null
-  }
-
-  // Unified navigation function for both clinical flows and training stages
-  const navigateForward = (currentRouteName: string, targetRouteName?: string, requiredStageToEnter?: number) => {
-    // 1. Handle Clinical Exam Flows
-    const flowName = getFlowName(currentRouteName)
-    if (flowName) {
-      if (currentRouteName === 'SectionIntroAmblyopia') settingsStore.setExamMode('amblyopia')
-      else if (currentRouteName === 'SectionIntroExam') settingsStore.setExamMode('exam')
-      else if (currentRouteName === 'SectionIntroVision') settingsStore.setExamMode('vision')
-
-      const flow = flows[flowName]
-      const node = flow.find(n => n.name === currentRouteName)
-      if (node && node.next) {
-        const nextRoute = typeof node.next === 'function' ? (node.next as RouteResolver)(settingsStore) : node.next
-        router.push({ name: nextRoute })
-        return { success: true }
-      }
-    }
-
-    // 2. Handle Training Stages (Intelligent Unlock Check)
+  const navigateForward = (currentRouteName?: string, targetRouteName?: string, requiredStageToEnter?: number) => {
+    // If targetRouteName is provided (used for navigating to specific games/stages)
     if (targetRouteName) {
       if (requiredStageToEnter && progressStore.effectiveUnlockedStage < requiredStageToEnter) {
         const requiredMinutes = Math.floor(settingsStore.requiredTrainingTime / 60)
@@ -55,34 +22,57 @@ export function useFlowManager() {
       return { success: true }
     }
 
-    console.warn(`节点 ${currentRouteName} 无法识别或没有配置 next 跳转`)
+    // Otherwise, just use route.meta.nav.next
+    const navMeta = route.meta.nav
+    if (navMeta && navMeta.next) {
+      let finalTarget: any
+      if (typeof navMeta.next === 'function') {
+        finalTarget = navMeta.next(settingsStore)
+      } else {
+        finalTarget = navMeta.next
+      }
+
+      if (typeof finalTarget === 'string') {
+        router.push({ name: finalTarget })
+      } else if (finalTarget && typeof finalTarget === 'object') {
+        router.push(finalTarget)
+      } else {
+        router.push({ name: 'Home' })
+      }
+      return { success: true }
+    }
+
+    console.warn(`节点 ${String(currentRouteName || route.name)} 无法识别或没有配置 next 跳转`)
     router.push({ name: 'Home' })
     return { success: true }
   }
 
-  const goBack = (currentRouteName: string) => {
-    const flowName = getFlowName(currentRouteName)
-    if (!flowName) {
-      // Intelligent fallback for non-flow routes like Exercises
-      if (currentRouteName.endsWith('Exercise')) {
-        // Find which stage intro leads to this exercise, or default to TrainingMenu
-        router.push({ name: 'TrainingMenu' })
+  const goBack = (_currentRouteName?: string) => {
+    const navMeta = route.meta.nav
+    if (navMeta && navMeta.back) {
+      let finalTarget: any
+      if (typeof navMeta.back === 'function') {
+        finalTarget = navMeta.back(settingsStore)
+      } else {
+        finalTarget = navMeta.back
+      }
+
+      if (typeof finalTarget === 'string') {
+        router.push({ name: finalTarget })
+      } else if (finalTarget && typeof finalTarget === 'object') {
+        router.push(finalTarget)
       } else {
         router.push({ name: 'Home' })
       }
       return
     }
 
-    const flow = flows[flowName]
-    const node = flow.find(n => n.name === currentRouteName)
-
-    if (node && node.prev) {
-      const prevRoute = typeof node.prev === 'function' ? (node.prev as RouteResolver)(settingsStore) : node.prev
-      router.push({ name: prevRoute })
-    } else {
-      router.push({ name: 'Home' })
-    }
+    router.push({ name: 'Home' })
   }
 
-  return { getFlowName, navigateForward, goBack, goNext: (route: string) => navigateForward(route) }
+  return { 
+    navigateForward, 
+    goBack, 
+    goNext: (routeName?: string) => navigateForward(routeName) 
+  }
 }
