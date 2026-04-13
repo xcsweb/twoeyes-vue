@@ -143,7 +143,7 @@ const formatFloat = (val: number | undefined) => {
 
 const getXStatus = (x: number) => {
   if (Math.abs(x) <= 5) return '正常范围'
-  return x > 5 ? '内隐斜倾向' : '外隐斜倾向'
+  return x > 5 ? '外隐斜倾向' : '内隐斜倾向'
 }
 
 const getYStatus = (y: number) => {
@@ -164,7 +164,7 @@ const isDiagonalAlignmentError = computed(() => {
 
 const hasSevereCyclotropia = computed(() => {
   if (isDiagonalAlignmentError.value) return false
-  return (offset.value.rLeft !== undefined && Math.abs(offset.value.rLeft) > 5) || 
+  return (offset.value.rLeft !== undefined && Math.abs(offset.value.rLeft) > 5) ||
          (offset.value.rRight !== undefined && Math.abs(offset.value.rRight) > 5)
 })
 
@@ -197,9 +197,9 @@ const comprehensiveSummary = computed(() => {
   } else {
     summary += '根据测试，您的双眼在静息状态下存在部分偏斜。'
     if (!isXNormal) {
-      summary += x > 5 
-        ? '在水平方向上存在向内偏斜的趋势（内隐斜），说明您可能在过度动用“负融像性集合（NFV）”来对抗内斜。' 
-        : '在水平方向上存在向外偏斜的趋势（外隐斜/集合不足），说明您可能在过度动用“正融像性集合（PFV）”来对抗外斜。'
+      summary += x > 5
+        ? '在水平方向上存在向外偏斜的趋势（外隐斜/集合不足），说明您可能在过度动用“正融像性集合（PFV）”来对抗外斜。'
+        : '在水平方向上存在向内偏斜的趋势（内隐斜），说明您可能在过度动用“负融像性集合（NFV）”来对抗内斜。'
     }
     if (!isYNormal) {
       summary += '在垂直方向上存在轻度偏斜，这容易加剧长期的视觉疲劳。'
@@ -220,8 +220,8 @@ const comprehensiveSummary = computed(() => {
 
 const targetAction = computed(() => {
   const x = offset.value.x
-  if (x > 5) return '您需要着重练习双眼的“分开（Divergence）”能力。在接下来的「聚散球」等康复游戏中，请多加练习将视线【由近处跳跃注视到远处】，强迫眼部肌肉向外放松发散。'
-  if (x < -5) return '您需要着重练习双眼的“集合（Convergence）”能力。在接下来的「聚散球」等康复游戏中，请多加练习将视线【由远处跳跃注视到近处】，强迫眼部肌肉向鼻梁内侧汇聚（俗称“斗鸡眼”）。'
+  if (x > 5) return '您需要着重练习双眼的“集合（Convergence）”能力。在接下来的「聚散球」等康复游戏中，请多加练习将视线【由远处跳跃注视到近处】，强迫眼部肌肉向鼻梁内侧汇聚（俗称“斗鸡眼”）。'
+  if (x < -5) return '您需要着重练习双眼的“分开（Divergence）”能力。在接下来的「聚散球」等康复游戏中，请多加练习将视线【由近处跳跃注视到远处】，强迫眼部肌肉向外放松发散。'
   return '您的水平眼位正常。训练重点将放在全面提升双眼聚散的灵活性上，以进一步巩固双眼视觉融合能力，预防日常视疲劳。'
 })
 

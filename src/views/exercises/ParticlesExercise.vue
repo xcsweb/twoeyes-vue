@@ -132,7 +132,7 @@ const initThree = () => {
 
       p.x += p.vx + Math.sin(time * 0.5 + p.y * 0.1) * 0.05 * speedMultiplier
       p.y += p.vy + Math.cos(time * 0.5 + p.x * 0.1) * 0.05 * speedMultiplier
-      
+
       if (zDirection !== 0) {
         p.z += zDirection * (0.05 + Math.abs(p.vz)) * speedMultiplier
       } else {
@@ -146,7 +146,18 @@ const initThree = () => {
       if (p.z > 20) p.z = -20
       if (p.z < -20) p.z = 20
 
-      tempObject.position.set(p.x, p.y, p.z)
+      // Recompute unitsPerPixel specifically for this particle's depth to be perfectly accurate
+      const pDist = camera.position.z - p.z
+      const pWorldHeight = 2 * pDist * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))
+      const pUnitsPerPixel = pWorldHeight / window.innerHeight
+      const pShiftX = alignmentOffset.x * pUnitsPerPixel / 2
+      const pShiftY = alignmentOffset.y * pUnitsPerPixel / 2
+
+      const isRightEye = (i % 2 !== 0)
+      const finalX = p.x + (isRightEye ? pShiftX : -pShiftX)
+      const finalY = p.y + (isRightEye ? pShiftY : -pShiftY)
+
+      tempObject.position.set(finalX, finalY, p.z)
 
       const breath = Math.sin(time * 2 + i) * 0.2 + 1
       const s = p.scale * breath

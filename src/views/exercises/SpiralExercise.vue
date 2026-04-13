@@ -55,14 +55,14 @@ let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 let animationId: number
 let timerId: number
-let instancedMesh: THREE.InstancedMesh
+let leftMesh: THREE.InstancedMesh
+let rightMesh: THREE.InstancedMesh
 
 const STAGE_NUMBER = 2 // Spiral Exercise belongs to Stage 2
 const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = useStageTimer(STAGE_NUMBER)
 
-const numItems = 600
+const numItemsPerEye = 300
 const tempObject = new THREE.Object3D()
-const tempColor = new THREE.Color()
 
 const initThree = () => {
   if (!containerRef.value) return
@@ -103,17 +103,14 @@ const initThree = () => {
   ]
 
   const geometry = new THREE.OctahedronGeometry(0.5, 0)
-  const material = new THREE.MeshPhongMaterial({ vertexColors: true })
-  instancedMesh = new THREE.InstancedMesh(geometry, material, numItems)
+  const leftMaterial = new THREE.MeshPhongMaterial({ color: colors[0], blending: THREE.AdditiveBlending, depthWrite: false, transparent: true })
+  const rightMaterial = new THREE.MeshPhongMaterial({ color: colors[1], blending: THREE.AdditiveBlending, depthWrite: false, transparent: true })
+  
+  leftMesh = new THREE.InstancedMesh(geometry, leftMaterial, numItemsPerEye)
+  rightMesh = new THREE.InstancedMesh(geometry, rightMaterial, numItemsPerEye)
 
-  const colorArray = new Float32Array(numItems * 3)
-  for (let i = 0; i < numItems; i++) {
-    const color = colors[i % 2 === 0 ? 0 : 1]
-    tempColor.set(color)
-    tempColor.toArray(colorArray, i * 3)
-  }
-  geometry.setAttribute('color', new THREE.InstancedBufferAttribute(colorArray, 3))
-  scene.add(instancedMesh)
+  scene.add(leftMesh)
+  scene.add(rightMesh)
 
   const offset = alignmentOffset.x
   const clock = new THREE.Clock()
@@ -124,29 +121,53 @@ const initThree = () => {
 
     const direction = offset < 0 ? -1 : 1
     const speed = 0.2 + Math.min(Math.abs(offset) / 100, 0.5)
-    instancedMesh.rotation.z = time * speed * direction
+    
+    leftMesh.rotation.z = rightMesh.rotation.z = time * speed * direction
 
-    for (let i = 0; i < numItems; i++) {
+    const zBaseOffset = offset > 0 ? -Math.min(offset, 15) : offset < 0 ? Math.min(Math.abs(offset), 10) : 0
+
+    // Compute pixel shift in world units at the mesh center
+    const dist = camera.position.z - zBaseOffset
+    const worldHeight = 2 * dist * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))
+    const unitsPerPixel = worldHeight / window.innerHeight
+    const shiftX = alignmentOffset.x * unitsPerPixel / 2
+    const shiftY = alignmentOffset.y * unitsPerPixel / 2
+
+    // Apply shifting directly to the parent meshes in world space (unaffected by local rotation)
+    leftMesh.position.set(-shiftX, -shiftY, 0)
+    rightMesh.position.set(shiftX, shiftY, 0)
+
+    let leftIdx = 0
+    let rightIdx = 0
+
+    const totalItems = numItemsPerEye * 2
+    for (let i = 0; i < totalItems; i++) {
       const angle = i * 0.5 + time * 0.5 * direction
       const radius = 0.5 + i * 0.05
 
       const x = Math.cos(angle) * radius
       const y = Math.sin(angle) * radius
-      
-      const zBaseOffset = offset > 0 ? -Math.min(offset, 15) : offset < 0 ? Math.min(Math.abs(offset), 10) : 0
+
       const z = Math.sin(i * 0.1 - time * 2) * 2 + zBaseOffset
 
       tempObject.position.set(x, y, z)
       tempObject.rotation.z = angle
       tempObject.rotation.x = time + i * 0.1
 
-      const scale = 0.2 + (i / numItems) * 0.8
+      const scale = 0.2 + (i / totalItems) * 0.8
       tempObject.scale.set(scale, scale, scale)
 
       tempObject.updateMatrix()
-      instancedMesh.setMatrixAt(i, tempObject.matrix)
+      
+      if (i % 2 === 0) {
+        leftMesh.setMatrixAt(leftIdx++, tempObject.matrix)
+      } else {
+        rightMesh.setMatrixAt(rightIdx++, tempObject.matrix)
+      }
     }
-    instancedMesh.instanceMatrix.needsUpdate = true
+    
+    leftMesh.instanceMatrix.needsUpdate = true
+    rightMesh.instanceMatrix.needsUpdate = true
 
     renderer.render(scene, camera)
   }

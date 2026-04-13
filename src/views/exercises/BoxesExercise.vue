@@ -55,14 +55,14 @@ let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 let animationId: number
 let timerId: number
-let instancedMesh: THREE.InstancedMesh
+let leftMesh: THREE.InstancedMesh
+let rightMesh: THREE.InstancedMesh
 
 const STAGE_NUMBER = 1 // Boxes Exercise belongs to Stage 1
 const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = useStageTimer(STAGE_NUMBER)
 
-const numBoxes = 1000
+const numBoxesPerEye = 500
 const tempObject = new THREE.Object3D()
-const tempColor = new THREE.Color()
 
 const initThree = () => {
   if (!containerRef.value) return
@@ -88,12 +88,12 @@ const initThree = () => {
   containerRef.value.appendChild(renderer.domElement)
 
   // Lights
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
   scene.add(ambientLight)
 
-  const pointLight = new THREE.PointLight(0xffffff, 0.55)
-  pointLight.position.set(150, 150, 150)
-  scene.add(pointLight)
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
+  directionalLight.position.set(5, 5, 5)
+  scene.add(directionalLight)
 
   // Instanced Mesh
   const { alignmentOffset } = settingsStore
@@ -102,46 +102,81 @@ const initThree = () => {
     settingsStore.rightEyeColorStr
   ]
 
-  const geometry = new THREE.BoxGeometry(0.7, 0.7, 0.7)
-  const material = new THREE.MeshPhongMaterial({ vertexColors: true })
-  instancedMesh = new THREE.InstancedMesh(geometry, material, numBoxes)
-
-  const colorArray = new Float32Array(numBoxes * 3)
-  for (let i = 0; i < numBoxes; i++) {
-    const color = colors[Math.floor(Math.random() * 2)]
-    tempColor.set(color)
-    tempColor.toArray(colorArray, i * 3)
-  }
-  geometry.setAttribute('color', new THREE.InstancedBufferAttribute(colorArray, 3))
-  scene.add(instancedMesh)
+  const geometry = new THREE.BoxGeometry(0.8, 0.8, 0.8)
+  const leftMaterial = new THREE.MeshStandardMaterial({ color: colors[0], blending: THREE.AdditiveBlending, depthWrite: false, transparent: true })
+  const rightMaterial = new THREE.MeshStandardMaterial({ color: colors[1], blending: THREE.AdditiveBlending, depthWrite: false, transparent: true })
+  
+  leftMesh = new THREE.InstancedMesh(geometry, leftMaterial, numBoxesPerEye)
+  rightMesh = new THREE.InstancedMesh(geometry, rightMaterial, numBoxesPerEye)
+  
+  scene.add(leftMesh)
+  scene.add(rightMesh)
 
   const offset = alignmentOffset.x
   const clock = new THREE.Clock()
+
+  const leftCoords: any[] = []
+  const rightCoords: any[] = []
+  for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < 10; y++) {
+      for (let z = 0; z < 10; z++) {
+        if (Math.random() > 0.5 && leftCoords.length < 500) {
+          leftCoords.push({x, y, z})
+        } else if (rightCoords.length < 500) {
+          rightCoords.push({x, y, z})
+        } else {
+          leftCoords.push({x, y, z})
+        }
+      }
+    }
+  }
 
   const animate = () => {
     animationId = requestAnimationFrame(animate)
     const time = clock.getElapsedTime()
 
-    instancedMesh.rotation.x = Math.sin(time / 4)
-    instancedMesh.rotation.y = Math.sin(time / 2)
+    leftMesh.rotation.x = rightMesh.rotation.x = Math.sin(time / 4)
+    leftMesh.rotation.y = rightMesh.rotation.y = Math.sin(time / 2)
 
     const zBaseOffset = offset > 0 ? -Math.min(offset / 2, 10) : offset < 0 ? Math.min(Math.abs(offset) / 2, 5) : 0
 
-    let i = 0
-    for (let x = 0; x < 10; x++) {
-      for (let y = 0; y < 10; y++) {
-        for (let z = 0; z < 10; z++) {
-          tempObject.position.set(5 - x, 5 - y, 5 - z + zBaseOffset)
-          tempObject.rotation.y = Math.sin(x / 4 + time) + Math.sin(y / 4 + time) + Math.sin(z / 4 + time)
-          tempObject.rotation.z = tempObject.rotation.y * 2
-          tempObject.scale.set(1, 1, 1)
-          tempObject.updateMatrix()
-          instancedMesh.setMatrixAt(i, tempObject.matrix)
-          i++
-        }
+    // Compute pixel shift in world units at the mesh center (zBaseOffset)
+    const dist = camera.position.z - zBaseOffset
+    const worldHeight = 2 * dist * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))
+    const unitsPerPixel = worldHeight / window.innerHeight
+    const shiftX = alignmentOffset.x * unitsPerPixel / 2
+    const shiftY = alignmentOffset.y * unitsPerPixel / 2
+
+    // Apply shifting directly to the parent meshes in world space (unaffected by local rotation)
+    leftMesh.position.set(-shiftX, -shiftY, 0)
+    rightMesh.position.set(shiftX, shiftY, 0)
+
+    for (let i = 0; i < 500; i++) {
+      // Left
+      let coord = leftCoords[i]
+      if (coord) {
+        tempObject.position.set(5 - coord.x, 5 - coord.y, 5 - coord.z + zBaseOffset)
+        tempObject.rotation.y = Math.sin(coord.x / 4 + time) + Math.sin(coord.y / 4 + time) + Math.sin(coord.z / 4 + time)
+        tempObject.rotation.z = tempObject.rotation.y * 2
+        tempObject.scale.set(1, 1, 1)
+        tempObject.updateMatrix()
+        leftMesh.setMatrixAt(i, tempObject.matrix)
+      }
+      
+      // Right
+      coord = rightCoords[i]
+      if (coord) {
+        tempObject.position.set(5 - coord.x, 5 - coord.y, 5 - coord.z + zBaseOffset)
+        tempObject.rotation.y = Math.sin(coord.x / 4 + time) + Math.sin(coord.y / 4 + time) + Math.sin(coord.z / 4 + time)
+        tempObject.rotation.z = tempObject.rotation.y * 2
+        tempObject.scale.set(1, 1, 1)
+        tempObject.updateMatrix()
+        rightMesh.setMatrixAt(i, tempObject.matrix)
       }
     }
-    instancedMesh.instanceMatrix.needsUpdate = true
+    
+    leftMesh.instanceMatrix.needsUpdate = true
+    rightMesh.instanceMatrix.needsUpdate = true
 
     renderer.render(scene, camera)
   }
