@@ -85,7 +85,7 @@ const route = useRoute()
 const settingsStore = useSettingsStore()
 const { goNext } = useFlowManager()
 
-const acuityLevels = [0.1, 0.12, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.2]
+const acuityLevels = [0.1, 0.12, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.2, 1.5, 2.0]
 const directions = ['up', 'down', 'left', 'right']
 
 const currentEye = ref<'left' | 'right'>('left')
