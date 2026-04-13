@@ -246,19 +246,21 @@ const handleNavChange = (value: string) => {
 }
 
 .bottom-nav {
-  position: fixed;
-  left: 50%;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
-  transform: translateX(-50%);
-  width: calc(100% - 24px);
-  max-width: 720px;
-  z-index: 1000;
-  border-radius: 18px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 auto !important;
+  width: calc(100% - 24px) !important;
+  max-width: 720px !important;
+  z-index: 1000 !important;
+  border-radius: 18px !important;
   background: rgba(18, 18, 18, 0.72) !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  /* Reset transform if vuetify adds it inline to prevent horizontal shifting,
+     but we only reset translateX just in case, though left/right margin auto handles it */
 }
 
 .bottom-nav .v-btn {
