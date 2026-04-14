@@ -1,23 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 
-export type NavTarget = string | { name: string } | ((store: any) => string | { name: string }) | boolean | undefined;
-
-export interface NavMeta {
-  show?: boolean;
-  back?: NavTarget;
-  next?: NavTarget;
-  home?: NavTarget;
-  menu?: NavTarget;
-  backLabel?: string;
-  nextLabel?: string;
-  menuLabel?: string;
-  homeLabel?: string;
-}
 
 declare module 'vue-router' {
   interface RouteMeta {
-    nav?: NavMeta;
     requiredStageToEnter?: number;
   }
 }
@@ -51,50 +37,22 @@ const routes = [
   {
     path: '/profile',
     name: 'UserProfile',
-    component: () => import('../views/UserProfileLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: 'Home',
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/UserProfileLevel.vue')
   },
   {
     path: '/theory',
     name: 'Theory',
-    component: () => import('../views/TheoryLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: 'Home',
-        backLabel: '返回主页'
-      }
-    }
+    component: () => import('../views/TheoryLevel.vue')
   },
   {
     path: '/theory/paper/:id',
     name: 'PaperDetail',
-    component: () => import('../views/PaperDetailLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: 'Theory',
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/PaperDetailLevel.vue')
   },
   {
     path: '/training/menu',
     name: 'TrainingMenu',
-    component: () => import('../views/TrainingMenuLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: 'Home',
-        backLabel: '返回主页'
-      }
-    }
+    component: () => import('../views/TrainingMenuLevel.vue')
   },
   {
     path: '/exam/intro',
@@ -110,13 +68,6 @@ const routes = [
         '最后将通过十字准星为您测量双眼隐斜视像素偏离度',
         '所有测试数据将自动应用于后续的康复训练'
       ]
-    },
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        next: (store: any) => store.age !== null ? 'LensSelection' : 'UserInfoForm'
-      }
     }
   },
   {
@@ -127,64 +78,22 @@ const routes = [
       title: '弱视 / 抑制检查',
       description: '请准备好您的红蓝 3D 眼镜。本流程将通过分视技术检测是否存在单眼抑制（弱视），并测定抑制眼的暗光惩罚阈值。',
       nextRoute: 'LensSelection'
-    },
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'Home',
-        next: (store: any) => store.age !== null ? 'LensSelection' : 'UserInfoForm'
-      }
     }
   },
   {
     path: '/exam/user-info',
     name: 'UserInfoForm',
-    component: () => import('../views/UserInfoFormLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: (store: any) => {
-          if (store.currentExamMode === 'vision') return 'SectionIntroVision'
-          if (store.currentExamMode === 'amblyopia') return 'SectionIntroAmblyopia'
-          return 'SectionIntroExam'
-        },
-        next: (store: any) => {
-          if (store.currentExamMode === 'vision') return 'VisionDistanceAdvice'
-          return 'LensSelection'
-        }
-      }
-    }
+    component: () => import('../views/UserInfoFormLevel.vue')
   },
   {
     path: '/exam/lens-selection',
     name: 'LensSelection',
-    component: () => import('../views/LensSelectionLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: (store: any) => {
-          if (store.currentExamMode === 'amblyopia') return store.age !== null ? 'SectionIntroAmblyopia' : 'UserInfoForm'
-          return store.age !== null ? 'SectionIntroExam' : 'UserInfoForm'
-        },
-        next: 'LensConfirmation'
-      }
-    }
+    component: () => import('../views/LensSelectionLevel.vue')
   },
   {
     path: '/exam/lens-confirmation',
     name: 'LensConfirmation',
-    component: () => import('../views/LensConfirmationLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'LensSelection',
-        next: 'DistanceAdvice'
-      }
-    }
+    component: () => import('../views/LensConfirmationLevel.vue')
   },
   {
     path: '/exam/alignment-intro',
@@ -198,120 +107,42 @@ const routes = [
         '您可以使用屏幕上的方向键或直接拖动圆圈',
         '重合时，红蓝颜色叠加会显示为白/黑色十字'
       ]
-    },
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: (store: any) => {
-          if (store.suppressionStatus === 'none' || store.suppressionStatus === 'diplopia') {
-            return 'SuppressionTest'
-          }
-          return 'ContrastTest'
-        },
-        next: 'AlignmentExercise'
-      }
     }
   },
   {
     path: '/exam/distance-advice',
     name: 'DistanceAdvice',
-    component: () => import('../views/DistanceAdviceLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'LensConfirmation',
-        next: 'SuppressionTest'
-      }
-    }
+    component: () => import('../views/DistanceAdviceLevel.vue')
   },
   {
     path: '/exam/alignment-exercise',
     name: 'AlignmentExercise',
-    component: () => import('../views/exercises/AlignmentExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'SectionIntroAlignment',
-        next: 'StereopsisTest'
-      }
-    }
+    component: () => import('../views/exercises/AlignmentExercise.vue')
   },
   {
     path: '/exam/alignment-advice',
     name: 'AlignmentAdvice',
-    component: () => import('../views/AlignmentAdviceLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'StereopsisTest',
-        next: 'Home'
-      }
-    }
+    component: () => import('../views/AlignmentAdviceLevel.vue')
   },
   {
     path: '/exam/stereopsis-test',
     name: 'StereopsisTest',
-    component: () => import('../views/exam/StereopsisTestLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'AlignmentExercise',
-        next: 'AlignmentAdvice'
-      }
-    }
+    component: () => import('../views/exam/StereopsisTestLevel.vue')
   },
   {
     path: '/exam/suppression-test',
     name: 'SuppressionTest',
-    component: () => import('../views/ObjectiveTestLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'DistanceAdvice',
-        next: (store: any) => {
-          if (store.suppressionStatus === 'none' || store.suppressionStatus === 'diplopia') {
-            store.setPenalizationFactor(1.0)
-            return store.currentExamMode === 'amblyopia' ? 'AmblyopiaAdvice' : 'SectionIntroAlignment'
-          }
-          return 'ContrastTest'
-        }
-      }
-    }
+    component: () => import('../views/ObjectiveTestLevel.vue')
   },
   {
     path: '/exam/contrast-test',
     name: 'ContrastTest',
-    component: () => import('../views/ContrastTestLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'SuppressionTest',
-        next: (store: any) => store.currentExamMode === 'amblyopia' ? 'AmblyopiaAdvice' : 'SectionIntroAlignment'
-      }
-    }
+    component: () => import('../views/ContrastTestLevel.vue')
   },
   {
     path: '/amblyopia/advice',
     name: 'AmblyopiaAdvice',
-    component: () => import('../views/vision/AmblyopiaAdviceLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: (store: any) => {
-          if (store.suppressionStatus === 'none' || store.suppressionStatus === 'diplopia') return 'SuppressionTest'
-          return 'ContrastTest'
-        },
-        next: 'Home'
-      }
-    }
+    component: () => import('../views/vision/AmblyopiaAdviceLevel.vue')
   },
   {
     path: '/vision/intro',
@@ -326,105 +157,42 @@ const routes = [
         '请在接下来的测试中，根据屏幕上的提示进行操作',
         '根据国际标准，本次测试默认在40cm距离下进行'
       ]
-    },
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        next: (store: any) => store.age !== null ? 'VisionDistanceAdvice' : 'UserInfoForm'
-      }
     }
   },
   {
     path: '/vision/distance',
     name: 'VisionDistanceAdvice',
-    component: () => import('../views/vision/VisionDistanceAdviceLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: (store: any) => store.age !== null ? 'SectionIntroVision' : 'UserInfoForm',
-        next: 'VisionTest'
-      }
-    }
+    component: () => import('../views/vision/VisionDistanceAdviceLevel.vue')
   },
   {
     path: '/vision/test',
     name: 'VisionTest',
-    component: () => import('../views/vision/VisionTestLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'VisionDistanceAdvice',
-        next: 'AstigmatismTest'
-      }
-    }
+    component: () => import('../views/vision/VisionTestLevel.vue')
   },
   {
     path: '/vision/astigmatism-test',
     name: 'AstigmatismTest',
-    component: () => import('../views/AstigmatismTestLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'VisionTest',
-        next: 'ColorVisionTest'
-      }
-    }
+    component: () => import('../views/AstigmatismTestLevel.vue')
   },
   {
     path: '/vision/color-vision-test',
     name: 'ColorVisionTest',
-    component: () => import('../views/ColorVisionTestLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'AstigmatismTest',
-        next: 'AmslerGridTest'
-      }
-    }
+    component: () => import('../views/ColorVisionTestLevel.vue')
   },
   {
     path: '/vision/amsler-grid-test',
     name: 'AmslerGridTest',
-    component: () => import('../views/AmslerGridTestLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'ColorVisionTest',
-        next: 'ContrastSensitivityTest'
-      }
-    }
+    component: () => import('../views/AmslerGridTestLevel.vue')
   },
   {
     path: '/vision/contrast-sensitivity-test',
     name: 'ContrastSensitivityTest',
-    component: () => import('../views/ContrastSensitivityTestLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'AmslerGridTest',
-        next: 'VisionAdvice'
-      }
-    }
+    component: () => import('../views/ContrastSensitivityTestLevel.vue')
   },
   {
     path: '/vision/advice',
     name: 'VisionAdvice',
-    component: () => import('../views/vision/VisionAdviceLevel.vue'),
-    meta: {
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'ContrastSensitivityTest',
-        next: 'Home'
-      }
-    }
+    component: () => import('../views/vision/VisionAdviceLevel.vue')
   },
   {
     path: '/training/intro',
@@ -458,37 +226,17 @@ const routes = [
       }
     },
     meta: {
-      requiredStageToEnter: 1,
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
-      }
-    }
+      requiredStageToEnter: 1}
   },
   {
     path: '/training/shuffle',
     name: 'ShuffleExercise',
-    component: () => import('../views/exercises/ShuffleExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: true,
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/exercises/ShuffleExercise.vue')
   },
   {
     path: '/training/boxes',
     name: 'BoxesExercise',
-    component: () => import('../views/exercises/BoxesExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: true,
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/exercises/BoxesExercise.vue')
   },
   {
     path: '/training/intro-2',
@@ -528,49 +276,22 @@ const routes = [
       }
     },
     meta: {
-      requiredStageToEnter: 2,
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
-      }
-    }
+      requiredStageToEnter: 2}
   },
   {
     path: '/training/saccadic',
     name: 'SaccadicTrackingExercise',
-    component: () => import('../views/exercises/SaccadicTrackingExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: true,
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/exercises/SaccadicTrackingExercise.vue')
   },
   {
     path: '/training/spiral',
     name: 'SpiralExercise',
-    component: () => import('../views/exercises/SpiralExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: true,
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/exercises/SpiralExercise.vue')
   },
   {
     path: '/training/particles',
     name: 'ParticlesExercise',
-    component: () => import('../views/exercises/ParticlesExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: true,
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/exercises/ParticlesExercise.vue')
   },
   {
     path: '/training/intro-3',
@@ -605,37 +326,17 @@ const routes = [
       }
     },
     meta: {
-      requiredStageToEnter: 3,
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
-      }
-    }
+      requiredStageToEnter: 3}
   },
   {
     path: '/training/vergence-cards',
     name: 'VergenceCardsExercise',
-    component: () => import('../views/exercises/VergenceCardsExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: true,
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/exercises/VergenceCardsExercise.vue')
   },
   {
     path: '/training/brock-string',
     name: 'BrockStringExercise',
-    component: () => import('../views/exercises/BrockStringExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: true,
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/exercises/BrockStringExercise.vue')
   },
   {
     path: '/training/intro-4',
@@ -665,37 +366,17 @@ const routes = [
       requiredStageToEnter: 4
     },
     meta: {
-      requiredStageToEnter: 4,
-      nav: {
-        show: true,
-        home: 'Home',
-        back: 'TrainingMenu'
-      }
-    }
+      requiredStageToEnter: 4}
   },
   {
     path: '/training/tetris',
     name: 'TetrisExercise',
-    component: () => import('../views/exercises/TetrisExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: true,
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/exercises/TetrisExercise.vue')
   },
   {
     path: '/exercises/stereopsis',
     name: 'StereopsisExercise',
-    component: () => import('../views/exercises/StereopsisExercise.vue'),
-    meta: {
-      nav: {
-        show: true,
-        back: true,
-        home: 'Home'
-      }
-    }
+    component: () => import('../views/exercises/StereopsisExercise.vue')
   }
 ]
 

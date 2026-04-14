@@ -22,62 +22,75 @@ export function useFlowManager() {
       return { success: true }
     }
 
-    // Otherwise, just use route.meta.nav.next
-    const navMeta = route.meta.nav
-    if (navMeta && navMeta.next) {
-      let finalTarget: any
-      if (typeof navMeta.next === 'function') {
-        finalTarget = navMeta.next(settingsStore)
-      } else {
-        finalTarget = navMeta.next
-      }
-
-      if (typeof finalTarget === 'string') {
-        router.push({ name: finalTarget })
-      } else if (finalTarget && typeof finalTarget === 'object') {
-        router.push(finalTarget)
-      } else {
-        router.push({ name: 'Home' })
-      }
-      return { success: true }
-    }
-
-    console.warn(`节点 ${String(currentRouteName || route.name)} 无法识别或没有配置 next 跳转`)
+    // Otherwise, without navMeta, we just fallback to Home
+    console.warn(`节点 ${String(currentRouteName || route.name)} 无法识别或没有配置 next 跳转，由于移除了 bottom nav，请确保传入 targetRouteName`)
     router.push({ name: 'Home' })
     return { success: true }
   }
 
   const goBack = (_currentRouteName?: string) => {
-    const navMeta = route.meta.nav
-    if (navMeta && navMeta.back) {
-      if (navMeta.back === true) {
-        router.go(-1)
-        return
-      }
+    router.go(-1)
+  }
 
-      let finalTarget: any
-      if (typeof navMeta.back === 'function') {
-        finalTarget = navMeta.back(settingsStore)
-      } else {
-        finalTarget = navMeta.back
-      }
+  const goNext = (currentRouteName?: string) => {
+    const name = currentRouteName || route.name as string
+    const mode = settingsStore.currentExamMode
 
-      if (typeof finalTarget === 'string') {
-        router.push({ name: finalTarget })
-      } else if (finalTarget && typeof finalTarget === 'object') {
-        router.push(finalTarget)
-      } else {
-        router.go(-1)
+    if (mode === 'vision') {
+      const flow = [
+        'SectionIntroVision',
+        'UserInfoForm',
+        'VisionDistanceAdvice',
+        'VisionTest',
+        'AstigmatismTest',
+        'ColorVisionTest',
+        'AmslerGridTest',
+        'ContrastSensitivityTest',
+        'VisionAdvice'
+      ]
+      const idx = flow.indexOf(name)
+      if (idx !== -1 && idx < flow.length - 1) {
+        return navigateForward(name, flow[idx + 1])
       }
-      return
+    } else if (mode === 'amblyopia') {
+      const flow = [
+        'SectionIntroAmblyopia',
+        'UserInfoForm',
+        'LensSelection',
+        'LensConfirmation',
+        'DistanceAdvice',
+        'SuppressionTest',
+        'ContrastTest',
+        'AmblyopiaAdvice'
+      ]
+      const idx = flow.indexOf(name)
+      if (idx !== -1 && idx < flow.length - 1) {
+        return navigateForward(name, flow[idx + 1])
+      }
+    } else if (mode === 'exam') {
+      const flow = [
+        'SectionIntroExam',
+        'UserInfoForm',
+        'LensSelection',
+        'LensConfirmation',
+        'SectionIntroAlignment',
+        'DistanceAdvice',
+        'AlignmentExercise',
+        'AlignmentAdvice',
+        'StereopsisTest'
+      ]
+      const idx = flow.indexOf(name)
+      if (idx !== -1 && idx < flow.length - 1) {
+        return navigateForward(name, flow[idx + 1])
+      }
     }
 
-    router.go(-1)
+    return navigateForward(name, 'Home')
   }
 
   return { 
     navigateForward, 
     goBack, 
-    goNext: (routeName?: string) => navigateForward(routeName) 
+    goNext
   }
 }

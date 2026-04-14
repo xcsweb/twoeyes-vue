@@ -116,16 +116,20 @@ const bgStyleColor = '#000000'
 const hintStyleColor = '#ffffff'
 
 const route = useRoute()
-const { navigateForward } = useFlowManager()
+const { navigateForward, goNext } = useFlowManager()
 
 const snackbar = ref(false)
 const snackbarText = ref('')
 
 const startGame = (routeName: string) => {
-  const result = navigateForward(route.name as string, routeName, props.requiredStageToEnter)
-  if (!result.success && result.error) {
-    snackbarText.value = result.error
-    snackbar.value = true
+  if (routeName) {
+    const result = navigateForward(route.name as string, routeName, props.requiredStageToEnter)
+    if (!result.success && result.error) {
+      snackbarText.value = result.error
+      snackbar.value = true
+    }
+  } else {
+    goNext(route.name as string)
   }
 }
 </script>
