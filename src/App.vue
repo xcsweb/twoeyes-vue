@@ -115,8 +115,8 @@ onUnmounted(() => {
   position: fixed;
   top: 0;
   right: 0;
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   overflow: hidden;
   z-index: 9999;
   pointer-events: none;
@@ -124,9 +124,9 @@ onUnmounted(() => {
 
 .welfare-ribbon {
   position: absolute;
-  top: 40px;
-  right: -50px;
-  width: 280px;
+  top: 28px;
+  right: -38px;
+  width: 200px;
   background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
   padding: 6px 0;
   transform: rotate(45deg);
@@ -134,6 +134,25 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.welfare-ribbon::before,
+.welfare-ribbon::after {
+  content: "";
+  position: absolute;
+  bottom: -4px; /* Adjust to create the folded corner */
+  border-top: 4px solid #3c7d1e; /* Darker green for the fold shadow */
+  z-index: -1;
+}
+
+.welfare-ribbon::before {
+  left: 0;
+  border-right: 4px solid transparent;
+}
+
+.welfare-ribbon::after {
+  right: 0;
+  border-left: 4px solid transparent;
 }
 
 .welfare-text {
