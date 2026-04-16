@@ -8,8 +8,12 @@
       @click="goBack"
     ></v-btn>
 
-    <div class="global-welfare-badge">
-      公益
+    <div class="welfare-wrapper">
+      <div class="welfare-ribbon">
+        <span class="flower flower-left">🌸</span>
+        <span class="welfare-text">公益</span>
+        <span class="flower flower-right">🌺</span>
+      </div>
     </div>
 
     <router-view v-slot="{ Component }">
@@ -103,19 +107,51 @@ onUnmounted(() => {
 </script>
 
 <style>
-.global-welfare-badge {
+.welfare-wrapper {
   position: fixed;
   top: env(safe-area-inset-top, 16px);
   right: 16px;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 4px;
-  backdrop-filter: blur(4px);
-  font-size: 14px;
-  font-weight: bold;
   pointer-events: none;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.welfare-ribbon {
+  background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+  padding: 6px 28px;
+  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welfare-text {
+  color: #ff2a2a;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin: 0 4px;
+  text-shadow:
+    -1px -1px 0 #fff,
+     1px -1px 0 #fff,
+    -1px  1px 0 #fff,
+     1px  1px 0 #fff,
+     0 2px 3px rgba(0,0,0,0.3);
+}
+
+.flower {
+  font-size: 16px;
+  display: inline-block;
+  animation: flower-swing 3s ease-in-out infinite alternate;
+  transform-origin: center bottom;
+}
+
+.flower-left { margin-right: 4px; }
+.flower-right { margin-left: 4px; }
+
+@keyframes flower-swing {
+  0% { transform: rotate(-15deg) scale(0.95); }
+  100% { transform: rotate(15deg) scale(1.05); }
 }
 
 .global-back-btn {
