@@ -112,7 +112,7 @@ onUnmounted(() => {
 
 <style>
 .welfare-corner {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   width: 150px;
