@@ -4,7 +4,7 @@
     
     <div class="content-area">
       <h1 class="title" @click="handleSecretClick">双眼视觉康复系统</h1>
-      <p class="subtitle">临床级视功能检查与分阶段脱抑制训练平台</p>
+      <p class="subtitle">重塑双眼视界 · 遇见清晰未来</p>
       
       <div class="cards-wrapper">
         <!-- Intro Card -->
@@ -303,20 +303,24 @@ const goToProfile = () => {
 }
 
 .title {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-  letter-spacing: -1px;
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
   color: #ffffff;
   text-align: center;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 40px;
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 48px;
   text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
   opacity: 0;
 }
