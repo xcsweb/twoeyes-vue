@@ -115,8 +115,8 @@ onUnmounted(() => {
   position: fixed;
   top: 0;
   right: 0;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   overflow: hidden;
   z-index: 9999;
   pointer-events: none;
@@ -124,9 +124,9 @@ onUnmounted(() => {
 
 .welfare-ribbon {
   position: absolute;
-  top: 25px;
-  right: -35px;
-  width: 200px;
+  top: 40px;
+  right: -50px;
+  width: 280px;
   background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
   padding: 6px 0;
   transform: rotate(45deg);
