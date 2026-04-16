@@ -112,7 +112,7 @@ onUnmounted(() => {
 
 <style>
 .welfare-corner {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   width: 150px;
@@ -124,8 +124,8 @@ onUnmounted(() => {
 
 .welfare-ribbon {
   position: absolute;
-  top: 28px;
-  right: -38px;
+  top: 25px;
+  right: -45px;
   width: 200px;
   background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
   padding: 6px 0;
@@ -138,21 +138,7 @@ onUnmounted(() => {
 
 .welfare-ribbon::before,
 .welfare-ribbon::after {
-  content: "";
-  position: absolute;
-  bottom: -4px; /* Adjust to create the folded corner */
-  border-top: 4px solid #3c7d1e; /* Darker green for the fold shadow */
-  z-index: -1;
-}
-
-.welfare-ribbon::before {
-  left: 0;
-  border-right: 4px solid transparent;
-}
-
-.welfare-ribbon::after {
-  right: 0;
-  border-left: 4px solid transparent;
+  display: none;
 }
 
 .welfare-text {
