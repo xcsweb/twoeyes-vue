@@ -293,7 +293,7 @@ const goToProfile = () => {
 }
 
 .content-area {
-  padding: 60px 20px;
+  padding: 40px 20px;
   width: 100%;
   max-width: 1200px;
   display: flex;
@@ -303,7 +303,7 @@ const goToProfile = () => {
 }
 
 .title {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 700;
   margin-bottom: 8px;
   letter-spacing: -1px;
@@ -313,9 +313,9 @@ const goToProfile = () => {
 }
 
 .subtitle {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   text-align: center;
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
   opacity: 0;
@@ -325,7 +325,7 @@ const goToProfile = () => {
   display: grid;
   /* Make cards smaller and more compact on PC, down to 260px minimum width */
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+  gap: 20px;
   width: 100%;
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
   opacity: 0;
@@ -353,7 +353,7 @@ const goToProfile = () => {
 .card-img-wrapper {
   position: relative;
   width: 100%;
-  height: 160px; /* Reduced image height to make the card more compact */
+  height: 140px; /* Reduced image height to make the card more compact */
   overflow: hidden;
 }
 
@@ -378,7 +378,7 @@ const goToProfile = () => {
 }
 
 .card-content {
-  padding: 24px 20px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
