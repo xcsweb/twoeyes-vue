@@ -8,6 +8,10 @@
       @click="goBack"
     ></v-btn>
 
+    <div class="global-welfare-badge">
+      公益
+    </div>
+
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in" @after-leave="onAfterLeave" @after-enter="onAfterEnter">
         <keep-alive include="HomeMenuLevel,UserProfileLevel">
@@ -99,6 +103,21 @@ onUnmounted(() => {
 </script>
 
 <style>
+.global-welfare-badge {
+  position: fixed;
+  top: env(safe-area-inset-top, 16px);
+  right: 16px;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+  font-size: 14px;
+  font-weight: bold;
+  pointer-events: none;
+}
+
 .global-back-btn {
   position: fixed !important;
   top: env(safe-area-inset-top, 16px);
