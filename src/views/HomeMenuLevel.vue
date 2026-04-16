@@ -4,7 +4,7 @@
     
     <div class="content-area">
       <h1 class="title" @click="handleSecretClick">双眼视觉康复系统</h1>
-      <p class="subtitle">重塑双眼视界 · 遇见清晰未来</p>
+      <p class="subtitle">让两只眼睛，一起看清明天</p>
       
       <div class="cards-wrapper">
         <!-- Intro Card -->
