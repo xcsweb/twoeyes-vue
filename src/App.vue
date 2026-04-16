@@ -8,7 +8,7 @@
       @click="goBack"
     ></v-btn>
 
-    <div class="welfare-wrapper">
+    <div v-if="isHome" class="welfare-corner">
       <div class="welfare-ribbon">
         <span class="flower flower-left">🌸</span>
         <span class="welfare-text">公益</span>
@@ -56,6 +56,10 @@ const isLoading = ref(false)
 
 const showBackButton = computed(() => {
   return route.name !== 'Home' && route.name !== 'Intro'
+})
+
+const isHome = computed(() => {
+  return route.name === 'Home'
 })
 
 const goBack = () => {
@@ -107,22 +111,29 @@ onUnmounted(() => {
 </script>
 
 <style>
-.welfare-wrapper {
-  position: fixed;
-  top: env(safe-area-inset-top, 16px);
-  right: 16px;
+.welfare-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
   z-index: 9999;
   pointer-events: none;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 }
 
 .welfare-ribbon {
+  position: absolute;
+  top: 25px;
+  right: -35px;
+  width: 200px;
   background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
-  padding: 6px 28px;
-  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%);
+  padding: 6px 0;
+  transform: rotate(45deg);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
 .welfare-text {
