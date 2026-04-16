@@ -263,13 +263,19 @@ const goToProfile = () => {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   color: white;
   position: relative;
   z-index: 0;
   overflow-y: auto;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+@media (min-width: 901px) {
+  .home-menu-container {
+    justify-content: center;
+  }
 }
 
 .bg-image {
@@ -300,6 +306,7 @@ const goToProfile = () => {
   flex-direction: column;
   align-items: center;
   z-index: 1;
+  min-height: min-content;
 }
 
 .title {
