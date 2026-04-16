@@ -196,14 +196,15 @@ html, body {
   height: 100%;
   background-color: black;
   color: white;
-  overflow-x: hidden;
+  overflow: hidden; /* Prevent body level scrolling */
 }
 
 #app {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {

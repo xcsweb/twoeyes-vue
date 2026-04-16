@@ -260,7 +260,7 @@ const goToProfile = () => {
 <style scoped>
 .home-menu-container {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -268,7 +268,7 @@ const goToProfile = () => {
   color: white;
   position: relative;
   z-index: 0;
-  overflow: hidden;
+  overflow-y: auto;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
