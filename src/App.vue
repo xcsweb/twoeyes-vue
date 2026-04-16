@@ -118,7 +118,7 @@ onUnmounted(() => {
   width: 150px;
   height: 150px;
   overflow: hidden;
-  z-index: 9999;
+  z-index: 1000; /* Lower z-index so it doesn't block snackbars and dialogs */
   pointer-events: none;
 }
 
