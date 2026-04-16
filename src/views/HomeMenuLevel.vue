@@ -4,7 +4,7 @@
     
     <div class="content-area">
       <h1 class="title" @click="handleSecretClick">双眼视觉康复系统</h1>
-      <p class="subtitle">让两只眼睛，一起看清明天</p>
+      <p class="subtitle">“黑夜给了我黑色的眼睛，我却用它寻找光明” —— 顾城</p>
       
       <div class="cards-wrapper">
         <!-- Intro Card -->
@@ -314,12 +314,13 @@ const goToProfile = () => {
 }
 
 .subtitle {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 300;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.85);
   margin-bottom: 48px;
   text-align: center;
+  font-style: italic;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
   opacity: 0;
