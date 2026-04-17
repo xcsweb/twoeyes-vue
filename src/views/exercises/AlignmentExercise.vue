@@ -214,22 +214,22 @@ const handleKeyDown = (e: KeyboardEvent) => {
       break
     case 'q':
     case 'Q':
-      rotateLeftBox(-0.2)
+      rotateLeftBox(-0.1)
       e.preventDefault()
       break
     case 'e':
     case 'E':
-      rotateLeftBox(0.2)
+      rotateLeftBox(0.1)
       e.preventDefault()
       break
     case 'u':
     case 'U':
-      rotateRightBox(-0.2)
+      rotateRightBox(-0.1)
       e.preventDefault()
       break
     case 'o':
     case 'O':
-      rotateRightBox(0.2)
+      rotateRightBox(0.1)
       e.preventDefault()
       break
   }
@@ -244,8 +244,8 @@ const applyMagneticSnap = () => {
   if (Math.abs(position.value.x) <= 1.5) position.value.x = 0
   if (Math.abs(position.value.y) <= 1.5) position.value.y = 0
   // Check rotation
-  if (Math.abs(position.value.rLeft) <= 0.4) position.value.rLeft = 0
-  if (Math.abs(position.value.rRight) <= 0.4) position.value.rRight = 0
+  if (Math.abs(position.value.rLeft) <= 0.2) position.value.rLeft = 0
+  if (Math.abs(position.value.rRight) <= 0.2) position.value.rRight = 0
 }
 
 const moveBox = (dx: number, dy: number) => {
@@ -265,7 +265,7 @@ const moveBox = (dx: number, dy: number) => {
 
 const rotateLeftBox = (dr: number) => {
   if (position.value.rLeft === 0 && dr !== 0) {
-    position.value.rLeft = dr > 0 ? 0.5 : -0.5
+    position.value.rLeft = dr > 0 ? 0.25 : -0.25
   } else {
     position.value.rLeft += dr
   }
@@ -273,7 +273,7 @@ const rotateLeftBox = (dr: number) => {
 
 const rotateRightBox = (dr: number) => {
   if (position.value.rRight === 0 && dr !== 0) {
-    position.value.rRight = dr > 0 ? 0.5 : -0.5
+    position.value.rRight = dr > 0 ? 0.25 : -0.25
   } else {
     position.value.rRight += dr
   }
