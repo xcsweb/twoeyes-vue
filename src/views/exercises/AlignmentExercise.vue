@@ -53,15 +53,15 @@
         <!-- Left eye rotation -->
         <div class="rotate-controls">
           <button class="dpad-btn" 
-            @pointerdown.prevent="startContinuous(() => rotateLeftBox(-0.2))"
-            @touchstart.prevent="startContinuous(() => rotateLeftBox(-0.2))"
+            @pointerdown.prevent="startContinuous(() => rotateLeftBox(-0.1))"
+            @touchstart.prevent="startContinuous(() => rotateLeftBox(-0.1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
             @contextmenu.prevent>↺</button>
           <button class="dpad-btn" 
-            @pointerdown.prevent="startContinuous(() => rotateLeftBox(0.2))"
-            @touchstart.prevent="startContinuous(() => rotateLeftBox(0.2))"
+            @pointerdown.prevent="startContinuous(() => rotateLeftBox(0.1))"
+            @touchstart.prevent="startContinuous(() => rotateLeftBox(0.1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
@@ -105,15 +105,15 @@
         <!-- Right eye rotation -->
         <div class="rotate-controls">
           <button class="dpad-btn" 
-            @pointerdown.prevent="startContinuous(() => rotateRightBox(-0.2))"
-            @touchstart.prevent="startContinuous(() => rotateRightBox(-0.2))"
+            @pointerdown.prevent="startContinuous(() => rotateRightBox(-0.1))"
+            @touchstart.prevent="startContinuous(() => rotateRightBox(-0.1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
             @contextmenu.prevent>↺</button>
           <button class="dpad-btn" 
-            @pointerdown.prevent="startContinuous(() => rotateRightBox(0.2))"
-            @touchstart.prevent="startContinuous(() => rotateRightBox(0.2))"
+            @pointerdown.prevent="startContinuous(() => rotateRightBox(0.1))"
+            @touchstart.prevent="startContinuous(() => rotateRightBox(0.1))"
             @pointerup="stopContinuous" 
             @pointerleave="stopContinuous" 
             @pointercancel="stopContinuous" 
@@ -424,8 +424,8 @@ const handleConfirm = () => {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
