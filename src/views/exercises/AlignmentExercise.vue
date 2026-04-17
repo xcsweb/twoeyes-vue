@@ -19,19 +19,17 @@
       <div
         class="box left-box"
         :style="{ 
-          backgroundColor: leftLenseRGBString,
           transform: `translate(-50%, -50%) rotate(${position.rLeft}deg)`
         }"
       >
-        <div class="horizontal-line"></div>
-        <div class="vertical-line"></div>
+        <div class="horizontal-line" :style="{ backgroundColor: leftLenseRGBString }"></div>
+        <div class="vertical-line" :style="{ backgroundColor: leftLenseRGBString }"></div>
       </div>
 
       <!-- Draggable/Movable Right Box (Controller) -->
       <div
         class="box right-box alignment-exercise-interactive"
         :style="{
-          backgroundColor: rightLenseRGBString,
           transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) rotate(${position.rRight}deg)`
         }"
         tabindex="0"
@@ -42,8 +40,8 @@
         @pointerup="handlePointerUp"
         @pointercancel="handlePointerUp"
       >
-        <div class="horizontal-line"></div>
-        <div class="vertical-line"></div>
+        <div class="horizontal-line" :style="{ backgroundColor: rightLenseRGBString }"></div>
+        <div class="vertical-line" :style="{ backgroundColor: rightLenseRGBString }"></div>
       </div>
     </div>
 
@@ -403,10 +401,9 @@ const handleConfirm = () => {
 .horizontal-line {
   position: absolute;
   top: 50%;
-  left: 10%;
-  width: 80%;
-  height: 2px;
-  background-color: #000;
+  left: 0;
+  width: 100%;
+  height: 4px;
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -414,10 +411,9 @@ const handleConfirm = () => {
 .vertical-line {
   position: absolute;
   left: 50%;
-  top: 10%;
-  width: 2px;
-  height: 80%;
-  background-color: #000;
+  top: 0;
+  width: 4px;
+  height: 100%;
   transform: translateX(-50%);
   pointer-events: none;
 }
