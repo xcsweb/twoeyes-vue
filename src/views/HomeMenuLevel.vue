@@ -269,6 +269,7 @@ const goToProfile = () => {
   position: relative;
   z-index: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* 修复 iOS 上滚动不流畅的问题 */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 

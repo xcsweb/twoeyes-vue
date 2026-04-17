@@ -5,11 +5,14 @@
     <div class="reference-grid"></div>
 
     <div class="instructions text-center px-4 pt-6">
-      <p class="text-h6 text-white mb-2">请戴上您的 3D 眼镜。</p>
+      <div class="d-flex align-center justify-center mb-2">
+        <v-icon color="info" size="28" class="mr-2">mdi-flask</v-icon>
+        <p class="text-h6 text-white mb-0">请戴上您的 3D 眼镜。</p>
+      </div>
       <p class="text-body-2 text-grey">
-        使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动其中一个十字准星。使用旋转按钮或键盘 Q/E (左眼) 和 U/O (右眼) 键调整旋转角度，直到两个十字准星在您的视觉中完全重合（看起来像一个发光的白色十字）。
+        使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动横线。使用旋转按钮或键盘 Q/E (左眼) 和 U/O (右眼) 键调整旋转角度，直到两条线在您的视觉中完全重合并形成一个<strong>完美的十字（+）</strong>。
         <br/><br/>
-        <strong class="text-orange">请先确保每个十字都与背景的白色参考线完全平行</strong>
+        <strong class="text-orange">请先确保每一条线都与背景的白色参考线完全平行或垂直</strong>
       </p>
     </div>
 
@@ -22,7 +25,6 @@
           transform: `translate(-50%, -50%) rotate(${position.rLeft}deg)`
         }"
       >
-        <div class="horizontal-line" :style="{ backgroundColor: leftLenseRGBString }"></div>
         <div class="vertical-line" :style="{ backgroundColor: leftLenseRGBString }"></div>
       </div>
 
@@ -41,7 +43,6 @@
         @pointercancel="handlePointerUp"
       >
         <div class="horizontal-line" :style="{ backgroundColor: rightLenseRGBString }"></div>
-        <div class="vertical-line" :style="{ backgroundColor: rightLenseRGBString }"></div>
       </div>
     </div>
 
