@@ -49,9 +49,11 @@
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { scrollState } from './router'
+import { useFlowManager } from './composables/useFlowManager'
 
 const route = useRoute()
 const router = useRouter()
+const { goBack: flowGoBack } = useFlowManager()
 const isLoading = ref(false)
 
 const showBackButton = computed(() => {
@@ -63,11 +65,7 @@ const isHome = computed(() => {
 })
 
 const goBack = () => {
-  if (window.history.state && window.history.state.back) {
-    router.back()
-  } else {
-    router.replace({ name: 'Home' })
-  }
+  flowGoBack()
 }
 
 const onAfterLeave = () => {

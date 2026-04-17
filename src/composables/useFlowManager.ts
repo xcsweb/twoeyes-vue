@@ -28,8 +28,73 @@ export function useFlowManager() {
     return { success: true }
   }
 
-  const goBack = (_currentRouteName?: string) => {
-    router.go(-1)
+  const goBack = (currentRouteName?: string) => {
+    const name = currentRouteName || (route.name as string)
+    const mode = settingsStore.currentExamMode
+
+    // Hardcoded specific fallbacks for deep links
+    if (name === 'PaperDetail') return router.replace({ name: 'Theory' })
+    if (name === 'ShuffleExercise' || name === 'BoxesExercise') return router.replace({ name: 'SectionIntroTraining' })
+    if (name === 'SaccadicTrackingExercise' || name === 'SpiralExercise' || name === 'ParticlesExercise') return router.replace({ name: 'SectionIntroTraining2' })
+    if (name === 'VergenceCardsExercise' || name === 'BrockStringExercise') return router.replace({ name: 'SectionIntroTraining3' })
+    if (name === 'StereopsisExercise' || name === 'TetrisExercise') return router.replace({ name: 'SectionIntroTraining4' })
+
+    const getPrevInFlow = (flow: string[]) => {
+      const idx = flow.indexOf(name)
+      if (idx > 0) return flow[idx - 1]
+      return null
+    }
+
+    let prev: string | null = null
+    if (mode === 'vision') {
+      prev = getPrevInFlow([
+        'SectionIntroVision',
+        'UserInfoForm',
+        'VisionDistanceAdvice',
+        'VisionTest',
+        'AstigmatismTest',
+        'ColorVisionTest',
+        'AmslerGridTest',
+        'ContrastSensitivityTest',
+        'VisionAdvice'
+      ])
+    } else if (mode === 'amblyopia') {
+      prev = getPrevInFlow([
+        'SectionIntroAmblyopia',
+        'UserInfoForm',
+        'LensSelection',
+        'LensConfirmation',
+        'DistanceAdvice',
+        'SuppressionTest',
+        'ContrastTest',
+        'AmblyopiaAdvice'
+      ])
+    } else if (mode === 'exam') {
+      prev = getPrevInFlow([
+        'SectionIntroExam',
+        'UserInfoForm',
+        'LensSelection',
+        'LensConfirmation',
+        'SectionIntroAlignment',
+        'DistanceAdvice',
+        'AlignmentExercise',
+        'AlignmentAdvice',
+        'StereopsisTest'
+      ])
+    }
+
+    if (prev) {
+      router.replace({ name: prev })
+      return { success: true }
+    }
+
+    // Ultimate fallback
+    if (window.history.state && window.history.state.back) {
+      router.back()
+    } else {
+      router.replace({ name: 'Home' })
+    }
+    return { success: true }
   }
 
   const goNext = (currentRouteName?: string) => {
