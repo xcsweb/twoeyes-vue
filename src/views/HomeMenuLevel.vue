@@ -161,6 +161,23 @@
         </v-btn>
       </template>
     </v-snackbar>
+
+    <v-dialog v-model="showExpiredDialog" max-width="400">
+      <v-card>
+        <v-card-title class="text-h6 text-warning">
+          <v-icon color="warning" class="mr-2">mdi-alert</v-icon>
+          检查数据已过期
+        </v-card-title>
+        <v-card-text>
+          您距离上次检查已超过设定的 {{ settingsStore.testFrequency }} 天。为了保证康复训练的效果与安全，请先重新完成视力或斜视检查。
+        </v-card-text>
+        <v-card-actions>
+          <v-btn variant="text" @click="showExpiredDialog = false">稍后再说</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="handleGoToTest">前往检查</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -181,9 +198,15 @@ const showDebug = ref(false)
 const snackbar = ref(false)
 const snackbarText = ref('')
 const snackbarColor = ref('error')
+const showExpiredDialog = ref(false)
 
 let clickCount = 0
 let clickTimeout: ReturnType<typeof setTimeout>
+
+const handleGoToTest = () => {
+  showExpiredDialog.value = false
+  goToVision()
+}
 
 const handleSecretClick = () => {
   clickCount++
@@ -217,35 +240,26 @@ const goToIntro = () => {
 }
 
 const goToVision = () => {
+  settingsStore.currentExamMode = 'vision'
   router.push({ name: 'SectionIntroVision' })
 }
 
 const goToExam = () => {
+  settingsStore.currentExamMode = 'exam'
   router.push({ name: 'SectionIntroExam' })
 }
 
 const goToAmblyopia = () => {
+  settingsStore.currentExamMode = 'amblyopia'
   router.push({ name: 'SectionIntroAmblyopia' })
 }
 
 const goToTraining = () => {
-  const lastTest = settingsStore.lastTestTime
-  const limit = settingsStore.testFrequency * 24 * 3600 * 1000
-  
-  if (lastTest === 0) {
-    snackbarText.value = '您尚未进行视功能检查，请先完成测试以便生成专属康复方案'
-    snackbarColor.value = 'error'
-    snackbar.value = true
+  if (settingsStore.isTestDataExpired) {
+    showExpiredDialog.value = true
     return
   }
-  
-  if (Date.now() - lastTest > limit) {
-    snackbarText.value = '您的检测数据已过期，请先进行视力或斜弱视检查'
-    snackbarColor.value = 'error'
-    snackbar.value = true
-    return
-  }
-  router.push({ name: 'TrainingMenu' })
+  router.push({ name: 'SectionIntroTraining' })
 }
 
 const goToTheory = () => {

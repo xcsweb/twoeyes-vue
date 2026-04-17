@@ -63,7 +63,11 @@ const isHome = computed(() => {
 })
 
 const goBack = () => {
-  router.go(-1)
+  if (window.history.state && window.history.state.back) {
+    router.back()
+  } else {
+    router.replace({ name: 'Home' })
+  }
 }
 
 const onAfterLeave = () => {

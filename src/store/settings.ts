@@ -43,6 +43,12 @@ export const useSettingsStore = defineStore('settings', {
     age: null as number | null
   }),
   getters: {
+    isTestDataExpired(state) {
+      if (state.lastTestTime === 0) return true
+      const now = Date.now()
+      const diffDays = (now - state.lastTestTime) / (1000 * 60 * 60 * 24)
+      return diffDays > state.testFrequency
+    },
     requiredTrainingTime(state) {
       if (state.age === null) return 900
       if (state.age <= 12) return 600

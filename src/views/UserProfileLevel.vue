@@ -26,6 +26,14 @@
                 <div class="data-label">神经可塑性评估</div>
                 <div class="data-value text-success">{{ neuroplasticityText }}</div>
               </div>
+              <div class="data-item">
+                <div class="data-label">复查周期 (天)</div>
+                <div class="data-value d-flex align-center">
+                  <v-btn icon="mdi-minus" size="x-small" variant="tonal" @click="updateFrequency(-1)" :disabled="settingsStore.testFrequency <= 1"></v-btn>
+                  <span class="mx-3">{{ settingsStore.testFrequency }}</span>
+                  <v-btn icon="mdi-plus" size="x-small" variant="tonal" @click="updateFrequency(1)" :disabled="settingsStore.testFrequency >= 30"></v-btn>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -34,6 +42,22 @@
               <v-icon icon="mdi-chart-timeline-variant" class="mr-2" color="success"></v-icon>
               训练统计
             </h3>
+            
+            <!-- 今日训练进度 -->
+            <div class="mt-4 mb-4">
+              <div class="d-flex justify-space-between mb-1">
+                <span class="text-body-2 text-grey">今日训练进度</span>
+                <span class="text-body-2 text-primary font-weight-bold">{{ todayTotalTime }} / {{ requiredTimeStr }} 分钟</span>
+              </div>
+              <v-progress-linear
+                :model-value="todayProgress"
+                color="success"
+                height="12"
+                rounded
+                striped
+              ></v-progress-linear>
+            </div>
+
             <v-row class="mt-2">
               <v-col cols="6">
                 <div class="stat-box">
@@ -317,12 +341,14 @@ const goToExam = () => {
 }
 
 const goToTraining = () => {
-  const limit = settingsStore.testFrequency * 24 * 3600 * 1000
-  if (Date.now() - settingsStore.lastTestTime > limit) {
-    alert('您的检测数据已过期，请先进行视力或斜弱视检查')
+  if (settingsStore.isTestDataExpired) {
+    const isConfirm = confirm(`您的检测数据已过期（超过 ${settingsStore.testFrequency} 天），请先进行视力或斜弱视检查以保证康复方案准确。是否前往检查？`)
+    if (isConfirm) {
+      router.push({ name: 'SectionIntroVision' })
+    }
     return
   }
-  router.push({ name: 'TrainingMenu' })
+  router.push({ name: 'SectionIntroTraining' })
 }
 
 const hasExamData = computed(() => {
@@ -332,6 +358,35 @@ const hasExamData = computed(() => {
 const hasVisionData = computed(() => {
   return settingsStore.visionHistory && settingsStore.visionHistory.length > 0
 })
+
+const todayTotalTime = computed(() => {
+  let totalSec = 0
+  Object.values(progressStore.stages).forEach(s => {
+    totalSec += s.totalTime
+  })
+  return Math.floor(totalSec / 60)
+})
+
+const requiredTimeStr = computed(() => {
+  return Math.floor(settingsStore.requiredTrainingTime / 60)
+})
+
+const todayProgress = computed(() => {
+  const req = settingsStore.requiredTrainingTime
+  if (req <= 0) return 0
+  let totalSec = 0
+  Object.values(progressStore.stages).forEach(s => {
+    totalSec += s.totalTime
+  })
+  return Math.min(100, Math.floor((totalSec / req) * 100))
+})
+
+const updateFrequency = (delta: number) => {
+  const newVal = settingsStore.testFrequency + delta
+  if (newVal >= 1 && newVal <= 30) {
+    settingsStore.testFrequency = newVal
+  }
+}
 
 const neuroplasticityText = computed(() => {
   if (settingsStore.age === null) return '未知'

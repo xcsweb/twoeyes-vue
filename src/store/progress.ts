@@ -7,11 +7,18 @@ export interface StageData {
   totalTime: number
 }
 
+export interface TrainingRecord {
+  date: string
+  stage: number
+  duration: number
+}
+
 export interface ProgressData {
   unlockedStage: number
   stages: Record<number, StageData>
   firstTrainingDate: string | null
   lastTrainingDate: string | null
+  trainingHistory: TrainingRecord[]
 }
 
 export const useProgressStore = defineStore('progress', {
@@ -24,7 +31,8 @@ export const useProgressStore = defineStore('progress', {
       4: { stage: 4, totalTime: 0 }
     },
     firstTrainingDate: null,
-    lastTrainingDate: null
+    lastTrainingDate: null,
+    trainingHistory: []
   }),
   getters: {
     trainingDaysCount: (state) => {
@@ -92,10 +100,14 @@ export const useProgressStore = defineStore('progress', {
     unlockStage(stage: number) {
       this.unlockedStage = Math.max(this.unlockedStage, stage)
     },
+    addTrainingRecord(record: { date: string, stage: number, duration: number }) {
+      this.trainingHistory.push(record)
+    },
     resetProgress() {
       this.unlockedStage = 1
       this.firstTrainingDate = null
       this.lastTrainingDate = null
+      this.trainingHistory = []
       this.stages = {
         1: { stage: 1, totalTime: 0 },
         2: { stage: 2, totalTime: 0 },
