@@ -201,16 +201,13 @@ html, body {
   height: 100%;
   background-color: black;
   color: white;
-  overflow: hidden; /* Prevent body level scrolling */
 }
 
 #app {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  overflow: hidden;
-  position: relative; /* ensure proper containment for scrolling */
 }
 
 h1, h2, h3, h4, h5, h6 {

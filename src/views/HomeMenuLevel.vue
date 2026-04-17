@@ -260,7 +260,7 @@ const goToProfile = () => {
 <style scoped>
 .home-menu-container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -268,14 +268,14 @@ const goToProfile = () => {
   color: white;
   position: relative;
   z-index: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* 修复 iOS 上滚动不流畅的问题 */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 @media (min-width: 901px) {
   .home-menu-container {
     justify-content: center;
+    overflow: hidden;
+    height: 100vh;
   }
 }
 
