@@ -8,11 +8,10 @@
       <div class="d-flex align-center justify-center mb-2">
         <p class="text-h6 text-white mb-0">请戴上您的 3D 眼镜。</p>
       </div>
-      <p class="text-body-2 text-grey">
-        使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动横线。使用旋转按钮或键盘 Q/E (左眼) 和 U/O (右眼) 键调整旋转角度，直到两条线在您的视觉中完全重合并形成一个<strong>完美的十字（+）</strong>。
-        <br/><br/>
-        <strong class="text-orange">请先确保每一条线都与背景的白色参考线完全平行或垂直</strong>
-      </p>
+      <div class="text-body-2 text-grey text-left d-inline-block">
+        <div class="mb-2"><strong>第 1 步 (测水平/垂直偏移距离)：</strong>使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动横线，直到两条线在您的视觉中完全重合并形成一个<strong>完美的十字（+）</strong>。</div>
+        <div><strong>第 2 步 (测旋转偏角)：</strong>使用旋转按钮或键盘 Q/E (左眼) 和 U/O (右眼) 键调整旋转角度，<strong class="text-orange">请确保每一条线都与背景的参考线完全平行或垂直。</strong></div>
+      </div>
     </div>
 
     <!-- The actual test area where boxes move -->
@@ -350,8 +349,8 @@ const handleConfirm = () => {
   height: 100%;
   /* Offset the reference lines so they don't perfectly overlap with the target cross when centered */
   background-image: 
-    linear-gradient(to right, transparent calc(40% - 1px), rgba(255,255,255,0.4) calc(40% - 1px), rgba(255,255,255,0.4) calc(40% + 1px), transparent calc(40% + 1px)),
-    linear-gradient(to bottom, transparent calc(30% - 1px), rgba(255,255,255,0.4) calc(30% - 1px), rgba(255,255,255,0.4) calc(30% + 1px), transparent calc(30% + 1px));
+    linear-gradient(to right, transparent calc(40% - 1px), rgba(255, 60, 60, 0.45) calc(40% - 1px), rgba(255, 60, 60, 0.45) calc(40% + 1px), transparent calc(40% + 1px)),
+    linear-gradient(to bottom, transparent calc(30% - 1px), rgba(60, 200, 255, 0.45) calc(30% - 1px), rgba(60, 200, 255, 0.45) calc(30% + 1px), transparent calc(30% + 1px));
   z-index: 10; /* Bring it above the canvas area so it's not hidden by the colored boxes */
   pointer-events: none;
 }
@@ -397,7 +396,7 @@ const handleConfirm = () => {
 }
 
 .right-box:focus {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+  outline: none;
 }
 
 .horizontal-line {
