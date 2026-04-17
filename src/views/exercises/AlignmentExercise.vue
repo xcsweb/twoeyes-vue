@@ -6,7 +6,6 @@
 
     <div class="instructions text-center px-4 pt-6">
       <div class="d-flex align-center justify-center mb-2">
-        <v-icon color="info" size="28" class="mr-2">mdi-flask</v-icon>
         <p class="text-h6 text-white mb-0">请戴上您的 3D 眼镜。</p>
       </div>
       <p class="text-body-2 text-grey">
@@ -26,6 +25,7 @@
         }"
       >
         <div class="vertical-line" :style="{ backgroundColor: leftLenseRGBString }"></div>
+        <div class="center-dot" :style="{ backgroundColor: rightLenseRGBString }"></div>
       </div>
 
       <!-- Draggable/Movable Right Box (Controller) -->
@@ -43,6 +43,7 @@
         @pointercancel="handlePointerUp"
       >
         <div class="horizontal-line" :style="{ backgroundColor: rightLenseRGBString }"></div>
+        <div class="center-dot" :style="{ backgroundColor: leftLenseRGBString }"></div>
       </div>
     </div>
 
@@ -416,6 +417,18 @@ const handleConfirm = () => {
   width: 4px;
   height: 100%;
   transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.center-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
   pointer-events: none;
 }
 
