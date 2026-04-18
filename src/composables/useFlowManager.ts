@@ -2,6 +2,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 import { useProgressStore } from '../store/progress'
 import { useHistoryStore } from '../store/history'
+import { flowConfig } from '../config/flowConfig'
 
 export function useFlowManager() {
   const router = useRouter()
@@ -67,49 +68,8 @@ export function useFlowManager() {
     const name = currentRouteName || route.name as string
     const mode = settingsStore.currentExamMode
 
-    if (mode === 'vision') {
-      const flow = [
-        'SectionIntroVision',
-        'UserInfoForm',
-        'VisionDistanceAdvice',
-        'VisionTest',
-        'AstigmatismTest',
-        'ColorVisionTest',
-        'AmslerGridTest',
-        'ContrastSensitivityTest',
-        'VisionAdvice'
-      ]
-      const idx = flow.indexOf(name)
-      if (idx !== -1 && idx < flow.length - 1) {
-        return navigateForward(name, flow[idx + 1])
-      }
-    } else if (mode === 'amblyopia') {
-      const flow = [
-        'SectionIntroAmblyopia',
-        'UserInfoForm',
-        'LensSelection',
-        'LensConfirmation',
-        'DistanceAdvice',
-        'SuppressionTest',
-        'ContrastTest',
-        'AmblyopiaAdvice'
-      ]
-      const idx = flow.indexOf(name)
-      if (idx !== -1 && idx < flow.length - 1) {
-        return navigateForward(name, flow[idx + 1])
-      }
-    } else if (mode === 'exam') {
-      const flow = [
-        'SectionIntroExam',
-        'UserInfoForm',
-        'LensSelection',
-        'LensConfirmation',
-        'SectionIntroAlignment',
-        'DistanceAdvice',
-        'AlignmentExercise',
-        'AlignmentAdvice',
-        'StereopsisTest'
-      ]
+    if (mode && flowConfig[mode]) {
+      const flow = flowConfig[mode]
       const idx = flow.indexOf(name)
       if (idx !== -1 && idx < flow.length - 1) {
         return navigateForward(name, flow[idx + 1])

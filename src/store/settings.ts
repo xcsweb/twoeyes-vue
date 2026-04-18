@@ -36,11 +36,22 @@ export const useSettingsStore = defineStore('settings', {
     colorVisionResult: null as 'normal' | 'deficient' | null,
     macularResult: null as 'normal' | 'abnormal' | null,
     contrastSensitivityResult: null as 'normal' | 'low' | null,
-    currentExamMode: null as 'exam' | 'amblyopia' | 'vision' | null,
+    currentExamMode: null as 'exam' | 'amblyopia' | 'vision' | 'diplopia' | null,
     testFrequency: 1,
     lastTestTime: 0,
     stereopsisResult: null as 'normal' | 'mild' | 'moderate' | 'severe' | null,
-    age: null as number | null
+    age: null as number | null,
+    diplopiaResult: null as null | {
+      monocular: {
+        right: { hasGhost: boolean; offsetX: number; offsetY: number }
+        left: { hasGhost: boolean; offsetX: number; offsetY: number }
+      }
+      binocular: {
+        hasSeparation: boolean
+        offsetX: number
+        offsetY: number
+      }
+    }
   }),
   getters: {
     isTestDataExpired(state) {
@@ -189,7 +200,7 @@ export const useSettingsStore = defineStore('settings', {
     setContrastSensitivityResult(result: 'normal' | 'low' | null) {
       this.contrastSensitivityResult = result
     },
-    setExamMode(mode: 'exam' | 'amblyopia' | 'vision' | null) {
+    setExamMode(mode: 'exam' | 'amblyopia' | 'vision' | 'diplopia' | null) {
       this.currentExamMode = mode
     },
     setTestFrequency(days: number) {
@@ -203,6 +214,29 @@ export const useSettingsStore = defineStore('settings', {
     },
     setAge(age: number | null) {
       this.age = age
+    },
+    setDiplopiaResult(result: any) {
+      this.diplopiaResult = result
+    },
+    setMonocularDiplopiaResult(result: any) {
+      if (!this.diplopiaResult) {
+        this.diplopiaResult = { monocular: result, binocular: { hasSeparation: false, offsetX: 0, offsetY: 0 } }
+      } else {
+        this.diplopiaResult.monocular = result
+      }
+    },
+    setBinocularDiplopiaResult(result: any) {
+      if (!this.diplopiaResult) {
+        this.diplopiaResult = { 
+          monocular: { 
+            right: { hasGhost: false, offsetX: 0, offsetY: 0 }, 
+            left: { hasGhost: false, offsetX: 0, offsetY: 0 } 
+          }, 
+          binocular: result 
+        }
+      } else {
+        this.diplopiaResult.binocular = result
+      }
     }
   },
   persist: true
