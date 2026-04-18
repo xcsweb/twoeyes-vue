@@ -48,6 +48,7 @@ export function useFlowManager() {
     let prev: string | null = null
     if (mode === 'vision') {
       prev = getPrevInFlow([
+        'Home',
         'SectionIntroVision',
         'UserInfoForm',
         'VisionDistanceAdvice',
@@ -60,6 +61,7 @@ export function useFlowManager() {
       ])
     } else if (mode === 'amblyopia') {
       prev = getPrevInFlow([
+        'Home',
         'SectionIntroAmblyopia',
         'UserInfoForm',
         'LensSelection',
@@ -71,6 +73,7 @@ export function useFlowManager() {
       ])
     } else if (mode === 'exam') {
       prev = getPrevInFlow([
+        'Home',
         'SectionIntroExam',
         'UserInfoForm',
         'LensSelection',
