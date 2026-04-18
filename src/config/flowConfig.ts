@@ -30,11 +30,5 @@ export const flowConfig: Record<string, string[]> = {
     'AlignmentExercise',
     'AlignmentAdvice',
     'StereopsisTest'
-  ],
-  diplopia: [
-    'SectionIntroDiplopia',
-    'MonocularDiplopiaTest',
-    'BinocularDiplopiaTest',
-    'DiplopiaAdvice'
   ]
 }

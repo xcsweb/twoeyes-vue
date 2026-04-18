@@ -81,26 +81,6 @@ const routes = [
     }
   },
   {
-    path: '/diplopia/intro',
-    name: 'SectionIntroDiplopia',
-    component: () => import('../views/diplopia/SectionIntroDiplopia.vue')
-  },
-  {
-    path: '/diplopia/monocular',
-    name: 'MonocularDiplopiaTest',
-    component: () => import('../views/diplopia/MonocularDiplopiaTest.vue')
-  },
-  {
-    path: '/diplopia/binocular',
-    name: 'BinocularDiplopiaTest',
-    component: () => import('../views/diplopia/BinocularDiplopiaTest.vue')
-  },
-  {
-    path: '/diplopia/advice',
-    name: 'DiplopiaAdvice',
-    component: () => import('../views/diplopia/DiplopiaAdvice.vue')
-  },
-  {
     path: '/exam/user-info',
     name: 'UserInfoForm',
     component: () => import('../views/UserInfoFormLevel.vue')
@@ -431,7 +411,6 @@ router.beforeEach((to, _from, next) => {
   if (to.name === 'SectionIntroAmblyopia') settingsStore.setExamMode('amblyopia')
   else if (to.name === 'SectionIntroExam') settingsStore.setExamMode('exam')
   else if (to.name === 'SectionIntroVision') settingsStore.setExamMode('vision')
-  else if (to.name === 'SectionIntroDiplopia') settingsStore.setExamMode('diplopia')
   next()
 })
 
