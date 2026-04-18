@@ -65,8 +65,8 @@
 
         <!-- Diplopia Exam Card -->
         <div class="elegant-card" @click="goToDiplopia">
-          <div class="card-img-wrapper" style="display: flex; justify-content: center; align-items: center; background: rgba(255,255,255,0.05);">
-            <v-icon size="64" color="white" style="z-index: 1;">mdi-eye-circle-outline</v-icon>
+          <div class="card-img-wrapper">
+            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20NASA-style%20planet%20in%20deep%20space%2C%20realistic%20astronomy%20photography%2C%20dark%20space%20background%2C%20glowing%20nebula%2C%20no%20humans&image_size=square" alt="diplopia" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
