@@ -1,14 +1,22 @@
 import { useRouter, useRoute } from 'vue-router'
 import { useSettingsStore } from '../store/settings'
 import { useProgressStore } from '../store/progress'
+import { useHistoryStore } from '../store/history'
 
 export function useFlowManager() {
   const router = useRouter()
   const route = useRoute()
   const settingsStore = useSettingsStore()
   const progressStore = useProgressStore()
+  const historyStore = useHistoryStore()
 
   const navigateForward = (currentRouteName?: string, targetRouteName?: string, requiredStageToEnter?: number) => {
+    // 记录当前路由到历史栈 (如果存在)
+    const nameToPush = currentRouteName || (route.name as string)
+    if (nameToPush && nameToPush !== 'Home') {
+      historyStore.pushRoute(nameToPush)
+    }
+
     // If targetRouteName is provided (used for navigating to specific games/stages)
     if (targetRouteName) {
       if (requiredStageToEnter && progressStore.effectiveUnlockedStage < requiredStageToEnter) {
@@ -30,7 +38,6 @@ export function useFlowManager() {
 
   const goBack = (currentRouteName?: string) => {
     const name = currentRouteName || (route.name as string)
-    const mode = settingsStore.currentExamMode
 
     // Hardcoded specific fallbacks for deep links
     if (name === 'PaperDetail') return router.replace({ name: 'Theory' })
@@ -39,54 +46,10 @@ export function useFlowManager() {
     if (name === 'VergenceCardsExercise' || name === 'BrockStringExercise') return router.replace({ name: 'SectionIntroTraining3' })
     if (name === 'StereopsisExercise' || name === 'TetrisExercise') return router.replace({ name: 'SectionIntroTraining4' })
 
-    const getPrevInFlow = (flow: string[]) => {
-      const idx = flow.indexOf(name)
-      if (idx > 0) return flow[idx - 1]
-      return null
-    }
+    // Pop the last route from the intelligent history stack
+    const prev = historyStore.popRoute()
 
-    let prev: string | null = null
-    if (mode === 'vision') {
-      prev = getPrevInFlow([
-        'Home',
-        'SectionIntroVision',
-        'UserInfoForm',
-        'VisionDistanceAdvice',
-        'VisionTest',
-        'AstigmatismTest',
-        'ColorVisionTest',
-        'AmslerGridTest',
-        'ContrastSensitivityTest',
-        'VisionAdvice'
-      ])
-    } else if (mode === 'amblyopia') {
-      prev = getPrevInFlow([
-        'Home',
-        'SectionIntroAmblyopia',
-        'UserInfoForm',
-        'LensSelection',
-        'LensConfirmation',
-        'DistanceAdvice',
-        'SuppressionTest',
-        'ContrastTest',
-        'AmblyopiaAdvice'
-      ])
-    } else if (mode === 'exam') {
-      prev = getPrevInFlow([
-        'Home',
-        'SectionIntroExam',
-        'UserInfoForm',
-        'LensSelection',
-        'LensConfirmation',
-        'SectionIntroAlignment',
-        'DistanceAdvice',
-        'AlignmentExercise',
-        'AlignmentAdvice',
-        'StereopsisTest'
-      ])
-    }
-
-    if (prev) {
+    if (prev && prev !== 'Home') {
       router.replace({ name: prev })
       return { success: true }
     }
