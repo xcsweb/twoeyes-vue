@@ -66,7 +66,7 @@
         <!-- Diplopia Exam Card -->
         <div class="elegant-card" @click="goToDiplopia">
           <div class="card-img-wrapper">
-            <img class="card-img" src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=A%20NASA-style%20planet%20in%20deep%20space%2C%20realistic%20astronomy%20photography%2C%20dark%20space%20background%2C%20glowing%20nebula%2C%20no%20humans&image_size=square" alt="diplopia" />
+            <img class="card-img" src="../assets/images/cards/diplopia.webp" alt="diplopia" />
             <div class="card-gradient"></div>
           </div>
           <div class="card-content">
