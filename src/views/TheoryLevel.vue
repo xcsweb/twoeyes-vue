@@ -34,6 +34,97 @@
       <v-card class="theory-card mb-6" variant="outlined">
         <v-card-text>
           <h2 class="text-h5 text-white mb-4 d-flex align-center">
+            <v-icon color="warning" class="mr-2">mdi-map-marker-path</v-icon>
+            系统四大模块的流转地图与出现逻辑
+          </h2>
+          <div class="text-body-1 text-grey-lighten-1">
+            <p class="mb-4">
+              为了确保各项数据能被精准采集并顺利继承到后续的康复训练中，本系统设计了严格的页面流转逻辑。根据您选择的模块和自身的视觉情况，系统会动态展现不同的测试页面：
+            </p>
+
+            <div class="mb-6">
+              <strong class="text-white text-h6">1. 普通视力检查 (Vision)</strong><br />
+              <span class="text-caption text-grey">无需佩戴 3D 眼镜，在自然光下评估基础视功能。</span>
+              <v-timeline density="compact" align="start" class="mt-2 ml-2" truncate-line="both">
+                <v-timeline-item dot-color="info" size="x-small"><strong class="text-white">模块引导页</strong> (介绍流程与注意事项)</v-timeline-item>
+                <v-timeline-item dot-color="info" size="x-small"><strong class="text-white">距离提示页</strong> (确认保持 40cm 测试距离)</v-timeline-item>
+                <v-timeline-item dot-color="info" size="x-small"><strong class="text-white">E字视力表测试</strong> (核心视力筛查，测量左右眼视力)</v-timeline-item>
+                <v-timeline-item dot-color="info" size="x-small"><strong class="text-white">散光客观筛查</strong> (光栅条纹方向辨认)</v-timeline-item>
+                <v-timeline-item dot-color="info" size="x-small"><strong class="text-white">色觉测试</strong> (数字辨认测试色弱/色盲)</v-timeline-item>
+                <v-timeline-item dot-color="info" size="x-small"><strong class="text-white">阿姆斯勒方格表</strong> (筛查黄斑病变等眼底问题)</v-timeline-item>
+                <v-timeline-item dot-color="info" size="x-small"><strong class="text-white">对比敏感度测试</strong> (Pelli-Robson 原理检测)</v-timeline-item>
+                <v-timeline-item dot-color="info" size="x-small"><strong class="text-white">诊断结果分析页</strong> (输出综合结果与临床建议)</v-timeline-item>
+              </v-timeline>
+            </div>
+
+            <div class="mb-6">
+              <strong class="text-white text-h6">2. 斜视检查 (Exam)</strong><br />
+              <span class="text-caption text-grey">佩戴红蓝 3D 眼镜，专注测量隐斜视偏离度及立体视。</span>
+              <v-timeline density="compact" align="start" class="mt-2 ml-2" truncate-line="both">
+                <v-timeline-item dot-color="warning" size="x-small"><strong class="text-white">模块引导与用户信息</strong> (收集视力基础信息)</v-timeline-item>
+                <v-timeline-item dot-color="warning" size="x-small">
+                  <strong class="text-white">滤光片校准与确认</strong>
+                  <div class="text-caption text-info mt-1">
+                    <v-icon icon="mdi-lightbulb-on-outline" size="small" class="mr-1"></v-icon>
+                    <strong>动态逻辑：</strong>如果您在选择颜色时点击了“我不确定颜色？使用客观视标测试”，系统会额外弹出一个闭眼看形状的“客观硬件校准”小测试，否则此步会跳过。
+                  </div>
+                </v-timeline-item>
+                <v-timeline-item dot-color="warning" size="x-small"><strong class="text-white">十字准星对齐说明与距离确认</strong></v-timeline-item>
+                <v-timeline-item dot-color="error" size="small"><strong class="text-white">十字准星对齐测试</strong> (核心马氏杆原理，移动红蓝线拼成十字，测出水平/垂直偏移距离及旋转偏角)</v-timeline-item>
+                <v-timeline-item dot-color="warning" size="x-small"><strong class="text-white">立体视敏度筛查</strong> (寻找浮起的目标，测试双眼融合深度感知)</v-timeline-item>
+                <v-timeline-item dot-color="warning" size="x-small">
+                  <strong class="text-white">诊断结果与康复方案生成</strong>
+                  <div class="text-caption text-info mt-1">
+                    <v-icon icon="mdi-lightbulb-on-outline" size="small" class="mr-1"></v-icon>
+                    <strong>为什么没有抑制测试？</strong>斜视检查主要评估眼位偏斜和立体视，因此不会出现找 E 字的“双眼抑制测试”和“对比度测试”。
+                  </div>
+                </v-timeline-item>
+              </v-timeline>
+            </div>
+
+            <div class="mb-6">
+              <strong class="text-white text-h6">3. 弱视/抑制检查 (Amblyopia)</strong><br />
+              <span class="text-caption text-grey">佩戴红蓝 3D 眼镜，专注于检测单眼抑制并测定暗光惩罚阈值。</span>
+              <v-timeline density="compact" align="start" class="mt-2 ml-2" truncate-line="both">
+                <v-timeline-item dot-color="purple" size="x-small"><strong class="text-white">模块引导与用户信息</strong></v-timeline-item>
+                <v-timeline-item dot-color="purple" size="x-small"><strong class="text-white">滤光片校准与确认</strong></v-timeline-item>
+                <v-timeline-item dot-color="error" size="small">
+                  <strong class="text-white">双眼抑制测试</strong> (客观找 E 字方向，精准判断强弱眼)
+                  <div class="text-caption text-info mt-1">
+                    <v-icon icon="mdi-lightbulb-on-outline" size="small" class="mr-1"></v-icon>
+                    <strong>为什么这里有这个测试？</strong>因为弱视的核心问题是大脑对差眼的信号抑制。此测试专用于测量双眼的信号接收不平衡度。
+                  </div>
+                </v-timeline-item>
+                <v-timeline-item dot-color="error" size="small"><strong class="text-white">分视对比度测试</strong> (分别测试双眼在分视下的敏感度)</v-timeline-item>
+                <v-timeline-item dot-color="purple" size="x-small"><strong class="text-white">弱视诊断结果页</strong> (输出抑制眼的“惩罚阈值”建议供训练使用)</v-timeline-item>
+              </v-timeline>
+            </div>
+
+            <div class="mb-2">
+              <strong class="text-white text-h6">4. 康复训练 (Training)</strong><br />
+              <span class="text-caption text-grey">读取您的检查数据，动态生成的 4 个阶段进阶视觉康复游戏。</span>
+              <v-timeline density="compact" align="start" class="mt-2 ml-2" truncate-line="both">
+                <v-timeline-item dot-color="success" size="x-small">
+                  <strong class="text-white">康复训练主菜单</strong>
+                  <div class="text-caption text-info mt-1">
+                    <v-icon icon="mdi-lightbulb-on-outline" size="small" class="mr-1"></v-icon>
+                    <strong>解锁逻辑：</strong>只有当您的检查数据未过期（在个人信息中设置）且完成了上一阶段的训练时长目标时，下一阶段的游戏才会解锁。否则点击训练入口会被系统拦截。
+                  </div>
+                </v-timeline-item>
+                <v-timeline-item dot-color="success" size="x-small"><strong class="text-white">阶段1：基础脱抑制</strong> (洗牌训练、方块阵列)</v-timeline-item>
+                <v-timeline-item dot-color="success" size="x-small"><strong class="text-white">阶段2：动态融合与扫视</strong> (扫视追踪、旋转螺旋、星空粒子)</v-timeline-item>
+                <v-timeline-item dot-color="success" size="x-small"><strong class="text-white">阶段3：集合与分开</strong> (裂隙尺聚散卡、3D聚散球)</v-timeline-item>
+                <v-timeline-item dot-color="success" size="x-small"><strong class="text-white">阶段4：立体视建立</strong> (进阶立体视测试、双眼协同俄罗斯方块)</v-timeline-item>
+              </v-timeline>
+            </div>
+
+          </div>
+        </v-card-text>
+      </v-card>
+
+      <v-card class="theory-card mb-6" variant="outlined">
+        <v-card-text>
+          <h2 class="text-h5 text-white mb-4 d-flex align-center">
             <v-icon color="info" class="mr-2">mdi-eye-check-outline</v-icon>
             基础视功能筛查原理
           </h2>
