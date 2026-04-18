@@ -25,10 +25,19 @@
         </div>
         
         <div v-if="step === 'adjust'" class="adjust-section bg-grey-darken-4 pa-6 rounded-lg elevation-4">
-          <p class="text-h6 text-white mb-4">
-            请使用方向键，移动红点，直到红青两点主观上融合为一个点（或呈白色/混色）。
+          <p class="text-h6 text-white mb-2">
+            双眼复视测量原理：利用滤光片进行分视。
           </p>
-          
+          <p class="text-body-1 text-grey-lighten-1 mb-4">
+            现在屏幕上固定了一个青点（右眼可见），并且您可以移动一个红点（左眼可见）。<br>
+            请使用方向键移动红点，直到它与青点<strong>主观上重合为一体（或呈白色）</strong>。<br>
+            当您主观感觉两点重合时，它们在屏幕上的物理距离，就是您双眼隐斜视导致复视的偏差量！
+          </p>
+
+          <div class="text-center mb-2">
+            <span class="text-h6 text-info">当前偏移: 水平 {{ offsetX }}px, 垂直 {{ offsetY }}px</span>
+          </div>
+
           <div class="control-pad d-flex flex-column align-center my-4">
             <v-btn icon="mdi-arrow-up" size="large" color="primary" class="mb-2" @click="moveDot(0, -10)"></v-btn>
             <div class="d-flex">
@@ -38,7 +47,7 @@
             </div>
             <v-btn icon="mdi-arrow-down" size="large" color="primary" class="mt-2" @click="moveDot(0, 10)"></v-btn>
           </div>
-          
+
           <v-btn color="success" size="large" block @click="finishTest">
             完成调整
           </v-btn>

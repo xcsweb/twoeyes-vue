@@ -25,10 +25,19 @@
         </div>
         
         <div v-if="step === 'adjust'" class="adjust-section bg-grey-darken-4 pa-6 rounded-lg elevation-4">
-          <p class="text-h6 text-white mb-4">
-            请使用方向键，将暗白色的参考点移动到您看到的重影位置。
+          <p class="text-h6 text-white mb-2">
+            单眼复视测量原理：屏幕中央为主基准点。
           </p>
-          
+          <p class="text-body-1 text-grey-lighten-1 mb-4">
+            现在出现了第二个游标点。因为单眼复视的物理特性，这两个点在您的眼里都会产生鬼影。<br>
+            请使用方向键移动游标点，直到它<strong>与主基准点的鬼影完全重合</strong>。<br>
+            当游标点“覆盖”在鬼影上时，这段移动的距离就是您单眼复视的光学偏移量！
+          </p>
+
+          <div class="text-center mb-2">
+            <span class="text-h6 text-info">当前偏移: X: {{ offsetX }}px, Y: {{ offsetY }}px</span>
+          </div>
+
           <div class="control-pad d-flex flex-column align-center my-4">
             <v-btn icon="mdi-arrow-up" size="large" color="primary" class="mb-2" @click="moveDot(0, -10)"></v-btn>
             <div class="d-flex">
@@ -38,7 +47,7 @@
             </div>
             <v-btn icon="mdi-arrow-down" size="large" color="primary" class="mt-2" @click="moveDot(0, 10)"></v-btn>
           </div>
-          
+
           <v-btn color="success" size="large" block @click="finishEye">
             完成调整
           </v-btn>
@@ -49,13 +58,13 @@
       <div class="test-area position-relative w-100 h-100">
         <!-- Main target dot -->
         <div class="target-dot position-absolute bg-white rounded-circle" style="width: 20px; height: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
-        
-        <!-- Reference dot for ghosting -->
-        <div 
+
+        <!-- Reference dot for ghosting (Movable) -->
+        <div
           v-if="step === 'adjust'"
-          class="reference-dot position-absolute bg-white rounded-circle opacity-40" 
+          class="reference-dot position-absolute bg-white rounded-circle"
           :style="{
-            width: '20px', 
+            width: '20px',
             height: '20px',
             top: '50%',
             left: '50%',
