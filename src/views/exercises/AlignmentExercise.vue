@@ -2,7 +2,7 @@
   <div class="alignment-exercise-container">
     <!-- Background overlay to prevent distractions -->
     <div class="bg-black-overlay"></div>
-    <div class="reference-grid"></div>
+    <div class="reference-grid" :style="referenceGridStyle"></div>
 
     <div class="instructions text-center px-4 pt-6">
       <div class="d-flex align-center justify-center mb-2">
@@ -10,7 +10,7 @@
       </div>
       <div class="text-body-2 text-grey text-left d-inline-block">
         <div class="mb-2"><strong>第 1 步 (测水平/垂直偏移距离)：</strong>使用屏幕上的箭头按钮、键盘方向键或触摸拖动，移动横线，直到两条线在您的视觉中完全重合并形成一个<strong>完美的十字（+）</strong>。</div>
-        <div><strong>第 2 步 (测旋转偏角)：</strong>使用旋转按钮或键盘 Q/E (左眼) 和 U/O (右眼) 键调整旋转角度，<strong class="text-orange">请确保每一条线都与背景的参考线完全平行或垂直。</strong></div>
+        <div><strong>第 2 步 (测旋转偏角)：</strong>使用旋转按钮或键盘 Q/E (左眼) 和 U/O (右眼) 键调整旋转角度，<strong class="text-orange">仅提示平行，请确保{{ leftColorName }}色垂直操作线与{{ leftColorName }}色背景参考线平行，{{ rightColorName }}色水平操作线与{{ rightColorName }}色背景参考线平行。</strong></div>
       </div>
     </div>
 
@@ -160,8 +160,30 @@ const dragStartPos = ref({ x: 0, y: 0 })
 const leftLense = settingsStore.leftLense
 const rightLense = settingsStore.rightLense
 
-const leftLenseRGBString = computed(() => `rgb(${leftLense.r}, ${leftLense.g}, ${leftLense.b})`)
-const rightLenseRGBString = computed(() => `rgb(${rightLense.r}, ${rightLense.g}, ${rightLense.b})`)
+const leftLenseRGBString = computed(() => settingsStore.leftEyeFinalColorStr)
+const rightLenseRGBString = computed(() => settingsStore.rightEyeFinalColorStr)
+
+const getColorName = (color: { r: number; g: number; b: number }) => {
+  if (color.r > 150 && color.g < 100 && color.b < 100) return '红'
+  if (color.r < 100 && color.g > 150 && color.b > 150) return '青'
+  if (color.r < 100 && color.g < 100 && color.b > 150) return '蓝'
+  if (color.r < 100 && color.g > 100 && color.b > 100) return '青蓝'
+  return '对应'
+}
+
+const leftColorName = computed(() => getColorName(leftLense))
+const rightColorName = computed(() => getColorName(rightLense))
+
+const referenceGridStyle = computed(() => {
+  const leftColor = `${leftLense.r}, ${leftLense.g}, ${leftLense.b}`
+  const rightColor = `${rightLense.r}, ${rightLense.g}, ${rightLense.b}`
+  return {
+    backgroundImage: `
+      linear-gradient(to right, transparent calc(40% - 1px), rgba(${leftColor}, 0.45) calc(40% - 1px), rgba(${leftColor}, 0.45) calc(40% + 1px), transparent calc(40% + 1px)),
+      linear-gradient(to bottom, transparent calc(30% - 1px), rgba(${rightColor}, 0.45) calc(30% - 1px), rgba(${rightColor}, 0.45) calc(30% + 1px), transparent calc(30% + 1px))
+    `
+  }
+})
 
 // Pointer Events for Dragging
 const handlePointerDown = (e: PointerEvent) => {
@@ -348,9 +370,6 @@ const handleConfirm = () => {
   width: 100%;
   height: 100%;
   /* Offset the reference lines so they don't perfectly overlap with the target cross when centered */
-  background-image: 
-    linear-gradient(to right, transparent calc(40% - 1px), rgba(255, 60, 60, 0.45) calc(40% - 1px), rgba(255, 60, 60, 0.45) calc(40% + 1px), transparent calc(40% + 1px)),
-    linear-gradient(to bottom, transparent calc(30% - 1px), rgba(60, 200, 255, 0.45) calc(30% - 1px), rgba(60, 200, 255, 0.45) calc(30% + 1px), transparent calc(30% + 1px));
   z-index: 10; /* Bring it above the canvas area so it's not hidden by the colored boxes */
   pointer-events: none;
 }

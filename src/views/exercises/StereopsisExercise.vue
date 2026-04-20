@@ -30,7 +30,7 @@
             <div
               class="shape-layer left-eye"
               :style="{
-                backgroundColor: settingsStore.leftEyeColorStr,
+                backgroundColor: settingsStore.leftEyeFinalColorStr,
                 transform: `translateX(${shape.leftOffset}px)`
               }"
             ></div>
@@ -38,7 +38,7 @@
             <div
               class="shape-layer right-eye"
               :style="{
-                backgroundColor: settingsStore.rightEyeColorStr,
+                backgroundColor: settingsStore.rightEyeFinalColorStr,
                 transform: `translateX(${shape.rightOffset}px)`
               }"
             ></div>

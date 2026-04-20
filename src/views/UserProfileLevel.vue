@@ -178,6 +178,14 @@
               </div>
 
               <div class="data-item">
+                <div class="data-label">颜色域校准强度</div>
+                <div class="data-value">
+                  <span class="text-error">红域: {{ Math.round(settingsStore.calibratedColorIntensity.red * 100) }}%</span> | 
+                  <span class="text-info">青(蓝)域: {{ Math.round(settingsStore.calibratedColorIntensity.cyan * 100) }}%</span>
+                </div>
+              </div>
+
+              <div class="data-item">
                 <div class="data-label">双眼抑制状态</div>
                 <div class="data-value">
                   <v-chip :color="suppressionColor" size="small" label>{{ suppressionText }}</v-chip>

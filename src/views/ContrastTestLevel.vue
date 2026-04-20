@@ -32,13 +32,14 @@
             <!-- The E symbol (Weak Eye, 100% opacity) -->
             <div 
               class="e-symbol"
-              :class="[eColorClass, eDirectionClass]"
+              :class="eDirectionClass"
+              :style="{ color: eColorStr }"
             >E</div>
             
             <!-- The noise mask (Strong Eye, dynamic opacity) -->
             <div 
               class="noise-mask"
-              :class="noiseColorClass"
+              :style="{ color: noiseColorStr }"
             >
               <!-- Generated random noise blocks -->
               <div v-for="n in 30" :key="n" class="noise-block" :style="getNoiseStyle()"></div>
@@ -120,22 +121,12 @@ const currentDirection = ref(directions[Math.floor(Math.random() * directions.le
 // But actually, for dichoptic presentation on black background:
 // Left Red Lens sees Red. Right Cyan Lens sees Cyan.
 // So if we want the weak eye to see the E, we draw the E in the WEAK eye's lens color.
-const eColorClass = computed(() => {
-  const isLeftRed = settingsStore.lensConfig === 'red-cyan'
-  if (isLeftWeak.value) {
-    return isLeftRed ? 'color-red' : 'color-cyan'
-  } else {
-    return isLeftRed ? 'color-cyan' : 'color-red'
-  }
+const eColorStr = computed(() => {
+  return isLeftWeak.value ? settingsStore.leftEyeFinalColorStr : settingsStore.rightEyeFinalColorStr
 })
 
-const noiseColorClass = computed(() => {
-  const isLeftRed = settingsStore.lensConfig === 'red-cyan'
-  if (!isLeftWeak.value) {
-    return isLeftRed ? 'color-red' : 'color-cyan'
-  } else {
-    return isLeftRed ? 'color-cyan' : 'color-red'
-  }
+const noiseColorStr = computed(() => {
+  return !isLeftWeak.value ? settingsStore.leftEyeFinalColorStr : settingsStore.rightEyeFinalColorStr
 })
 
 const eDirectionClass = computed(() => {
@@ -273,9 +264,6 @@ onUnmounted(() => {
 .dir-down { transform: translate(-50%, -50%) rotate(90deg); }
 .dir-left { transform: translate(-50%, -50%) scaleX(-1); }
 .dir-right { transform: translate(-50%, -50%); }
-
-.color-red { color: #ff0000; }
-.color-cyan { color: #00ffff; }
 
 .noise-mask {
   position: absolute;

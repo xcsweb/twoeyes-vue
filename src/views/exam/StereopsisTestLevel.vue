@@ -21,7 +21,7 @@
             <div
               class="circle-layer left-eye"
               :style="{
-                backgroundColor: settingsStore.leftEyeColorStr,
+                backgroundColor: settingsStore.leftEyeFinalColorStr,
                 transform: `translateX(${circle.leftOffset}px)`
               }"
             ></div>
@@ -29,7 +29,7 @@
             <div
               class="circle-layer right-eye"
               :style="{
-                backgroundColor: settingsStore.rightEyeColorStr,
+                backgroundColor: settingsStore.rightEyeFinalColorStr,
                 transform: `translateX(${circle.rightOffset}px)`
               }"
             ></div>

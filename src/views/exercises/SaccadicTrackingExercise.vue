@@ -79,8 +79,8 @@ const STAGE_NUMBER = 2
 const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = useStageTimer(STAGE_NUMBER)
 
 
-const leftColorStr = computed(() => settingsStore.leftEyeColorStr)
-const rightColorStr = computed(() => settingsStore.rightEyeColorStr)
+const leftColorStr = computed(() => settingsStore.leftEyeFinalColorStr)
+const rightColorStr = computed(() => settingsStore.rightEyeFinalColorStr)
 
 const showInstruction = ref(true)
 const isPlaying = ref(false)

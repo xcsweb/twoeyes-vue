@@ -116,6 +116,11 @@ const routes = [
     component: () => import('../views/LensConfirmationLevel.vue')
   },
   {
+    path: '/exam/color-calibration',
+    name: 'ColorCalibration',
+    component: () => import('../views/ColorCalibrationLevel.vue')
+  },
+  {
     path: '/exam/alignment-intro',
     name: 'SectionIntroAlignment',
     component: () => import('../views/SectionIntroLevel.vue'),

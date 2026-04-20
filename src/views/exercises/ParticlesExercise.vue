@@ -90,8 +90,8 @@ const initThree = () => {
   // Instanced Mesh
   const { alignmentOffset } = settingsStore
   const colors = [
-    settingsStore.leftEyeColorStr,
-    settingsStore.rightEyeColorStr
+    settingsStore.leftEyeFinalColorStr,
+    settingsStore.rightEyeFinalColorStr
   ]
 
   const particles = new Array(numParticles).fill(null).map((_, i) => ({

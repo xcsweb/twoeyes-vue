@@ -111,8 +111,8 @@ const initThree = () => {
 
   // Create Boxes
   const colors = [
-    new THREE.Color(settingsStore.leftEyeColorStr),
-    new THREE.Color(settingsStore.rightEyeColorStr)
+    new THREE.Color(settingsStore.leftEyeFinalColorStr),
+    new THREE.Color(settingsStore.rightEyeFinalColorStr)
   ]
 
   const offset = settingsStore.alignmentOffset.x

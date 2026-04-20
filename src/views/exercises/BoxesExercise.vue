@@ -98,8 +98,8 @@ const initThree = () => {
   // Instanced Mesh
   const { alignmentOffset } = settingsStore
   const colors = [
-    settingsStore.leftEyeColorStr,
-    settingsStore.rightEyeColorStr
+    settingsStore.leftEyeFinalColorStr,
+    settingsStore.rightEyeFinalColorStr
   ]
 
   const geometry = new THREE.BoxGeometry(0.8, 0.8, 0.8)

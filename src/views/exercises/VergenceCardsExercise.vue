@@ -137,8 +137,8 @@ const { formattedTime, isTargetReached, showCompletionDialog, returnToMenu } = u
 const stageTime = computed(() => progressStore.stages[STAGE_NUMBER]?.totalTime || 0)
 
 
-const leftColorStr = computed(() => settingsStore.leftEyeColorStr)
-const rightColorStr = computed(() => settingsStore.rightEyeColorStr)
+const leftColorStr = computed(() => settingsStore.leftEyeFinalColorStr)
+const rightColorStr = computed(() => settingsStore.rightEyeFinalColorStr)
 
 // 根据用户的隐斜视 offset 决定是内斜还是外斜
 // 负数 -> 外斜视 (Exophoria) -> 需要训练集合 (Convergence, BO)

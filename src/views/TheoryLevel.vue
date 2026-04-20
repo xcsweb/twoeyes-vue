@@ -213,19 +213,23 @@
           </h2>
           <div class="text-body-1 text-grey-lighten-1">
             <p class="mb-4">
-              <strong class="text-white">1. 颜色的绝对匹配（消除串扰）：</strong><br />
-              在“滤片选择”阶段确定的 RGB 颜色值，会被 100% 沿用到后续所有的 3D 训练游戏中。只有保证训练刺激的颜色与您的眼镜滤片完全一致，才能达到“右眼看不见红色，左眼看不见蓝色”的彻底分视效果（Dichoptic Presentation），防止图像串扰（Crosstalk）。
+              <strong class="text-white">1. 核心参数的四步流转逻辑（镜片确认 → 颜色域主观校准 → 抑制/惩罚阈值(客观) → 对齐/训练）：</strong><br />
+              为了实现精准的双眼分视（Dichoptic Presentation），系统设计了严密的参数流转闭环。首先进行<strong>镜片确认</strong>，设定基础分视颜色；随后进入<strong>颜色域主观校准</strong>，用户通过田字格矩阵微调出肉眼最能消除串扰的极致颜色；紧接着，系统通过寻找 E 字等<strong>客观抑制测试</strong>，精确测量大脑对差眼的抑制程度，并自动计算出降低优势眼亮度的“惩罚阈值”；最终，在<strong>十字对齐</strong>和所有的<strong>康复训练</strong>中，系统会统一输出叠加了“主观校准颜色”与“客观惩罚因子”的最终渲染画面。
             </p>
             <p class="mb-4">
-              <strong class="text-white">2. 抑制测试与暗光惩罚（Penalization）<sup class="text-primary">[1]</sup>：</strong><br />
-              在“四点客观测试”中，如果系统测出您的大脑正在抑制某一只眼睛（如弱视眼），系统会在后台记录该状态。在进入康复训练时，系统会自动将您“优势眼”的颜色亮度降低至 30%，通过“惩罚”好眼，强迫大脑去重新建立对“差眼”的神经连接。
+              <strong class="text-white">2. 颜色的绝对匹配（消除串扰）：</strong><br />
+              在校准阶段确定的 RGB 颜色值，会被 100% 沿用到后续所有的 3D 训练游戏中。只有保证训练刺激的颜色与您的眼镜滤片完全一致，才能达到“右眼看不见红色，左眼看不见蓝色”的彻底分视效果（Dichoptic Presentation），防止图像串扰（Crosstalk）。
             </p>
             <p class="mb-4">
-              <strong class="text-white">3. 隐斜偏移量与空间频率动态调节<sup class="text-primary">[3]</sup>：</strong><br />
+              <strong class="text-white">3. 抑制测试与暗光惩罚（Penalization）<sup class="text-primary">[1]</sup>：</strong><br />
+              在“四点客观测试”中，如果系统测出您的大脑正在抑制某一只眼睛（如弱视眼），系统会在后台记录该状态。在进入康复训练时，系统会自动将您“优势眼”的颜色亮度降低至 30%（或根据测试结果动态调整），通过“惩罚”好眼，强迫大脑去重新建立对“差眼”的神经连接。
+            </p>
+            <p class="mb-4">
+              <strong class="text-white">4. 隐斜偏移量与空间频率动态调节<sup class="text-primary">[3]</sup>：</strong><br />
               在“十字准星对齐”中测出的 Offset 值代表了您的隐斜视程度。Offset 越大，说明融合能力越差。系统会将该数值代入 3D 引擎：Offset 越大，生成的训练方块就越大（降低空间频率），且运动速度越慢，给眼球肌肉更充裕的时间进行融合；随着您能力的提升（Offset 减小），方块会变得更小、更快，逐步挑战更高阶的动态立体视。
             </p>
             <p class="mb-0">
-              <strong class="text-white">4. 外斜视与内斜视的差异化聚散训练<sup class="text-primary">[4]</sup>：</strong><br />
+              <strong class="text-white">5. 外斜视与内斜视的差异化聚散训练<sup class="text-primary">[4]</sup>：</strong><br />
               依据临床指南，外斜视（Exotropia）与内斜视（Esotropia）的训练方向截然相反。系统会根据 Offset 值的正负号自动判断：如果您是外斜视，系统会在【阶段 3】生成交叉视差（底向外 BO）的训练，强制您进行“斗鸡眼”集合训练；如果您是内斜视，则生成非交叉视差（底向内 BI），强制您放松眼部肌肉进行散开训练。
             </p>
           </div>
@@ -301,6 +305,24 @@
             <v-icon color="success" class="mr-2">mdi-school</v-icon>
             核心参考论文与临床指南
           </h2>
+          
+          <div class="mb-4 px-4 py-3 bg-grey-darken-4 rounded-lg">
+            <div class="text-subtitle-1 text-white font-weight-bold mb-2">
+              <v-icon icon="mdi-tag-multiple" size="small" class="mr-2" color="info"></v-icon>
+              核心检索关键词 (Keywords)
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              <v-chip size="small" color="info" variant="flat" class="mr-2 mb-2">dichoptic</v-chip>
+              <v-chip size="small" color="info" variant="flat" class="mr-2 mb-2">anaglyph</v-chip>
+              <v-chip size="small" color="info" variant="flat" class="mr-2 mb-2">binocular rivalry</v-chip>
+              <v-chip size="small" color="info" variant="flat" class="mr-2 mb-2">subjective color balancing</v-chip>
+              <v-chip size="small" color="info" variant="flat" class="mr-2 mb-2">penalization</v-chip>
+            </div>
+            <div class="text-caption text-grey mt-1">
+              您可以使用上述关键词在 PubMed、Google Scholar 等学术库中检索更多关于双眼分视疗法的前沿研究。
+            </div>
+          </div>
+
           <v-list bg-color="transparent" class="reference-list">
             <v-list-item 
               v-for="(paper, index) in papers"

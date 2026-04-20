@@ -51,7 +51,8 @@ export const useSettingsStore = defineStore('settings', {
         offsetX: number
         offsetY: number
       }
-    }
+    },
+    calibratedColorIntensity: { red: 1.0, cyan: 1.0 },
   }),
   getters: {
     isTestDataExpired(state) {
@@ -75,6 +76,18 @@ export const useSettingsStore = defineStore('settings', {
       // If right eye is dominant (left is suppressed), penalize right eye
       let factor = state.suppressionStatus === 'left' ? state.penalizationFactor : 1.0
       return `rgb(${Math.round(state.rightLense.r * factor)}, ${Math.round(state.rightLense.g * factor)}, ${Math.round(state.rightLense.b * factor)})`
+    },
+    leftEyeFinalColorStr(state) {
+      const isRed = state.lensConfig === 'red-cyan'
+      const intensity = isRed ? state.calibratedColorIntensity.red : state.calibratedColorIntensity.cyan
+      let factor = state.suppressionStatus === 'right' ? state.penalizationFactor : 1.0
+      return `rgb(${Math.round(state.leftLense.r * factor * intensity)}, ${Math.round(state.leftLense.g * factor * intensity)}, ${Math.round(state.leftLense.b * factor * intensity)})`
+    },
+    rightEyeFinalColorStr(state) {
+      const isCyan = state.lensConfig === 'red-cyan'
+      const intensity = isCyan ? state.calibratedColorIntensity.cyan : state.calibratedColorIntensity.red
+      let factor = state.suppressionStatus === 'left' ? state.penalizationFactor : 1.0
+      return `rgb(${Math.round(state.rightLense.r * factor * intensity)}, ${Math.round(state.rightLense.g * factor * intensity)}, ${Math.round(state.rightLense.b * factor * intensity)})`
     },
     personalizedHUDText(state) {
       const parts = []
@@ -181,6 +194,9 @@ export const useSettingsStore = defineStore('settings', {
     },
     setSuppressionStatus(status: 'none' | 'left' | 'right' | 'diplopia') {
       this.suppressionStatus = status
+    },
+    setCalibratedColorIntensity(intensity: { red: number, cyan: number }) {
+      this.calibratedColorIntensity = intensity
     },
     setPenalizationFactor(factor: number) {
       this.penalizationFactor = factor

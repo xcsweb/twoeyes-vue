@@ -107,8 +107,8 @@ const initThree = () => {
   scene.add(pointLight)
 
   const { alignmentOffset } = settingsStore
-  const leftColorStr = settingsStore.leftEyeColorStr
-  const rightColorStr = settingsStore.rightEyeColorStr
+  const leftColorStr = settingsStore.leftEyeFinalColorStr
+  const rightColorStr = settingsStore.rightEyeFinalColorStr
 
   const IOD_FACTOR = 0.08
   const startZ = 4;

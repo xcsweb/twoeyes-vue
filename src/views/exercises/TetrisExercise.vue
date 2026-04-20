@@ -125,14 +125,14 @@ type Piece = {
 
 const activeColor = computed(() => {
   return settingsStore.suppressionStatus === 'right' 
-    ? settingsStore.rightEyeColorStr 
-    : settingsStore.leftEyeColorStr
+    ? settingsStore.rightEyeFinalColorStr 
+    : settingsStore.leftEyeFinalColorStr
 })
 
 const passiveColor = computed(() => {
   return settingsStore.suppressionStatus === 'right' 
-    ? settingsStore.leftEyeColorStr 
-    : settingsStore.rightEyeColorStr
+    ? settingsStore.leftEyeFinalColorStr 
+    : settingsStore.rightEyeFinalColorStr
 })
 
 const board = ref<Board>(Array.from({ length: ROWS }, () => Array(COLS).fill(null)))
