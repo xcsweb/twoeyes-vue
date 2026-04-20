@@ -10,6 +10,6 @@ test.describe('Global Flow and Navigation', () => {
     await backBtn.click()
     
     // Should fallback to home
-    await expect(page).toHaveURL(/#\/$/)
+    await expect(page).toHaveURL(/#\/home$/)
   })
 })

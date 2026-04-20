@@ -63,20 +63,6 @@
           </div>
         </div>
 
-        <!-- Diplopia Exam Card -->
-        <div class="elegant-card" @click="goToDiplopia">
-          <div class="card-img-wrapper" style="display: flex; justify-content: center; align-items: center; background: rgba(255,255,255,0.05);">
-            <v-icon size="64" color="white" style="z-index: 1;">mdi-eye-circle-outline</v-icon>
-            <div class="card-gradient"></div>
-          </div>
-          <div class="card-content">
-            <h2 class="card-title">复视检查</h2>
-            <p class="card-text">
-              检测单眼与双眼复视情况，并测算复视偏移量。
-            </p>
-          </div>
-        </div>
-
         <!-- Training Card -->
         <div class="elegant-card" @click="goToTraining">
           <div class="card-img-wrapper">
@@ -266,11 +252,6 @@ const goToExam = () => {
 const goToAmblyopia = () => {
   settingsStore.currentExamMode = 'amblyopia'
   router.push({ name: 'SectionIntroAmblyopia' })
-}
-
-const goToDiplopia = () => {
-  settingsStore.currentExamMode = 'diplopia'
-  router.push({ name: 'SectionIntroDiplopia' })
 }
 
 const goToTraining = () => {

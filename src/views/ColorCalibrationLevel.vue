@@ -4,63 +4,29 @@
       <h1 class="success-title mb-4">颜色域校准</h1>
       
       <p class="text-body-1 text-grey-lighten-1 mb-8">
-        请戴上您的3D眼镜。观察下方四个色块，选择透过眼镜看时，<br/>
-        <b>感觉最清晰且不刺眼</b>的一个色块。这将作为您后续训练的基础颜色强度。
+        请戴上您的 3D 眼镜。
       </p>
 
-      <v-row class="mb-8" justify="center" align="center" style="max-width: 400px; margin: 0 auto;">
-        <!-- 红色 100% -->
-        <v-col cols="6">
-          <v-card 
-            class="d-flex flex-column align-center justify-center color-card"
-            :class="{ 'selected-card': isSelected('red', 1.0) }"
-            style="background-color: rgb(255, 0, 0); height: 150px; border-radius: 16px;"
-            @click="selectCalibration('red', 1.0)"
-          >
-            <div class="text-h6 text-white font-weight-bold text-shadow">红色 (强)</div>
-            <div class="text-caption text-white opacity-80 text-shadow">100% 强度</div>
-          </v-card>
-        </v-col>
+      <div class="phase-card mx-auto mb-6">
+        <div class="text-h6 text-white mb-2">{{ phaseTitle }}</div>
+        <div class="text-body-2 text-grey-lighten-1">
+          {{ phaseInstruction }}
+        </div>
+      </div>
 
-        <!-- 红色 70% -->
-        <v-col cols="6">
-          <v-card 
-            class="d-flex flex-column align-center justify-center color-card"
-            :class="{ 'selected-card': isSelected('red', 0.7) }"
-            style="background-color: rgb(178, 0, 0); height: 150px; border-radius: 16px;"
-            @click="selectCalibration('red', 0.7)"
-          >
-            <div class="text-h6 text-white font-weight-bold text-shadow">红色 (弱)</div>
-            <div class="text-caption text-white opacity-80 text-shadow">70% 强度</div>
-          </v-card>
-        </v-col>
-
-        <!-- 青色 100% -->
-        <v-col cols="6">
-          <v-card 
-            class="d-flex flex-column align-center justify-center color-card"
-            :class="{ 'selected-card': isSelected('cyan', 1.0) }"
-            style="background-color: rgb(0, 255, 255); height: 150px; border-radius: 16px;"
-            @click="selectCalibration('cyan', 1.0)"
-          >
-            <div class="text-h6 text-black font-weight-bold text-shadow">青色 (强)</div>
-            <div class="text-caption text-black opacity-80 text-shadow">100% 强度</div>
-          </v-card>
-        </v-col>
-
-        <!-- 青色 70% -->
-        <v-col cols="6">
-          <v-card 
-            class="d-flex flex-column align-center justify-center color-card"
-            :class="{ 'selected-card': isSelected('cyan', 0.7) }"
-            style="background-color: rgb(0, 178, 178); height: 150px; border-radius: 16px;"
-            @click="selectCalibration('cyan', 0.7)"
-          >
-            <div class="text-h6 text-black font-weight-bold text-shadow">青色 (弱)</div>
-            <div class="text-caption text-black opacity-80 text-shadow">70% 强度</div>
-          </v-card>
-        </v-col>
-      </v-row>
+      <div class="calibration-grid-wrapper mb-8">
+        <div class="calibration-grid">
+          <button
+            v-for="cell in cells"
+            :key="cell.key"
+            type="button"
+            class="calibration-cell"
+            :class="{ selected: cell.isSelected }"
+            :style="{ backgroundColor: cell.bg }"
+            @click="selectCell(cell.intensity)"
+          ></button>
+        </div>
+      </div>
 
       <div class="btn-wrapper mt-8 text-center">
         <v-btn 
@@ -68,10 +34,10 @@
           size="x-large"
           class="confirm-btn px-12"
           height="56"
-          :disabled="!hasSelected"
-          @click="confirmAndNext"
+          :disabled="!canConfirm"
+          @click="handleConfirm"
         >
-          确认并继续
+          {{ confirmText }}
         </v-btn>
       </div>
     </div>
@@ -88,62 +54,84 @@ const route = useRoute()
 const settings = useSettingsStore()
 const { goNext } = useFlowManager()
 
-const selectedColor = ref<'red' | 'cyan' | null>(null)
-const selectedIntensity = ref<number | null>(null)
+const phase = ref<'red' | 'cyan'>('red')
+const selectedRed = ref<number | null>(null)
+const selectedCyan = ref<number | null>(null)
 
-const hasSelected = computed(() => selectedColor.value !== null && selectedIntensity.value !== null)
+const redEyeName = computed(() => settings.lensConfig === 'red-cyan' ? '左眼' : '右眼')
+const cyanEyeName = computed(() => settings.lensConfig === 'red-cyan' ? '右眼' : '左眼')
+
+const phaseTitle = computed(() => phase.value === 'red' ? '第 1 步：红色域校准' : '第 2 步：青(蓝)色域校准')
+const phaseInstruction = computed(() => {
+  if (phase.value === 'red') {
+    return `请闭上${cyanEyeName.value}（青/蓝片），只用${redEyeName.value}（红片）观察：选择一个“最清晰且不刺眼”的红色块。`
+  }
+  return `请闭上${redEyeName.value}（红片），只用${cyanEyeName.value}（青/蓝片）观察：选择一个“最清晰且不刺眼”的青(蓝)色块。`
+})
+
+const minIntensity = 0.35
+const maxIntensity = 1.0
+const levels = computed(() => {
+  return Array.from({ length: 64 }, (_, idx) => {
+    const t = idx / 63
+    return Number((minIntensity + (maxIntensity - minIntensity) * t).toFixed(2))
+  })
+})
+
+const selectedIntensity = computed(() => phase.value === 'red' ? selectedRed.value : selectedCyan.value)
+const canConfirm = computed(() => selectedIntensity.value !== null)
+const confirmText = computed(() => phase.value === 'red' ? '确认红色并继续' : '保存并继续')
+
+const cells = computed(() => {
+  const selected = selectedIntensity.value
+  return levels.value.map((intensity, idx) => {
+    const channel = Math.round(255 * intensity)
+    const bg = phase.value === 'red'
+      ? `rgb(${channel}, 0, 0)`
+      : `rgb(0, ${channel}, ${channel})`
+    return {
+      key: `${phase.value}-${idx}`,
+      intensity,
+      bg,
+      isSelected: selected !== null && Math.abs(selected - intensity) < 0.001
+    }
+  })
+})
 
 onMounted(() => {
   const lastConfig = localStorage.getItem('lastCalibratedLensConfig')
   if (lastConfig === settings.lensConfig) {
-    // 镜片未变更，复用历史校准结果
-    if (settings.calibratedColorIntensity.red < 1.0) {
-      selectedColor.value = 'red'
-      selectedIntensity.value = settings.calibratedColorIntensity.red
-    } else if (settings.calibratedColorIntensity.cyan < 1.0) {
-      selectedColor.value = 'cyan'
-      selectedIntensity.value = settings.calibratedColorIntensity.cyan
-    } else if (settings.calibratedColorIntensity.red === 1.0 && settings.calibratedColorIntensity.cyan === 1.0) {
-      // 默认都是 1.0 的情况，默认选中红色 100%（或者由用户重选）
-      selectedColor.value = 'red'
-      selectedIntensity.value = 1.0
-    }
+    selectedRed.value = settings.calibratedColorIntensity.red
+    selectedCyan.value = settings.calibratedColorIntensity.cyan
   } else {
-    // 镜片变更，重置并需重新校准
     settings.setCalibratedColorIntensity({ red: 1.0, cyan: 1.0 })
-    selectedColor.value = null
-    selectedIntensity.value = null
+    selectedRed.value = null
+    selectedCyan.value = null
   }
 })
 
-function selectCalibration(color: 'red' | 'cyan', intensity: number) {
-  selectedColor.value = color
-  selectedIntensity.value = intensity
-}
-
-function isSelected(color: 'red' | 'cyan', intensity: number) {
-  return selectedColor.value === color && selectedIntensity.value === intensity
-}
-
-function confirmAndNext() {
-  if (!hasSelected.value) return
-
-  const newIntensity = { red: 1.0, cyan: 1.0 }
-  
-  if (selectedColor.value === 'red') {
-    newIntensity.red = selectedIntensity.value!
+function selectCell(intensity: number) {
+  if (phase.value === 'red') {
+    selectedRed.value = intensity
   } else {
-    newIntensity.cyan = selectedIntensity.value!
+    selectedCyan.value = intensity
+  }
+}
+
+function handleConfirm() {
+  if (phase.value === 'red') {
+    if (selectedRed.value === null) return
+    phase.value = 'cyan'
+    return
   }
 
-  if (selectedIntensity.value === 1.0) {
-    newIntensity.red = 1.0
-    newIntensity.cyan = 1.0
-  }
+  if (selectedCyan.value === null) return
 
-  settings.setCalibratedColorIntensity(newIntensity)
+  settings.setCalibratedColorIntensity({
+    red: selectedRed.value ?? 1.0,
+    cyan: selectedCyan.value ?? 1.0
+  })
   localStorage.setItem('lastCalibratedLensConfig', settings.lensConfig)
-
   goNext(route.name as string)
 }
 </script>
@@ -168,27 +156,46 @@ function confirmAndNext() {
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.color-card {
+.phase-card {
+  max-width: 720px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 16px 18px;
+}
+
+.calibration-grid-wrapper {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.calibration-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+}
+
+.calibration-cell {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 4px solid transparent !important;
-  opacity: 0.9;
+  outline: none;
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  opacity: 0.92;
 }
 
-.color-card:hover {
+.calibration-cell:hover {
+  transform: translateY(-1px);
   opacity: 1;
-  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
-.selected-card {
-  border-color: white !important;
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5) !important;
+.calibration-cell.selected {
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.35);
   opacity: 1;
-}
-
-.text-shadow {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .btn-wrapper {

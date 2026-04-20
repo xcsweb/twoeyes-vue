@@ -32,8 +32,13 @@ test.describe('Color Calibration and Penalization E2E Flow', () => {
 
     // ColorCalibration
     await expect(page.locator('text=颜色域校准')).toBeVisible();
-    await page.locator('.color-card').first().click();
-    await page.locator('button:has-text("确认并继续")').click();
+    await expect(page.locator('text=第 1 步：红色域校准')).toBeVisible();
+    await page.locator('.calibration-cell').nth(63).click();
+    await page.locator('button:has-text("确认红色并继续")').click();
+
+    await expect(page.locator('text=第 2 步：青(蓝)色域校准')).toBeVisible();
+    await page.locator('.calibration-cell').nth(63).click();
+    await page.locator('button:has-text("保存并继续")').click();
 
     // DistanceAdvice
     await expect(page.locator('text=测试距离提示')).toBeVisible();

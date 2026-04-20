@@ -35,7 +35,7 @@
         <v-card-text>
           <h2 class="text-h5 text-white mb-4 d-flex align-center">
             <v-icon color="warning" class="mr-2">mdi-map-marker-path</v-icon>
-            系统五大模块的流转地图与出现逻辑
+            系统四大模块的流转地图与出现逻辑
           </h2>
           <div class="text-body-1 text-grey-lighten-1">
             <p class="mb-4">
@@ -115,23 +115,6 @@
                 <v-timeline-item dot-color="success" size="x-small"><strong class="text-white">阶段2：动态融合与扫视</strong> (扫视追踪、旋转螺旋、星空粒子)</v-timeline-item>
                 <v-timeline-item dot-color="success" size="x-small"><strong class="text-white">阶段3：集合与分开</strong> (裂隙尺聚散卡、3D聚散球)</v-timeline-item>
                 <v-timeline-item dot-color="success" size="x-small"><strong class="text-white">阶段4：立体视建立</strong> (进阶立体视测试、双眼协同俄罗斯方块)</v-timeline-item>
-              </v-timeline>
-            </div>
-
-            <div class="mb-2">
-              <strong class="text-white text-h6">5. 复视专科检查 (Diplopia)</strong><br />
-              <span class="text-caption text-grey">结合遮盖法与3D分视技术，快速鉴别单眼与双眼复视的临床病因。</span>
-              <v-timeline density="compact" align="start" class="mt-2 ml-2" truncate-line="both">
-                <v-timeline-item dot-color="primary" size="x-small"><strong class="text-white">模块引导页</strong> (介绍复视检查的目的和步骤)</v-timeline-item>
-                <v-timeline-item dot-color="error" size="small">
-                  <strong class="text-white">单眼复视测试</strong> (依次遮盖左右眼，检查自身光学系统是否出现重影)
-                  <div class="text-caption text-info mt-1">
-                    <v-icon icon="mdi-lightbulb-on-outline" size="small" class="mr-1"></v-icon>
-                    <strong>为什么要有这一步？</strong>单眼复视往往是角膜或晶状体的屈光问题导致（如白内障或散光），和双眼神经、肌肉的协作无关，临床上必须首先排除。
-                  </div>
-                </v-timeline-item>
-                <v-timeline-item dot-color="error" size="small"><strong class="text-white">双眼复视测试</strong> (佩戴红青眼镜分视，排查因眼位偏斜或神经麻痹导致的大脑融合失败)</v-timeline-item>
-                <v-timeline-item dot-color="primary" size="x-small"><strong class="text-white">复视诊断结果报告</strong> (基于双眼视差位移生成病因初筛报告，给出就医指导)</v-timeline-item>
               </v-timeline>
             </div>
 
