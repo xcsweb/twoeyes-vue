@@ -49,8 +49,8 @@ const playVisionTest = async (page) => {
   }
 
   await page.waitForSelector('text=您的初步视力测试已结束', { timeout: 10000 })
-  // The button says "查看详细报告", we should click it directly
-  await page.locator('button:has-text("查看详细报告")').click()
+  // The button says "继续下一步", we should click it directly
+  await page.locator('button:has-text("继续下一步")').click()
   await page.waitForLoadState('networkidle')
 
   // Astigmatism Test

@@ -37,11 +37,11 @@ test.describe('Full E2E Journey', () => {
     }
     await page.locator('button:has-text("开始右眼测试")').click();
     // Keep clicking up until finish
-    while(await page.locator('text=查看详细报告').count() === 0) {
+    while(await page.locator('text=继续下一步').count() === 0) {
       await page.locator('.mdi-arrow-up-bold').click();
       await page.waitForTimeout(50);
     }
-    await page.locator('button:has-text("查看详细报告")').click();
+    await page.locator('button:has-text("继续下一步")').click();
 
     // AstigmatismTest
     await page.waitForSelector('text=客观散光筛查', { timeout: 10000 });

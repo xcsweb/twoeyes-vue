@@ -67,7 +67,7 @@
           class="home-btn mt-6"
           @click="finishAndGoNext"
         >
-          查看详细报告
+          继续下一步
         </v-btn>
       </div>
 
